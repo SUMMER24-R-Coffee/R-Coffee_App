@@ -13,10 +13,10 @@
         android:theme="@style/Theme.RCoffee"
         tools:targetApi="31">
         <activity
-            android:name=".view.activity.Login"
+            android:name=".ui.view.activity.Login"
             android:exported="false" />
         <activity
-            android:name=".view.activity.SplashSceen"
+            android:name=".ui.view.activity.SplashSceen"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
