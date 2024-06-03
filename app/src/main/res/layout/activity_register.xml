@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.view.activity.Login">
+    tools:context=".ui.view.activity.RegisterActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,20 +28,20 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/inter_extrabold"
-            android:text="Welcome back! \nGlad to see you, Again!"
+            android:text="Hello, Register here \nto get started."
             android:textColor="#000000"
             android:textSize="24sp"
             android:textStyle="bold" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilEmail"
+            android:id="@+id/tilEmailRegis"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tedEmail"
+                android:id="@+id/tedEmailRegis"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/email"
@@ -52,7 +52,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilPassword"
+            android:id="@+id/tilPasswordRegis"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tedPassword"
+                android:id="@+id/tedPasswordRegis"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/password"
@@ -71,80 +71,44 @@
                 android:textSize="14sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/tvForgotPassword"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilRe_PasswordRegis"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:fontFamily="@font/inter_bold"
-            android:text="Forgot Password?"
-            android:textAlignment="textEnd"
-            android:textColor="#000000"
-            android:textSize="14sp" />
+            app:passwordToggleEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/Re_tedPasswordRegis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/password"
+                android:drawablePadding="10dp"
+                android:hint="Re Password"
+                android:inputType="textPassword"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/btnLogin"
+            android:id="@+id/btnRegis"
             style="@style/MainButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Login"
-            android:textSize="14sp" />
+            android:layout_marginTop="44dp"
+            android:text="Register"
+            android:textSize="14sp"
+            android:lineHeight="17sp"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/inter_bold"
-                android:text="Or Login With"
-                android:textAlignment="center"
-                android:textColor="#000000"
-                android:textSize="14sp"
-                android:drawableLeft="@drawable/line_"
-                android:drawableRight="@drawable/line_"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:src="@drawable/facebook" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="22dp"
-                android:layout_marginRight="22dp"
-                android:layout_weight="0"
-                android:src="@drawable/google" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:src="@drawable/x" />
-        </LinearLayout>
 
         <TextView
-            android:id="@+id/tvRegister"
+            android:id="@+id/tvBackToLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="44dp"
+            android:layout_marginTop="60dp"
             android:fontFamily="@font/inter_bold"
-            android:text="Don't have an account? Register now!"
+            android:text="Already have an account? Login now!"
             android:textAlignment="center"
             android:textColor="#000000"
             android:textSize="14sp" />
