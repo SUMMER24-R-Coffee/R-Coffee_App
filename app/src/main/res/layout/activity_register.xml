@@ -95,11 +95,9 @@
             android:id="@+id/btnRegis"
             style="@style/MainButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_marginTop="44dp"
-            android:text="Register"
-            android:textSize="14sp"
-            android:lineHeight="17sp"/>
+            android:text="Register" />
 
 
         <TextView
