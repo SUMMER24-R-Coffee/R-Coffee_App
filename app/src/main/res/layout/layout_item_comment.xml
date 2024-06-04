@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:divider="@drawable/line_"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_user_comment"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/img_default"
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="1dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/tv_name_user_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="TextView"
+            android:textColor="@color/black"
+            app:layout_constraintLeft_toRightOf="@+id/img_user_comment"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/lnStarComent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            app:layout_constraintLeft_toRightOf="@+id/tv_name_user_comment"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/img_star_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/star" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="TextView"
+            android:textColor="@color/black"
+            app:layout_constraintLeft_toRightOf="@+id/img_user_comment"
+            app:layout_constraintTop_toBottomOf="@+id/tv_name_user_comment" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>
