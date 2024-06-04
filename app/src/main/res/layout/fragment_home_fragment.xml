@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,159 +7,189 @@
     tools:context=".ui.view.fragment.HomeFagment">
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbarHome"
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom|center_horizontal|end"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="90dp"
+            android:background="@drawable/shape_rect"
+            android:src="@drawable/cart" />
+
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteY="10dp">
+            android:layout_height="match_parent" >
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="22dp"
-                android:layout_marginRight="22dp"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
 
-                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/imgUser"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/logo_mini"
-                    app:civ_border_color="#FF000000"
-                    app:civ_border_width="1dp" />
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbarHome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:ignore="MissingConstraints">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="22dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="22dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                            android:id="@+id/imgUser"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/logo_mini"
+                            app:civ_border_color="#FF000000"
+                            app:civ_border_width="1dp" />
+
+                        <TextView
+                            android:id="@+id/tvNameUser"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingStart="12.5dp"
+                            android:text="Welcome back \nUser" />
+
+                        <ImageView
+                            android:id="@+id/imgNotification"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/alert" />
+                    </LinearLayout>
+                </androidx.appcompat.widget.Toolbar>
 
                 <TextView
-                    android:id="@+id/tvNameUser"
+                    android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingStart="12.5dp"
-                    android:text="Welcome back \nUser" />
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginTop="22dp"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="What you're looking for?"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/toolbarHome"
+                    tools:ignore="MissingConstraints" />
 
-                <ImageView
-                    android:id="@+id/imgNotification"
+                <LinearLayout
+                    android:id="@+id/line1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="22dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+                    <EditText
+                        android:id="@+id/editTextTextPassword"
+                        android:layout_width="wrap_content"
+                        android:layout_height="53dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_rect"
+                        android:drawableLeft="@drawable/search"
+                        android:drawablePadding="17dp"
+                        android:ems="10"
+                        android:hint="...Search"
+                        android:paddingLeft="17dp"
+                        android:textSize="14sp" />
+
+                    <ImageButton
+                        android:id="@+id/imageButton"
+                        android:layout_width="53dp"
+                        android:layout_height="53dp"
+                        android:src="@drawable/hert" />
+                </LinearLayout>
+
+                <com.denzcoskun.imageslider.ImageSlider
+                    android:id="@+id/image_slider"
                     android:layout_width="wrap_content"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="32dp"
+                    app:iss_auto_cycle="true"
+                    app:iss_delay="1000"
+                    app:iss_period="1000"
+                    app:iss_text_align="CENTER"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/line1"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/tvTitleCateory"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/alert" />
-            </LinearLayout>
-        </androidx.appcompat.widget.Toolbar>
+                    android:layout_marginTop="22dp"
+                    android:fontFamily="@font/inter_bold"
+                    android:paddingLeft="22dp"
+                    android:text="Our Products"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/image_slider" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_bold"
-            android:text="What you're looking for?"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            tools:layout_editor_absoluteX="22dp"
-            tools:layout_editor_absoluteY="88dp" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcvCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTitleCateory" />
 
-        <LinearLayout
-            android:id="@+id/line1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@+id/textView2"
-            android:layout_marginStart="22dp"
-            android:layout_marginEnd="22dp"
-            android:layout_marginTop="10dp">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcvProduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginBottom="22dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rcvCategory" />
 
-            <EditText
-                android:id="@+id/editTextTextPassword"
-                android:layout_width="wrap_content"
-                android:layout_height="53dp"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="...Search"
-                android:drawableLeft="@drawable/search"
-                android:drawablePadding="17dp"
-                android:textSize="14sp"/>
+                <TextView
+                    android:id="@+id/tvRecommend"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginBottom="22dp"
+                    android:fontFamily="@font/inter_bold"
+                    android:paddingLeft="22dp"
+                    android:text="Recommend For You"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rcvProduct" />
 
-            <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="53dp"
-                android:layout_height="53dp"
-                android:src="@drawable/hert" />
-        </LinearLayout>
-        <com.denzcoskun.imageslider.ImageSlider
-            android:id="@+id/image_slider"
-            android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            app:iss_auto_cycle="true"
-            app:iss_period="1000"
-            app:iss_delay="1000"
-            app:iss_text_align="CENTER"
-            tools:ignore="MissingConstraints"
-            app:layout_constraintTop_toBottomOf="@+id/line1"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginStart="22dp"
-            android:layout_marginEnd="22dp"
-            android:layout_marginTop="36dp"/>
-        <TextView
-            android:id="@+id/tvTitleCateory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Our Products"
-            app:layout_constraintTop_toBottomOf="@+id/image_slider"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:paddingLeft="22dp"
-            android:layout_marginTop="22dp"
-            android:fontFamily="@font/inter_bold"
-            android:textSize="16dp"
-            android:textColor="@color/black"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcvRecommend"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvRecommend" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcvCategory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
-            android:orientation="horizontal"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitleCateory" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/rcvProduct"
-            app:layout_constraintTop_toBottomOf="@+id/rcvCategory"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:orientation="horizontal"
-            android:layout_marginTop="22dp"
-            android:layout_marginBottom="22dp"/>
-        <TextView
-            android:id="@+id/tvRecommend"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Recommend For You"
-            app:layout_constraintTop_toBottomOf="@+id/rcvProduct"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:paddingLeft="22dp"
-            android:layout_marginTop="22dp"
-            android:fontFamily="@font/inter_bold"
-            android:textSize="16dp"
-            android:textColor="@color/black"
-            android:layout_marginBottom="22dp"/>
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/rcvRecommend"
-            app:layout_constraintTop_toBottomOf="@+id/tvRecommend"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:orientation="horizontal" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 
-</androidx.core.widget.NestedScrollView>
+
+</FrameLayout>
