@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rootPrdInf">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbarHome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:ignore="MissingConstraints">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="22dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnBackPrdIm"
+                        android:layout_width="33dp"
+                        android:layout_height="33dp"
+                        android:background="@drawable/shape_rect"
+                        android:backgroundTint="@color/green_chaleston"
+                        android:src="@drawable/arrowback" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <ImageButton
+                        android:id="@+id/btnBasketPrd"
+                        android:layout_width="33dp"
+                        android:layout_height="33dp"
+                        android:background="@drawable/shape_rect"
+                        android:backgroundTint="@color/green_chaleston"
+                        android:src="@drawable/cart_white" />
+
+                    <ImageButton
+                        android:id="@+id/btnFavoritePrd"
+                        android:layout_width="33dp"
+                        android:layout_height="33dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@drawable/shape_rect"
+                        android:backgroundTint="@color/green_chaleston"
+                        android:src="@drawable/hert" />
+
+                </LinearLayout>
+            </androidx.appcompat.widget.Toolbar>
+
+            <TextView
+                android:id="@+id/tvProductNamInf"
+                style="@style/textName"
+                android:layout_width="match_parent"
+                android:layout_height="31dp"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/tvProductPriceInf"
+                style="@style/textName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+            <ImageView
+                android:id="@+id/imgProductInf"
+                android:layout_width="match_parent"
+                android:layout_height="282dp"
+                android:layout_marginLeft="22dp"
+                android:layout_marginRight="22dp"
+                android:background="@drawable/round_corner"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_default" />
+
+            <TextView
+                style="@style/textTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:paddingLeft="22dp"
+                android:text="Description" />
+
+            <TextView
+                android:id="@+id/tvDescriptionPrdInf"
+                style="@style/textContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:layout_marginBottom="22dp"
+                android:paddingLeft="22dp"
+                android:text="TextView" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="22dp"
+                android:layout_marginRight="22dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/textTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Reviews" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/imageView3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:src="@drawable/star" />
+
+                        <TextView
+                            android:id="@+id/tvAverageStarInf"
+                            style="@style/textContent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="4/5"
+                            android:textSize="13sp" />
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvCreateReview"
+                    style="@style/textTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Create review"
+                    android:textAlignment="textEnd"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvReviews"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/layout_item_comment">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/tvViewAllReview"
+                style="@style/textContent"
+                android:layout_width="142dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="22dp"
+                android:drawableEnd="@drawable/arrowto"
+                android:text="View all reviews"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="22dp"
+                android:layout_marginTop="22dp"
+                android:layout_marginRight="22dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/textTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Quantity" />
+
+                <ImageButton
+                    android:id="@+id/btnMinusPrd"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@drawable/shape_rect_filled_ver2"
+                    android:src="@drawable/minus" />
+
+                <TextView
+                    android:id="@+id/tvQuantity"
+                    style="@style/textTitle"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/shape_rect_border_ver3"
+                    android:gravity="center"
+                    android:text="43" />
+
+                <ImageButton
+                    android:id="@+id/btnIncreasePrd"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@drawable/shape_rect_filled_ver2"
+                    android:src="@drawable/plus" />
+                />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="22dp"
+        android:paddingTop="22dp"
+        android:paddingRight="22dp"
+        android:paddingBottom="22dp"
+        android:gravity="center"
+        android:background="@color/white"
+        android:layout_gravity="bottom|center_horizontal">
+
+        <Button
+            android:id="@+id/btnUpdateBasket"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Update Basket"
+            style="@style/secondButton"
+            android:textAllCaps="false" />
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

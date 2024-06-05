@@ -4,20 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.view.fragment.HomeFagment">
-
+    tools:context=".ui.view.fragment.HomeFragment">
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="bottom|center_horizontal|end"
-        android:layout_marginRight="30dp"
         android:layout_marginBottom="90dp"
+        android:layout_marginRight="30dp"
         app:icon="@drawable/cart"
         app:shapeAppearanceOverlay="@style/customExtendedFAB"
-        android:backgroundTint="@color/light_gray"
-        />
-
+        android:backgroundTint="@color/light_gray" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -31,6 +28,8 @@
                 android:id="@+id/toolbarHome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
                 tools:ignore="MissingConstraints">
 
                 <LinearLayout
@@ -42,7 +41,7 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/imgUser"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
@@ -60,14 +59,14 @@
 
                     <ImageView
                         android:id="@+id/imgNotification"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/alert" />
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/alert" />
                 </LinearLayout>
             </androidx.appcompat.widget.Toolbar>
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/tvFind"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="22dp"
@@ -88,7 +87,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="22dp"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/textView2">
+                app:layout_constraintTop_toBottomOf="@+id/tvFind">
 
                 <EditText
                     android:id="@+id/editTextTextPassword"
@@ -119,11 +118,9 @@
                 app:iss_delay="1000"
                 app:iss_period="1000"
                 app:iss_text_align="CENTER"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/line1"
-                tools:ignore="MissingConstraints" />
+                app:layout_constraintTop_toBottomOf="@+id/line1" />
 
             <TextView
                 android:id="@+id/tvTitleCateory"
@@ -134,7 +131,7 @@
                 android:paddingLeft="22dp"
                 android:text="Our Products"
                 android:textColor="@color/black"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/image_slider" />
@@ -187,6 +184,5 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-
 
 </FrameLayout>

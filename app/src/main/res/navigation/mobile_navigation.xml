@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="datlowashere.project.rcoffee.ui.view.fragment.HomeFagment"
+        android:name="datlowashere.project.rcoffee.ui.view.fragment.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home_fragment" />
     <fragment

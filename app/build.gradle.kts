@@ -54,4 +54,7 @@ dependencies {
     implementation ("de.hdodenhof:circleimageview:3.1.0")
     //image slideshow
     implementation ("com.github.denzcoskun:ImageSlideshow:0.1.2")
+
+    implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
+
 }
