@@ -7,14 +7,18 @@
     tools:context=".ui.view.fragment.OrderHistoryFragment">
 
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/appbarHistory"
+        android:background="@color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarOrdHistory"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/rcvHistory">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,11 +45,11 @@
                 android:src="@drawable/alert" />
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
-
+    </com.google.android.material.appbar.AppBarLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvHistory"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarOrdHistory"/>
+        app:layout_constraintTop_toBottomOf="@+id/appbarHistory"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

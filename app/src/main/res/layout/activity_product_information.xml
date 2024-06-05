@@ -6,62 +6,71 @@
     android:layout_height="match_parent"
     android:id="@+id/rootPrdInf">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarHome"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="noScroll|enterAlways"
+            android:layout_marginBottom="10dp"
+            tools:ignore="MissingConstraints">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingLeft="22dp"
+                android:paddingTop="10dp"
+                android:paddingRight="22dp">
+
+                <ImageButton
+                    android:id="@+id/btnBackPrdIm"
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    android:background="@drawable/shape_rect"
+                    android:backgroundTint="@color/green_chaleston"
+                    android:src="@drawable/arrowback" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <ImageButton
+                    android:id="@+id/btnBasketPrd"
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    android:background="@drawable/shape_rect"
+                    android:backgroundTint="@color/green_chaleston"
+                    android:src="@drawable/cart_white" />
+
+                <ImageButton
+                    android:id="@+id/btnFavoritePrd"
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/shape_rect"
+                    android:backgroundTint="@color/green_chaleston"
+                    android:src="@drawable/hert" />
+
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbarHome"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:ignore="MissingConstraints">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="22dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="22dp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <ImageButton
-                        android:id="@+id/btnBackPrdIm"
-                        android:layout_width="33dp"
-                        android:layout_height="33dp"
-                        android:background="@drawable/shape_rect"
-                        android:backgroundTint="@color/green_chaleston"
-                        android:src="@drawable/arrowback" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <ImageButton
-                        android:id="@+id/btnBasketPrd"
-                        android:layout_width="33dp"
-                        android:layout_height="33dp"
-                        android:background="@drawable/shape_rect"
-                        android:backgroundTint="@color/green_chaleston"
-                        android:src="@drawable/cart_white" />
-
-                    <ImageButton
-                        android:id="@+id/btnFavoritePrd"
-                        android:layout_width="33dp"
-                        android:layout_height="33dp"
-                        android:layout_marginLeft="5dp"
-                        android:background="@drawable/shape_rect"
-                        android:backgroundTint="@color/green_chaleston"
-                        android:src="@drawable/hert" />
-
-                </LinearLayout>
-            </androidx.appcompat.widget.Toolbar>
 
             <TextView
                 android:id="@+id/tvProductNamInf"
@@ -164,6 +173,7 @@
                 android:id="@+id/rcvReviews"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                tools:itemCount="5"
                 tools:listitem="@layout/layout_item_comment">
 
             </androidx.recyclerview.widget.RecyclerView>
@@ -224,24 +234,23 @@
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:background="@color/white"
+        android:gravity="center"
         android:orientation="horizontal"
         android:paddingLeft="22dp"
-        android:paddingTop="22dp"
-        android:paddingRight="22dp"
-        android:paddingBottom="22dp"
-        android:gravity="center"
-        android:background="@color/white"
-        android:layout_gravity="bottom|center_horizontal">
+        android:paddingRight="22dp">
 
         <Button
             android:id="@+id/btnUpdateBasket"
+            style="@style/secondButton"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:text="Update Basket"
-            style="@style/secondButton"
             android:textAllCaps="false" />
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
