@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="343dp"
-    android:layout_height="154dp">
+    android:layout_height="154dp"
+    android:layout_marginBottom="22dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -47,14 +48,16 @@
                     android:lineSpacingExtra="2sp"
                     android:text="TextView"
                     android:textColor="@color/white" />
+
                 <TextView
                     android:id="@+id/tvStarFavoriteItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="9dp"
-                    android:text="TextView"
                     android:drawableLeft="@drawable/star"
+                    android:text="TextView"
                     android:textColor="@color/white" />
+
                 <TextView
                     android:id="@+id/tvPriceFavoriteProductItem"
                     android:layout_width="match_parent"

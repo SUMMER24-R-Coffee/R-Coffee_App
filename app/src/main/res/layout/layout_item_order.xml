@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="343dp"
-    android:layout_height="154dp">
+    android:layout_width="match_parent"
+    android:layout_height="154dp"
+    android:layout_marginBottom="22dp"
+    android:paddingLeft="22dp"
+    android:paddingRight="22dp"
+    android:orientation="vertical"
+    android:gravity="center">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -13,12 +18,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center|top"
             android:orientation="horizontal">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="96dp"
                 android:layout_height="96dp"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="30dp"
                 android:layout_marginTop="25dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="16dp"

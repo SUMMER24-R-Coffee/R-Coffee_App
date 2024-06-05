@@ -4,14 +4,12 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.TextView
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import datlowashere.project.rcoffee.R
 import datlowashere.project.rcoffee.databinding.FragmentHomeFragmentBinding
 import datlowashere.project.rcoffee.ui.viewmodel.HomeViewModel
 
-class HomeFagment : Fragment() {
+class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeFragmentBinding? =null
 
