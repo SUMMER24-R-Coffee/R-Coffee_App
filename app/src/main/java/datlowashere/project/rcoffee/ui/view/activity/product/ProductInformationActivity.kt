@@ -1,4 +1,4 @@
-package datlowashere.project.rcoffee.ui.view.activity
+package datlowashere.project.rcoffee.ui.view.activity.product
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

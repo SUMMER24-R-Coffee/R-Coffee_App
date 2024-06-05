@@ -13,16 +13,19 @@
         android:theme="@style/Theme.RCoffee"
         tools:targetApi="31">
         <activity
-            android:name=".ui.view.activity.OrderInnformationActivity"
+            android:name=".ui.view.activity.account.AccountActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.view.activity.OrderActivity"
+            android:name=".ui.view.activity.order.OrderInnformationActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.view.activity.BastketActivity"
+            android:name=".ui.view.activity.order.OrderActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.view.activity.ProductInformationActivity"
+            android:name=".ui.view.activity.basket.BastketActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.activity.product.ProductInformationActivity"
             android:exported="false" />
         <activity
             android:name=".ui.view.activity.LoginActivity"

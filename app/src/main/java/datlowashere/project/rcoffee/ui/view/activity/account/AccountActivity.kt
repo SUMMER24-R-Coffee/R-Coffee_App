@@ -1,12 +1,12 @@
-package datlowashere.project.rcoffee.ui.view.activity
+package datlowashere.project.rcoffee.ui.view.activity.account
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import datlowashere.project.rcoffee.R
 
-class OrderInnformationActivity : AppCompatActivity() {
+class AccountActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_order_innformation)
+        setContentView(R.layout.activity_account)
     }
 }
