@@ -4,7 +4,8 @@
     android:layout_height="48dp"
     android:id="@+id/lnContainerCategory"
     android:background="@drawable/shape_rect_filled"
-    android:layout_marginRight="10dp"
+    android:layout_marginLeft="11dp"
+    android:layout_marginRight="11dp"
     android:gravity="center">
 
     <TextView

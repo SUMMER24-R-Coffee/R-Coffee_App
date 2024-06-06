@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="150dp"
     android:layout_height="246dp"
+    android:layout_marginLeft="11dp"
+    android:layout_marginRight="11dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
@@ -25,8 +27,6 @@
                 android:layout_height="129dp"
                 app:cardCornerRadius="16dp"
                 android:layout_marginTop="12dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
                 app:cardUseCompatPadding="false"
                 app:layout_constraintLeft_toLeftOf="@+id/contraint_item_product"
                 app:layout_constraintRight_toRightOf="@+id/contraint_item_product"
@@ -40,13 +40,15 @@
                     android:src="@drawable/img_default" />
             </androidx.cardview.widget.CardView>
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/img_fav_product"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/heart"
+                android:background="@color/cardview_shadow_end_color"
+                android:src="@drawable/hert"
+                android:translationZ="10dp"
                 app:layout_constraintRight_toRightOf="@+id/cv_product_img"
                 app:layout_constraintTop_toTopOf="@+id/cv_product_img" />
             <LinearLayout
@@ -66,6 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
                     android:gravity="center_vertical"
+                    android:maxLength="10"
                     android:lineSpacingExtra="4sp"
                     android:text="cappuccino"
                     android:textColor="@color/white" />
@@ -81,7 +84,6 @@
                     android:id="@+id/tv_star_item_product"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="12dp"
                     android:layout_weight="1"
                     android:text="4.5"
                     android:textColor="@color/white" />
@@ -95,6 +97,7 @@
                 android:layout_marginLeft="12dp"
                 android:fontFamily="@font/inter_light"
                 android:text="TextView"
+                android:maxLength="20"
                 android:lineSpacingExtra="9sp"
                 android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"

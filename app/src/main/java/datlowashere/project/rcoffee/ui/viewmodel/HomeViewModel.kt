@@ -19,11 +19,14 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
     private val _products = MutableLiveData<Resource<List<Product>>>()
     val products: LiveData<Resource<List<Product>>> get() = _products
 
+    val filteredProducts = MutableLiveData<Resource<List<Product>>>()
+
+
     init {
         getData()
     }
 
-    public fun getData() {
+    fun getData() {
         viewModelScope.launch {
             getBanners()
             getCategories()
@@ -58,6 +61,13 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
             _products.postValue(Resource.Success(response))
         } catch (e: Exception) {
             _products.postValue(Resource.Error(e.message ?: "An error occurred"))
+        }
+    }
+
+    fun filterProductsByCategory(categoryId: Int) {
+        products.value?.data?.let { productList ->
+            val filteredList = productList.filter { it.category_id == categoryId }
+            filteredProducts.value = Resource.Success(filteredList)
         }
     }
 }

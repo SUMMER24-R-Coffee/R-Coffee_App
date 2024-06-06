@@ -7,7 +7,14 @@ import datlowashere.project.rcoffee.R
 import datlowashere.project.rcoffee.databinding.LayoutItemCategoryBinding
 import datlowashere.project.rcoffee.data.model.Category
 
-class CategoryAdapter(private val categories: List<Category>) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+class CategoryAdapter(
+    private val categories: List<Category>,
+    private val itemClickListener: OnItemClickListener
+) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+
+    interface OnItemClickListener {
+        fun onItemClick(categoryId: Int)
+    }
 
     private var selectedPosition = RecyclerView.NO_POSITION
 
@@ -22,6 +29,7 @@ class CategoryAdapter(private val categories: List<Category>) : RecyclerView.Ada
             notifyItemChanged(selectedPosition)
             selectedPosition = holder.adapterPosition
             notifyItemChanged(selectedPosition)
+            itemClickListener.onItemClick(categories[holder.adapterPosition].category_id)
         }
     }
 
@@ -38,3 +46,4 @@ class CategoryAdapter(private val categories: List<Category>) : RecyclerView.Ada
         }
     }
 }
+

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +18,6 @@ import datlowashere.project.rcoffee.ui.adapter.ProductAdapter
 import datlowashere.project.rcoffee.ui.viewmodel.HomeViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.HomeViewModelFactory
 import datlowashere.project.rcoffee.utils.Resource
-import com.bumptech.glide.Glide
 
 class HomeFragment : Fragment() {
 
@@ -61,13 +61,35 @@ class HomeFragment : Fragment() {
             }
         })
 
+
         homeViewModel.categories.observe(viewLifecycleOwner, Observer { resource ->
             when (resource) {
                 is Resource.Success -> {
                     resource.data?.let {
-                        categoryAdapter = CategoryAdapter(it)
+                        categoryAdapter = CategoryAdapter(it, object : CategoryAdapter.OnItemClickListener {
+                            override fun onItemClick(categoryId: Int) {
+                                homeViewModel.filterProductsByCategory(categoryId)
+                            }
+                        })
                         binding.rcvCategory.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                         binding.rcvCategory.adapter = categoryAdapter
+                    }
+                }
+                is Resource.Error -> {
+                }
+                is Resource.Loading -> {
+                }
+            }
+        })
+
+
+        homeViewModel.products.observe(viewLifecycleOwner, Observer { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data?.let {
+                        productAdapter = ProductAdapter(it)
+                        binding.rcvProduct.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                        binding.rcvProduct.adapter = productAdapter
                     }
                 }
                 is Resource.Error -> {
@@ -82,7 +104,23 @@ class HomeFragment : Fragment() {
                 is Resource.Success -> {
                     resource.data?.let {
                         productAdapter = ProductAdapter(it)
-                        binding.rcvProduct.layoutManager = LinearLayoutManager(context)
+                        binding.rcvRecommend.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                        binding.rcvRecommend.adapter = productAdapter
+                    }
+                }
+                is Resource.Error -> {
+                }
+                is Resource.Loading -> {
+                }
+            }
+        })
+
+        homeViewModel.filteredProducts.observe(viewLifecycleOwner, Observer { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data?.let {
+                        productAdapter = ProductAdapter(it)
+                        binding.rcvProduct.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                         binding.rcvProduct.adapter = productAdapter
                     }
                 }

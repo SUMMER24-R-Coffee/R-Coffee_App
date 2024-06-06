@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import datlowashere.project.rcoffee.R
 import datlowashere.project.rcoffee.data.model.Product
 import datlowashere.project.rcoffee.databinding.LayoutItemProductBinding
+import datlowashere.project.rcoffee.utils.FormatterHelper
 
 class ProductAdapter(private val products: List<Product>) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
@@ -22,7 +23,7 @@ class ProductAdapter(private val products: List<Product>) : RecyclerView.Adapter
         val product = products[position]
         holder.binding.apply {
             tvProductName.text = product.product_name
-            tvPriceItemProduct.text = product.price.toString()
+            tvPriceItemProduct.text = FormatterHelper.formatCurrency(product.price)
             tvStarItemProduct.text =product.average_rating.toString()
             tvDescItemProduct.text = product.description
             Glide.with(imgProductItemImg.context)
