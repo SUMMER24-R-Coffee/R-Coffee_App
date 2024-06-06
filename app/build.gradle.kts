@@ -55,6 +55,21 @@ dependencies {
     //image slideshow
     implementation ("com.github.denzcoskun:ImageSlideshow:0.1.2")
 
+    //constraint layout
     implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
+
+    //viewmodel livedata
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.4.0")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
+
+    //retrofit and okhttp
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.okhttp3:okhttp:4.9.1")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.9.1")
+
+    //glide
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
 
 }
