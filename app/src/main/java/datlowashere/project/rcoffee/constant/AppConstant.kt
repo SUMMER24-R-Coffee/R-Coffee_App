@@ -6,5 +6,6 @@ class AppConstant {
     companion object {
         const val GET_BANNER = "banner"
         const val GET_CATEGORY ="categories"
+        const val GET_PRODUCT = "products"
     }
 }

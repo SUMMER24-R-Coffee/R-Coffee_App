@@ -1,47 +1,63 @@
 package datlowashere.project.rcoffee.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.*
 import datlowashere.project.rcoffee.data.model.Banner
 import datlowashere.project.rcoffee.data.model.Category
+import datlowashere.project.rcoffee.data.model.Product
 import datlowashere.project.rcoffee.data.repository.HomeRepository
 import datlowashere.project.rcoffee.utils.Resource
 import kotlinx.coroutines.launch
-import java.util.*
+
 class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
 
-    private val _banners: MutableLiveData<Resource<List<Banner>>> = MutableLiveData()
-    val banners: LiveData<Resource<List<Banner>>>
-        get() = _banners
+    private val _banners = MutableLiveData<Resource<List<Banner>>>()
+    val banners: LiveData<Resource<List<Banner>>> get() = _banners
 
-    private val _categories: MutableLiveData<Resource<List<Category>>> = MutableLiveData()
-    val categories: LiveData<Resource<List<Category>>>
-        get() = _categories
+    private val _categories = MutableLiveData<Resource<List<Category>>>()
+    val categories: LiveData<Resource<List<Category>>> get() = _categories
+
+    private val _products = MutableLiveData<Resource<List<Product>>>()
+    val products: LiveData<Resource<List<Product>>> get() = _products
 
     init {
-        getBanner()
-        getCategories()
+        getData()
     }
 
-    fun getBanner() = viewModelScope.launch {
-        _banners.value = Resource.Loading()
-        try {
-            val response = repository.getBanners()
-            _banners.value = Resource.Success(response)
-        } catch (e: Exception) {
-            Log.e("HomeViewModel", "Failed to fetch banners", e)
-            _banners.value = Resource.Error("Failed to fetch banners: ${e.message}")
+    public fun getData() {
+        viewModelScope.launch {
+            getBanners()
+            getCategories()
+            getProducts()
         }
     }
 
-    fun getCategories() = viewModelScope.launch {
-        _categories.value = Resource.Loading()
+    private suspend fun getBanners() {
+        _banners.postValue(Resource.Loading())
+        try {
+            val response = repository.getBanners()
+            _banners.postValue(Resource.Success(response))
+        } catch (e: Exception) {
+            _banners.postValue(Resource.Error(e.message ?: "An error occurred"))
+        }
+    }
+
+    private suspend fun getCategories() {
+        _categories.postValue(Resource.Loading())
         try {
             val response = repository.getCategories()
-            _categories.value = Resource.Success(response)
+            _categories.postValue(Resource.Success(response))
         } catch (e: Exception) {
-            Log.e("HomeViewModel", "Failed to fetch categories", e)
-            _categories.value = Resource.Error("Failed to fetch categories: ${e.message}")
+            _categories.postValue(Resource.Error(e.message ?: "An error occurred"))
+        }
+    }
+
+    private suspend fun getProducts() {
+        _products.postValue(Resource.Loading())
+        try {
+            val response = repository.getProducts()
+            _products.postValue(Resource.Success(response))
+        } catch (e: Exception) {
+            _products.postValue(Resource.Error(e.message ?: "An error occurred"))
         }
     }
 }
