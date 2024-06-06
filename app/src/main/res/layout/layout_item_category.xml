@@ -4,14 +4,16 @@
     android:layout_height="48dp"
     android:id="@+id/lnContainerCategory"
     android:background="@drawable/shape_rect_filled"
+    android:layout_marginRight="10dp"
     android:gravity="center">
 
     <TextView
         android:id="@+id/tvCategoryName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:textAlignment="center"
+        android:gravity="center"
         android:textColor="@color/black"
         android:fontFamily="@font/inter_bold"
         android:textSize="14sp"

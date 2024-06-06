@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -10,8 +11,33 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.RCoffee"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.view.activity.address.SelectAddressActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.activity.address.AddAddressActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.activity.address.AddressActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.activity.account.ChangePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.activity.review.AddReviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.activity.review.ReviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.activity.notification.NotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.activity.voucher.SelectVoucherActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.view.activity.account.AccountActivity"
             android:exported="false" />
