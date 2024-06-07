@@ -1,5 +1,6 @@
 package datlowashere.project.rcoffee.ui.view.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import datlowashere.project.rcoffee.data.repository.HomeRepository
 import datlowashere.project.rcoffee.databinding.FragmentHomeFragmentBinding
 import datlowashere.project.rcoffee.ui.adapter.CategoryAdapter
 import datlowashere.project.rcoffee.ui.adapter.ProductAdapter
+import datlowashere.project.rcoffee.ui.view.activity.product.ProductActivity
 import datlowashere.project.rcoffee.ui.viewmodel.HomeViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.HomeViewModelFactory
 import datlowashere.project.rcoffee.utils.Resource
@@ -45,6 +47,12 @@ class HomeFragment : Fragment() {
         setupObservers()
 
         homeViewModel.getData()
+
+        binding.tvTitleCateory.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(context, ProductActivity::class.java))
+        })
+
+
     }
 
     private fun setupObservers() {
