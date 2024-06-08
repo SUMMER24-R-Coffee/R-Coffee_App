@@ -52,9 +52,7 @@ class HomeFragment : Fragment() {
             startActivity(Intent(context, ProductActivity::class.java))
         })
 
-
     }
-
     private fun setupObservers() {
         homeViewModel.banners.observe(viewLifecycleOwner, Observer { resource ->
             when (resource) {
