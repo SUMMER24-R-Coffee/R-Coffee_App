@@ -1,12 +1,14 @@
 package datlowashere.project.rcoffee.ui.view.activity.product
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import datlowashere.project.rcoffee.R
+import datlowashere.project.rcoffee.data.model.Product
 import datlowashere.project.rcoffee.databinding.ActivityProductBinding
 import datlowashere.project.rcoffee.data.repository.ProductRepository
 import datlowashere.project.rcoffee.ui.adapter.ProductAdapter
@@ -15,7 +17,7 @@ import datlowashere.project.rcoffee.ui.viewmodel.ProductViewModelFactory
 import datlowashere.project.rcoffee.utils.GridSpacingItemDecoration
 import datlowashere.project.rcoffee.utils.Resource
 
-class ProductActivity : AppCompatActivity() {
+class ProductActivity : AppCompatActivity(), ProductAdapter.OnItemClickListener {
 
     private lateinit var binding: ActivityProductBinding
     private lateinit var productViewModel: ProductViewModel
@@ -42,7 +44,7 @@ class ProductActivity : AppCompatActivity() {
             when (resource) {
                 is Resource.Success -> {
                     resource.data?.let {
-                        productAdapter = ProductAdapter(it)
+                        productAdapter = ProductAdapter(it, this)
                         binding.rcvProducts.layoutManager = GridLayoutManager(this, 2)
                         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.item_spacing)
                         binding.rcvProducts.addItemDecoration(GridSpacingItemDecoration(2, spacingInPixels, true))
@@ -55,5 +57,13 @@ class ProductActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    override fun onProductClick(product: Product) {
+        val intent = Intent(this, ProductInformationActivity::class.java).apply {
+            putExtra("product", product)
+        }
+        Log.d("PRODUCT_INFO", product.toString())
+        startActivity(intent)
     }
 }

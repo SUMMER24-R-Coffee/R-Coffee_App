@@ -6,22 +6,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
+import datlowashere.project.rcoffee.data.model.Product
 import datlowashere.project.rcoffee.data.repository.HomeRepository
 import datlowashere.project.rcoffee.databinding.FragmentHomeFragmentBinding
 import datlowashere.project.rcoffee.ui.adapter.CategoryAdapter
 import datlowashere.project.rcoffee.ui.adapter.ProductAdapter
 import datlowashere.project.rcoffee.ui.view.activity.product.ProductActivity
+import datlowashere.project.rcoffee.ui.view.activity.product.ProductInformationActivity
 import datlowashere.project.rcoffee.ui.viewmodel.HomeViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.HomeViewModelFactory
 import datlowashere.project.rcoffee.utils.Resource
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAdapter.OnItemClickListener {
 
     private var _binding: FragmentHomeFragmentBinding? = null
     private val binding get() = _binding!!
@@ -48,11 +49,11 @@ class HomeFragment : Fragment() {
 
         homeViewModel.getData()
 
-        binding.tvTitleCateory.setOnClickListener(View.OnClickListener {
+        binding.tvTitleCateory.setOnClickListener {
             startActivity(Intent(context, ProductActivity::class.java))
-        })
-
+        }
     }
+
     private fun setupObservers() {
         homeViewModel.banners.observe(viewLifecycleOwner, Observer { resource ->
             when (resource) {
@@ -67,16 +68,11 @@ class HomeFragment : Fragment() {
             }
         })
 
-
         homeViewModel.categories.observe(viewLifecycleOwner, Observer { resource ->
             when (resource) {
                 is Resource.Success -> {
                     resource.data?.let {
-                        categoryAdapter = CategoryAdapter(it, object : CategoryAdapter.OnItemClickListener {
-                            override fun onItemClick(categoryId: Int) {
-                                homeViewModel.filterProductsByCategory(categoryId)
-                            }
-                        })
+                        categoryAdapter = CategoryAdapter(it, this@HomeFragment)
                         binding.rcvCategory.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                         binding.rcvCategory.adapter = categoryAdapter
                     }
@@ -88,12 +84,11 @@ class HomeFragment : Fragment() {
             }
         })
 
-
         homeViewModel.products.observe(viewLifecycleOwner, Observer { resource ->
             when (resource) {
                 is Resource.Success -> {
                     resource.data?.let {
-                        productAdapter = ProductAdapter(it)
+                        productAdapter = ProductAdapter(it, this@HomeFragment)
                         binding.rcvProduct.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                         binding.rcvProduct.adapter = productAdapter
                     }
@@ -109,7 +104,7 @@ class HomeFragment : Fragment() {
             when (resource) {
                 is Resource.Success -> {
                     resource.data?.let {
-                        productAdapter = ProductAdapter(it)
+                        productAdapter = ProductAdapter(it, this@HomeFragment)
                         binding.rcvRecommend.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                         binding.rcvRecommend.adapter = productAdapter
                     }
@@ -125,7 +120,7 @@ class HomeFragment : Fragment() {
             when (resource) {
                 is Resource.Success -> {
                     resource.data?.let {
-                        productAdapter = ProductAdapter(it)
+                        productAdapter = ProductAdapter(it, this@HomeFragment)
                         binding.rcvProduct.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                         binding.rcvProduct.adapter = productAdapter
                     }
@@ -136,6 +131,16 @@ class HomeFragment : Fragment() {
                 }
             }
         })
+    }
+
+    override fun onItemClick(categoryId: Int) {
+        homeViewModel.filterProductsByCategory(categoryId)
+    }
+
+    override fun onProductClick(product: Product) {
+        val intent = Intent(context, ProductInformationActivity::class.java)
+        intent.putExtra("product", product)
+        startActivity(intent)
     }
 
     override fun onDestroyView() {
