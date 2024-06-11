@@ -1,5 +1,6 @@
 package datlowashere.project.rcoffee.ui.view.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,20 +11,24 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
+import datlowashere.project.rcoffee.data.model.Product
 import datlowashere.project.rcoffee.data.repository.HomeRepository
 import datlowashere.project.rcoffee.databinding.FragmentHomeFragmentBinding
 import datlowashere.project.rcoffee.ui.adapter.CategoryAdapter
+import datlowashere.project.rcoffee.ui.adapter.ProductAdapter
+import datlowashere.project.rcoffee.ui.view.activity.product.ProductActivity
+import datlowashere.project.rcoffee.ui.view.activity.product.ProductInformationActivity
 import datlowashere.project.rcoffee.ui.viewmodel.HomeViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.HomeViewModelFactory
 import datlowashere.project.rcoffee.utils.Resource
-import java.util.*
-import kotlin.collections.*
-class HomeFragment : Fragment() {
+
+class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAdapter.OnItemClickListener {
 
     private var _binding: FragmentHomeFragmentBinding? = null
     private val binding get() = _binding!!
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var categoryAdapter: CategoryAdapter
+    private lateinit var productAdapter: ProductAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,56 +45,104 @@ class HomeFragment : Fragment() {
         val viewModelFactory = HomeViewModelFactory(repository)
         homeViewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
 
-        getBanner()
-        getCategory()
+        setupObservers()
 
+        homeViewModel.getData()
+
+        binding.tvTitleCateory.setOnClickListener {
+            startActivity(Intent(context, ProductActivity::class.java))
+        }
     }
 
-    fun getBanner(){
-        homeViewModel.banners.observe(viewLifecycleOwner, Observer { bannerList ->
-            bannerList?.let { resource ->
-                when (resource) {
-                    is Resource.Success -> {
-                        val imageList = resource.data?.map { SlideModel(it.img, "") }
-                        if (imageList != null) {
-                            binding.imageSlider.setImageList(imageList, ScaleTypes.CENTER_CROP)
-                        }
+    private fun setupObservers() {
+        homeViewModel.banners.observe(viewLifecycleOwner, Observer { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    val imageList = resource.data?.map { SlideModel(it.img, "") }
+                    imageList?.let { binding.imageSlider.setImageList(it, ScaleTypes.CENTER_CROP) }
+                }
+                is Resource.Error -> {
+                }
+                is Resource.Loading -> {
+                }
+            }
+        })
+
+        homeViewModel.categories.observe(viewLifecycleOwner, Observer { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data?.let {
+                        categoryAdapter = CategoryAdapter(it, this@HomeFragment)
+                        binding.rcvCategory.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                        binding.rcvCategory.adapter = categoryAdapter
                     }
-                    is Resource.Error -> {
+                }
+                is Resource.Error -> {
+                }
+                is Resource.Loading -> {
+                }
+            }
+        })
+
+        homeViewModel.products.observe(viewLifecycleOwner, Observer { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data?.let {
+                        productAdapter = ProductAdapter(it, this@HomeFragment)
+                        binding.rcvProduct.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                        binding.rcvProduct.adapter = productAdapter
                     }
-                    is Resource.Loading -> {
+                }
+                is Resource.Error -> {
+                }
+                is Resource.Loading -> {
+                }
+            }
+        })
+
+        homeViewModel.products.observe(viewLifecycleOwner, Observer { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data?.let {
+                        productAdapter = ProductAdapter(it, this@HomeFragment)
+                        binding.rcvRecommend.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                        binding.rcvRecommend.adapter = productAdapter
                     }
+                }
+                is Resource.Error -> {
+                }
+                is Resource.Loading -> {
+                }
+            }
+        })
+
+        homeViewModel.filteredProducts.observe(viewLifecycleOwner, Observer { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data?.let {
+                        productAdapter = ProductAdapter(it, this@HomeFragment)
+                        binding.rcvProduct.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                        binding.rcvProduct.adapter = productAdapter
+                    }
+                }
+                is Resource.Error -> {
+                }
+                is Resource.Loading -> {
                 }
             }
         })
     }
 
-    fun getCategory(){
-        binding.rcvCategory.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false)
-        homeViewModel.categories.observe(viewLifecycleOwner, Observer { categoryList ->
-            categoryList?.let { resource ->
-                when (resource) {
-                    is Resource.Success -> {
-                        resource.data?.let {
-                            categoryAdapter = CategoryAdapter(it)
-                            binding.rcvCategory.adapter = categoryAdapter
-                        }
-                    }
-                    is Resource.Error -> {
-                    }
-                    is Resource.Loading -> {
-                    }
-                }
-            }
-        })
-
+    override fun onItemClick(categoryId: Int) {
+        homeViewModel.filterProductsByCategory(categoryId)
     }
 
-    override fun onResume() {
-        super.onResume()
-        homeViewModel.getBanner()
-        homeViewModel.getCategories()
+    override fun onProductClick(product: Product) {
+        val intent = Intent(context, ProductInformationActivity::class.java)
+        intent.putExtra("product", product)
+        startActivity(intent)
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

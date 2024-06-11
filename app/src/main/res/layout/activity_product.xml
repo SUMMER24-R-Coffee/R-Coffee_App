@@ -5,19 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.view.activity.address.AddressActivity">
+    tools:context=".ui.view.activity.product.ProductActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbarAdress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:layout_constraintTop_toTopOf="parent">
+        android:background="@color/white">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbarAdress"
+            android:id="@+id/toolbarProduct"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
             app:layout_scrollFlags="noScroll"
             tools:ignore="MissingConstraints">
 
@@ -28,7 +26,7 @@
                 android:orientation="horizontal">
 
                 <ImageButton
-                    android:id="@+id/btnBackAdress"
+                    android:id="@+id/btnBackProduct"
                     android:layout_width="33dp"
                     android:layout_height="33dp"
                     android:background="@drawable/shape_rect"
@@ -36,32 +34,21 @@
                     android:src="@drawable/arrowback" />
 
                 <TextView
+                    style="@style/textHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Adresses"
                     android:paddingLeft="34.3dp"
-                    style="@style/textHeader"
-                    android:textAlignment="textStart"/>
+                    android:text="Products"
+                    android:textAlignment="textStart" />
+
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
+
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
-        android:layout_marginLeft="22dp"
-        android:layout_marginRight="22dp"
-        android:layout_marginBottom="22dp"
-        android:orientation="vertical">
-
-    </LinearLayout>
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvAdress"
+        android:id="@+id/rcvProducts"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/layout_item_select_address" />
-
+        android:layout_height="match_parent" />
 
 </LinearLayout>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,15 +7,19 @@
     android:id="@+id/rootPrdInf">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white">
+        android:background="@color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarHome"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:layout_scrollFlags="noScroll|enterAlways"
+            app:layout_scrollFlags="noScroll"
             android:layout_marginBottom="10dp"
             tools:ignore="MissingConstraints">
 
@@ -63,9 +67,15 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="0dp"
+        android:background="@color/white"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+        app:layout_constraintBottom_toTopOf="@id/bottomLinearLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -76,7 +86,9 @@
                 android:id="@+id/tvProductNamInf"
                 style="@style/textName"
                 android:layout_width="match_parent"
+                android:layout_marginTop="22dp"
                 android:layout_height="31dp"
+                android:textAlignment="center"
                 android:text="TextView" />
 
             <TextView
@@ -84,18 +96,34 @@
                 style="@style/textName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="22dp"
+                android:textAlignment="center"
                 android:text="TextView" />
 
-            <ImageView
-                android:id="@+id/imgProductInf"
-                android:layout_width="match_parent"
-                android:layout_height="282dp"
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="22dp"
                 android:layout_marginRight="22dp"
-                android:background="@drawable/round_corner"
-                android:scaleType="centerCrop"
-                android:src="@drawable/img_default" />
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardUseCompatPadding="false">
 
+                <ImageView
+                    android:id="@+id/imgProductInf"
+                    android:layout_width="match_parent"
+                    android:layout_height="282dp"
+                    android:background="@drawable/round_corner"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/img_default" />
+            </androidx.cardview.widget.CardView>
+
+            <View
+                android:layout_marginTop="22dp"
+                android:layout_marginBottom="22dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/actionBarDivider"/>
             <TextView
                 style="@style/textTitle"
                 android:layout_width="match_parent"
@@ -114,9 +142,16 @@
                 android:paddingLeft="22dp"
                 android:text="TextView" />
 
+            <View
+                android:layout_marginTop="22dp"
+                android:layout_marginBottom="22dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/actionBarDivider"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="22dp"
                 android:layout_marginRight="22dp"
                 android:orientation="horizontal">
@@ -134,7 +169,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
                         android:orientation="horizontal">
 
@@ -142,7 +177,6 @@
                             android:id="@+id/imageView3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:src="@drawable/star" />
 
                         <TextView
@@ -150,11 +184,8 @@
                             style="@style/textContent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:text="4/5"
                             android:textSize="13sp" />
-
-
                     </LinearLayout>
                 </LinearLayout>
 
@@ -172,12 +203,21 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvReviews"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 tools:itemCount="5"
                 tools:listitem="@layout/layout_item_comment">
-
             </androidx.recyclerview.widget.RecyclerView>
-
+            <TextView
+                android:id="@+id/tvInformPrdinf"
+                style="@style/textContent"
+                android:layout_width="142dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="22dp"
+                android:text="No review"
+                android:visibility="gone"
+                android:textAlignment="center"
+                android:textStyle="bold" />
             <TextView
                 android:id="@+id/tvViewAllReview"
                 style="@style/textContent"
@@ -190,67 +230,73 @@
                 android:textAlignment="center"
                 android:textStyle="bold" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="22dp"
+            <View
                 android:layout_marginTop="22dp"
-                android:layout_marginRight="22dp"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/actionBarDivider"/>
 
-                <TextView
-                    style="@style/textTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Quantity" />
-
-                <ImageButton
-                    android:id="@+id/btnMinusPrd"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:background="@drawable/shape_rect_filled_ver2"
-                    android:src="@drawable/minus" />
-
-                <TextView
-                    android:id="@+id/tvQuantity"
-                    style="@style/textTitle"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/shape_rect_border_ver3"
-                    android:gravity="center"
-                    android:text="43" />
-
-                <ImageButton
-                    android:id="@+id/btnIncreasePrd"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:background="@drawable/shape_rect_filled_ver2"
-                    android:src="@drawable/plus" />
-                />
-            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
+        android:id="@+id/bottomLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:background="@color/white"
         android:gravity="center"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:paddingLeft="22dp"
-        android:paddingRight="22dp">
+        android:paddingRight="22dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:layout_marginBottom="22dp"
+            android:orientation="horizontal">
 
+            <TextView
+                style="@style/textTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Quantity" />
+
+            <ImageButton
+                android:id="@+id/btnMinusPrd"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/shape_rect_filled_ver2"
+                android:src="@drawable/minus" />
+
+            <TextView
+                android:id="@+id/tvQuantity"
+                style="@style/textTitle"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/shape_rect_border_ver3"
+                android:gravity="center"
+                android:text="0" />
+
+            <ImageButton
+                android:id="@+id/btnIncreasePrd"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/shape_rect_filled_ver2"
+                android:src="@drawable/plus" />
+        </LinearLayout>
         <Button
             android:id="@+id/btnUpdateBasket"
             style="@style/secondButton"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:text="Update Basket"
             android:textAllCaps="false" />
     </LinearLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
