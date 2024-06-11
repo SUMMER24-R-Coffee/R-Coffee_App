@@ -28,7 +28,8 @@ class ProductAdapter(
         holder.binding.apply {
             tvProductName.text = product.product_name
             tvPriceItemProduct.text = FormatterHelper.formatCurrency(product.price)
-            tvStarItemProduct.text = product.average_rating.toString()
+            val rating = product.average_rating
+            tvStarItemProduct.text = String.format("%.1f", rating)
             tvDescItemProduct.text = product.description
             Glide.with(imgProductItemImg.context)
                 .load(product.img)

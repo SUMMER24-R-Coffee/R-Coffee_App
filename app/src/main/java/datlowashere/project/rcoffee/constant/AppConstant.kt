@@ -7,5 +7,6 @@ class AppConstant {
         const val GET_BANNER = "banner"
         const val GET_CATEGORY ="categories"
         const val GET_PRODUCT = "products"
+        const val GET_RATING ="ratings/{product_id}"
     }
 }

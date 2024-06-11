@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import datlowashere.project.rcoffee.data.model.Product
+import datlowashere.project.rcoffee.data.model.Rating
 import datlowashere.project.rcoffee.data.repository.ProductRepository
 import datlowashere.project.rcoffee.utils.Resource
 import kotlinx.coroutines.launch
@@ -15,8 +16,12 @@ class ProductViewModel(private val repository: ProductRepository) : ViewModel() 
     private val _products = MutableLiveData<Resource<List<Product>>>()
     val products: LiveData<Resource<List<Product>>> get() = _products
 
+    private val _ratings = MutableLiveData<Resource<List<Rating>>>()
+    val ratings: LiveData<Resource<List<Rating>>> get() = _ratings
+
     init {
         getData()
+
     }
 
     fun getData() {
@@ -32,6 +37,18 @@ class ProductViewModel(private val repository: ProductRepository) : ViewModel() 
             _products.postValue(Resource.Success(response))
         } catch (e: Exception) {
             _products.postValue(Resource.Error(e.message ?: "An error occurred"))
+        }
+    }
+
+    fun getRatings(productId: Int) {
+        viewModelScope.launch {
+            _ratings.postValue(Resource.Loading())
+            try {
+                val response = repository.getRatings(productId)
+                _ratings.postValue(Resource.Success(response))
+            } catch (e: Exception) {
+                _ratings.postValue(Resource.Error(e.message ?: "An error occurred"))
+            }
         }
     }
 
