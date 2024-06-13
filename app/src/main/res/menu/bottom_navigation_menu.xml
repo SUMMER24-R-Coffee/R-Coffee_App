@@ -16,7 +16,7 @@
         android:title="Favorite" />
     <item
         android:id="@+id/nav_settting"
-        android:icon="@drawable/circle"
+        android:icon="@drawable/user_circle"
         android:title="Settings" />
 
 </menu>

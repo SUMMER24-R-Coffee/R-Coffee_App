@@ -8,5 +8,7 @@ class AppConstant {
         const val GET_CATEGORY ="categories"
         const val GET_PRODUCT = "products"
         const val GET_RATING ="ratings/{product_id}"
+        const val LOGIN ="login"
+        const val GET_USER ="user/{email_user}"
     }
 }
