@@ -42,6 +42,12 @@ class ProductInformationActivity : AppCompatActivity() {
             binding.tvProductPriceInf.text = FormatterHelper.formatCurrency(it.price)
             binding.tvAverageStarInf.text =String.format("%.1f", it.average_rating)
 
+            if (product.favourite_id != null) {
+                binding.btnFavoritePrd.setImageResource(R.drawable.red_heart)
+            } else {
+                binding.btnFavoritePrd.setImageResource(R.drawable.hert)
+            }
+
             Glide.with(this)
                 .load(it.img)
                 .centerCrop()

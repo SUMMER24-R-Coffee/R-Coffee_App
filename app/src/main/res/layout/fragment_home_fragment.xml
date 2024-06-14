@@ -47,8 +47,8 @@
                     android:id="@+id/imgUser"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/logo_mini"
-                    app:civ_border_color="#FF000000"
+                    android:layout_gravity="center"
+                    android:src="@drawable/logomini"
                     app:civ_border_width="1dp" />
 
                 <TextView
@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:paddingStart="12.5dp"
-                    android:text="Welcome back \nUser" />
+                    android:text="Hello there!" />
 
                 <ImageView
                     android:id="@+id/imgNotification"

@@ -10,7 +10,8 @@ data class Product(
     val description: String?,
     val price: Double,
     val category_id: Int,
-    val average_rating: Double
+    val average_rating: Double,
+    val favourite_id: Int?
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
@@ -19,7 +20,8 @@ data class Product(
         parcel.readString(),
         parcel.readDouble(),
         parcel.readInt(),
-        parcel.readDouble()
+        parcel.readDouble(),
+        parcel.readValue(Int::class.java.classLoader) as? Int
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -30,6 +32,7 @@ data class Product(
         parcel.writeDouble(price)
         parcel.writeInt(category_id)
         parcel.writeDouble(average_rating)
+        parcel.writeValue(favourite_id)
     }
 
     override fun describeContents(): Int {

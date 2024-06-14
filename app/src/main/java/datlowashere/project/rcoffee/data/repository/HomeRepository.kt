@@ -18,7 +18,7 @@ class HomeRepository {
         apiService.getCategories()
     }
 
-    suspend fun getProducts(): List<Product> = withContext(Dispatchers.IO) {
-        apiService.getProducts()
+    suspend fun getProducts(email_user: String): List<Product> = withContext(Dispatchers.IO) {
+        apiService.getProducts(email_user)
     }
 }

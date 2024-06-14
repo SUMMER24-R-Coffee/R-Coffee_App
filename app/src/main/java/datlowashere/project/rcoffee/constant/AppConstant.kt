@@ -6,7 +6,9 @@ class AppConstant {
     companion object {
         const val GET_BANNER = "banner"
         const val GET_CATEGORY ="categories"
-        const val GET_PRODUCT = "products"
+        const val GET_PRODUCT = "products/{email_user}"
         const val GET_RATING ="ratings/{product_id}"
+        const val LOGIN ="login"
+        const val GET_USER ="user/{email_user}"
     }
 }

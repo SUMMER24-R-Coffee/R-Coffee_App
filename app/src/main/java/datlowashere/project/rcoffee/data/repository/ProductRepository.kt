@@ -12,8 +12,8 @@ import kotlinx.coroutines.withContext
 class ProductRepository {
     private val apiService = ApiClient.instance
 
-    suspend fun getProducts(): List<Product> = withContext(Dispatchers.IO) {
-        apiService.getProducts()
+    suspend fun getProducts(email_user: String): List<Product> = withContext(Dispatchers.IO) {
+        apiService.getProducts(email_user)
     }
 
     suspend fun getRatings(productId: Int): List<Rating> = withContext(Dispatchers.IO) {
