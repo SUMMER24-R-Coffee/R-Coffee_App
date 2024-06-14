@@ -1,5 +1,6 @@
 package datlowashere.project.rcoffee.ui.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,9 +10,10 @@ import datlowashere.project.rcoffee.data.model.Product
 import datlowashere.project.rcoffee.data.model.Rating
 import datlowashere.project.rcoffee.data.repository.ProductRepository
 import datlowashere.project.rcoffee.utils.Resource
+import datlowashere.project.rcoffee.utils.SharedPreferencesHelper
 import kotlinx.coroutines.launch
 
-class ProductViewModel(private val repository: ProductRepository) : ViewModel()  {
+class ProductViewModel(private val repository: ProductRepository, ) : ViewModel()  {
 
     private val _products = MutableLiveData<Resource<List<Product>>>()
     val products: LiveData<Resource<List<Product>>> get() = _products
@@ -19,25 +21,19 @@ class ProductViewModel(private val repository: ProductRepository) : ViewModel() 
     private val _ratings = MutableLiveData<Resource<List<Rating>>>()
     val ratings: LiveData<Resource<List<Rating>>> get() = _ratings
 
-    init {
-        getData()
 
-    }
 
-    fun getData() {
+    fun getProducts(email_user: String) {
         viewModelScope.launch {
-            getProducts()
+            _products.postValue(Resource.Loading())
+            try {
+                val response = repository.getProducts(email_user)
+                _products.postValue(Resource.Success(response))
+            } catch (e: Exception) {
+                _products.postValue(Resource.Error(e.message ?: "An error occurred"))
+            }
         }
-    }
 
-    private suspend fun getProducts() {
-        _products.postValue(Resource.Loading())
-        try {
-            val response = repository.getProducts()
-            _products.postValue(Resource.Success(response))
-        } catch (e: Exception) {
-            _products.postValue(Resource.Error(e.message ?: "An error occurred"))
-        }
     }
 
     fun getRatings(productId: Int) {
@@ -54,7 +50,7 @@ class ProductViewModel(private val repository: ProductRepository) : ViewModel() 
 
 }
 
-class ProductViewModelFactory(private val repository: ProductRepository) : ViewModelProvider.Factory {
+class ProductViewModelFactory( private val repository: ProductRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ProductViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
@@ -63,3 +59,4 @@ class ProductViewModelFactory(private val repository: ProductRepository) : ViewM
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
+

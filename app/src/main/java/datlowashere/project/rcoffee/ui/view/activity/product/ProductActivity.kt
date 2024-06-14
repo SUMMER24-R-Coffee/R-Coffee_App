@@ -16,6 +16,7 @@ import datlowashere.project.rcoffee.ui.viewmodel.ProductViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.ProductViewModelFactory
 import datlowashere.project.rcoffee.utils.GridSpacingItemDecoration
 import datlowashere.project.rcoffee.utils.Resource
+import datlowashere.project.rcoffee.utils.SharedPreferencesHelper
 
 class ProductActivity : AppCompatActivity(), ProductAdapter.OnItemClickListener {
 
@@ -31,6 +32,8 @@ class ProductActivity : AppCompatActivity(), ProductAdapter.OnItemClickListener 
         val repository = ProductRepository()
         val factory = ProductViewModelFactory(repository)
         productViewModel = ViewModelProvider(this, factory).get(ProductViewModel::class.java)
+
+        productViewModel.getProducts(getEmail())
 
         observeViewModel()
 
@@ -58,7 +61,9 @@ class ProductActivity : AppCompatActivity(), ProductAdapter.OnItemClickListener 
             }
         })
     }
-
+    fun getEmail(): String {
+        return SharedPreferencesHelper.getUserEmail(this) ?: " "
+    }
     override fun onProductClick(product: Product) {
         val intent = Intent(this, ProductInformationActivity::class.java).apply {
             putExtra("product", product)

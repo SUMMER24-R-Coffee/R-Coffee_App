@@ -37,6 +37,12 @@ class ProductAdapter(
                 .placeholder(R.drawable.img_default)
                 .into(imgProductItemImg)
 
+            if (product.favourite_id != null) {
+                imgFavProduct.setImageResource(R.drawable.red_heart)
+            } else {
+                imgFavProduct.setImageResource(R.drawable.hert)
+            }
+
             root.isSelected = selectedPosition == position
         }
 

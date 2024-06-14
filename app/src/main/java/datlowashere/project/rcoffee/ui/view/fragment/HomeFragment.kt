@@ -1,5 +1,6 @@
 package datlowashere.project.rcoffee.ui.view.fragment
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -38,7 +39,6 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
     private lateinit var productAdapter: ProductAdapter
     private lateinit var authViewModel: AuthViewModel
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,27 +51,30 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
         super.onViewCreated(view, savedInstanceState)
 
         setupViewModels()
-
         setupObservers()
+
         homeViewModel.getData()
         authViewModel.getUserData(getEmail())
+        homeViewModel.getProducts(getEmail())
 
+        Log.d("EMAIL USER", getEmail())
 
         binding.tvTitleCateory.setOnClickListener {
             startActivity(Intent(context, ProductActivity::class.java))
         }
-
-
     }
+
     private fun setupViewModels() {
         val homeRepository = HomeRepository()
-        val homeViewModelFactory = HomeViewModelFactory(homeRepository)
+        val homeViewModelFactory = HomeViewModelFactory(homeRepository, requireContext())
         homeViewModel = ViewModelProvider(this, homeViewModelFactory).get(HomeViewModel::class.java)
 
         val authRepository = AuthRepository()
         val authViewModelFactory = AuthViewModelFactory(authRepository)
         authViewModel = ViewModelProvider(this, authViewModelFactory).get(AuthViewModel::class.java)
     }
+
+    @SuppressLint("FragmentLiveDataObserve")
     private fun setupObservers() {
         homeViewModel.banners.observe(viewLifecycleOwner, Observer { resource ->
             when (resource) {
@@ -102,29 +105,23 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
             }
         })
 
-        homeViewModel.products.observe(viewLifecycleOwner, Observer { resource ->
+        homeViewModel.products.observe(this@HomeFragment, Observer { resource ->
             when (resource) {
                 is Resource.Success -> {
-                    resource.data?.let {
-                        productAdapter = ProductAdapter(it, this@HomeFragment)
-                        binding.rcvProduct.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                        binding.rcvProduct.adapter = productAdapter
-                    }
-                }
-                is Resource.Error -> {
-                }
-                is Resource.Loading -> {
-                }
-            }
-        })
+                    resource.data?.let {products ->
+                    if(products.isNotEmpty()){
+                        productAdapter = ProductAdapter(products, this@HomeFragment)
+                        binding.rcvProduct.apply {
+                            layoutManager =LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                            adapter=productAdapter
+                        }
 
-        homeViewModel.products.observe(viewLifecycleOwner, Observer { resource ->
-            when (resource) {
-                is Resource.Success -> {
-                    resource.data?.let {
-                        productAdapter = ProductAdapter(it, this@HomeFragment)
-                        binding.rcvRecommend.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                        binding.rcvRecommend.adapter = productAdapter
+                        binding.rcvRecommend.apply {
+                            layoutManager =LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                            adapter=productAdapter
+                        }
+                    }
+
                     }
                 }
                 is Resource.Error -> {
@@ -155,7 +152,7 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
                 authResponse.users?.let { users ->
                     if (users.isNotEmpty()) {
                         val user = users[0]
-                        binding.tvNameUser.text ="Hello, Welcome back\n"+user.name+ "!"
+                        binding.tvNameUser.text = "Hello, Welcome back\n${user.name}!"
                         Glide.with(binding.imgUser)
                             .load(user.user_img)
                             .centerCrop()
@@ -170,14 +167,14 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
                 Log.e("HomeFragment", "User response is null")
             }
         })
-
     }
 
     override fun onItemClick(categoryId: Int) {
         homeViewModel.filterProductsByCategory(categoryId)
     }
+
     fun getEmail(): String {
-        return SharedPreferencesHelper.getUserEmail(requireContext()) ?: ""
+        return SharedPreferencesHelper.getUserEmail(requireContext()) ?: " "
     }
 
     override fun onProductClick(product: Product) {

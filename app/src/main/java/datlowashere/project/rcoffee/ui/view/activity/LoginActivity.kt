@@ -29,6 +29,9 @@ class LoginActivity : AppCompatActivity() {
         val factory = AuthViewModelFactory(repository)
         authViewModel = ViewModelProvider(this, factory).get(AuthViewModel::class.java)
 
+        binding.btnBackLogin.setOnClickListener {
+            finish()
+        }
         binding.tvRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }

@@ -1,14 +1,17 @@
 package datlowashere.project.rcoffee.ui.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.*
 import datlowashere.project.rcoffee.data.model.Banner
 import datlowashere.project.rcoffee.data.model.Category
 import datlowashere.project.rcoffee.data.model.Product
 import datlowashere.project.rcoffee.data.repository.HomeRepository
 import datlowashere.project.rcoffee.utils.Resource
+import datlowashere.project.rcoffee.utils.SharedPreferencesHelper
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
+class HomeViewModel(private val repository: HomeRepository,
+                    private val context: Context) : ViewModel() {
 
     private val _banners = MutableLiveData<Resource<List<Banner>>>()
     val banners: LiveData<Resource<List<Banner>>> get() = _banners
@@ -30,10 +33,8 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
         viewModelScope.launch {
             getBanners()
             getCategories()
-            getProducts()
         }
     }
-
     private suspend fun getBanners() {
         _banners.postValue(Resource.Loading())
         try {
@@ -54,13 +55,15 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
         }
     }
 
-    private suspend fun getProducts() {
-        _products.postValue(Resource.Loading())
-        try {
-            val response = repository.getProducts()
-            _products.postValue(Resource.Success(response))
-        } catch (e: Exception) {
-            _products.postValue(Resource.Error(e.message ?: "An error occurred"))
+    fun getProducts(emailUser: String) {
+        viewModelScope.launch {
+            _products.postValue(Resource.Loading())
+            try {
+                val response = repository.getProducts(emailUser)
+                _products.postValue(Resource.Success(response))
+            } catch (e: Exception) {
+                _products.postValue(Resource.Error(e.message ?: "An error occurred"))
+            }
         }
     }
 
@@ -72,11 +75,12 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
     }
 }
 
-class HomeViewModelFactory(private val repository: HomeRepository) : ViewModelProvider.Factory {
+class HomeViewModelFactory(private val repository: HomeRepository,
+                            private val context: Context) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return HomeViewModel(repository) as T
+            return HomeViewModel(repository, context) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

@@ -24,7 +24,7 @@ interface ApiService {
     suspend fun getCategories(): List<Category>
 
     @GET(AppConstant.GET_PRODUCT)
-    suspend fun getProducts(): List<Product>
+    suspend fun getProducts(@Path("email_user") email_user: String): List<Product>
 
     @GET(AppConstant.GET_RATING)
     suspend fun getRatings(@Path("product_id") productId: Int): List<Rating>
