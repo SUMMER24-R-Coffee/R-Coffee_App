@@ -1,8 +1,12 @@
 package datlowashere.project.rcoffee.ui.view.activity.product
 
+import android.app.AlertDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,10 +16,13 @@ import datlowashere.project.rcoffee.databinding.ActivityProductInformationBindin
 import datlowashere.project.rcoffee.data.model.Product
 import datlowashere.project.rcoffee.data.repository.ProductRepository
 import datlowashere.project.rcoffee.ui.adapter.RatingAdapter
+import datlowashere.project.rcoffee.ui.view.activity.LoginActivity
+import datlowashere.project.rcoffee.ui.view.activity.basket.BastketActivity
 import datlowashere.project.rcoffee.ui.viewmodel.ProductViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.ProductViewModelFactory
 import datlowashere.project.rcoffee.utils.FormatterHelper
 import datlowashere.project.rcoffee.utils.Resource
+import datlowashere.project.rcoffee.utils.SharedPreferencesHelper
 
 class ProductInformationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProductInformationBinding
@@ -31,11 +38,24 @@ class ProductInformationActivity : AppCompatActivity() {
             finish()
         }
 
+        setUpViewModel()
+        setupObservers()
+
+        binding.btnUpdateBasket.setOnClickListener{
+            setUpButtonBasket()
+        }
+
+
+    }
+
+
+    fun setUpViewModel(){
         val repository = ProductRepository()
         val factory = ProductViewModelFactory(repository)
         productViewModel = ViewModelProvider(this, factory).get(ProductViewModel::class.java)
+    }
+    fun setupObservers(){
         val product: Product? = intent.getParcelableExtra("product")
-
         product?.let {
             binding.tvProductNamInf.text = it.product_name
             binding.tvDescriptionPrdInf.text = it.description
@@ -80,6 +100,34 @@ class ProductInformationActivity : AppCompatActivity() {
             })
 
             handleValueQuantityWithPrice(it.price)
+        }
+    }
+
+    fun setUpButtonBasket() {
+        val userEmail = SharedPreferencesHelper.getUserEmail(this)
+        if (userEmail.isNullOrEmpty()) {
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.layout_custom_dialog, null)
+            val alertDialog = AlertDialog.Builder(this)
+                .setView(dialogView)
+                .setCancelable(false)
+                .create()
+
+            val btnGoToLogin = dialogView.findViewById<Button>(R.id.btnGoToLogin)
+            val btnCancel = dialogView.findViewById<Button>(R.id.btnCancel)
+
+            btnGoToLogin.setOnClickListener {
+                alertDialog.dismiss()
+                startActivity(Intent(this, LoginActivity::class.java))
+            }
+
+            btnCancel.setOnClickListener {
+                alertDialog.dismiss()
+            }
+
+            alertDialog.show()
+        } else {
+            startActivity(Intent(this, BastketActivity::class.java))
+
         }
     }
 

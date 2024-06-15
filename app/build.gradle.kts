@@ -76,6 +76,7 @@ dependencies {
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
     implementation ("jp.wasabeef:glide-transformations:4.3.0")
 
+    //swipe review
 
     //shimmer
 

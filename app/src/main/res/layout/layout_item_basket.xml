@@ -1,139 +1,159 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="353dp"
-    android:layout_height="154dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginBottom="22dp">
 
-    <androidx.cardview.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:backgroundTint="@color/green_chaleston"
-        app:cardCornerRadius="16dp">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="154dp"
             android:orientation="horizontal">
 
-            <CheckBox
-                android:id="@+id/ckItemBasket"
-                android:layout_width="0dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1" />
+            <datlowashere.project.rcoffee.ui.component.SwipeRevealLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="96dp"
-                android:layout_height="96dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="25dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="16dp">
-
-                <ImageView
-                    android:id="@+id/imgProductBasketItem"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/img_default" />
-            </androidx.cardview.widget.CardView>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|left"
-                android:layout_weight="0"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tvNameBasketItem"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:lineSpacingExtra="2sp"
-                    android:text="Cappuccino"
-                    android:textColor="@color/white" />
-
-                <TextView
-                    android:id="@+id/tvPriceBasketProductItem"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="9dp"
-                    android:layout_marginBottom="9dp"
-                    android:text="225.000 đ"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tvEditBasketItem"
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Edit"
-                    android:textAlignment="center"
-                    android:textColor="@color/white" />
+                    android:layout_height="154dp"
+                    android:backgroundTint="@color/green_chaleston">
 
-                <ImageButton
-                    android:id="@+id/btnMinusBasket"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:backgroundTint="@color/orange_bold"
-                    android:src="@drawable/minus" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        tools:ignore="MissingClass">
 
-                <TextView
-                    android:id="@+id/tvQuantityBasketItem"
-                    android:layout_width="35dp"
-                    android:layout_height="30dp"
-                    android:background="@drawable/shape_rect_border_ver2"
-                    android:gravity="center"
-                    android:text="12"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textStyle="bold" />
+                        <CheckBox
+                            android:id="@+id/ckItemBasket"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center" />
 
-                <ImageButton
-                    android:id="@+id/btnPlusBasket"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:backgroundTint="@color/orange_bold"
-                    android:src="@drawable/plus" />
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
+                            android:layout_marginTop="25dp"
+                            android:layout_marginBottom="16dp"
+                            app:cardCornerRadius="16dp">
 
-            </LinearLayout>
+                            <ImageView
+                                android:id="@+id/imgProductBasketItem"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/img_default" />
+                        </androidx.cardview.widget.CardView>
 
-            <LinearLayout
-                android:id="@+id/btnRemoveBasketItem"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@color/red_exp"
-                android:orientation="vertical"
-                android:visibility="gone">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|left"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
+                            <TextView
+                                android:id="@+id/tvNameBasketItem"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:lineSpacingExtra="2sp"
+                                android:text="Cappuccino"
+                                android:textColor="@color/white" />
 
-                <TextView
+                            <TextView
+                                android:id="@+id/tvPriceBasketProductItem"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="9dp"
+                                android:layout_marginBottom="9dp"
+                                android:text="225.000 đ"
+                                android:textColor="@color/white"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="12dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvEditBasketItem"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Edit"
+                                android:textAlignment="center"
+                                android:textColor="@color/white" />
+
+                            <ImageButton
+                                android:id="@+id/btnMinusBasket"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:backgroundTint="@color/orange_bold"
+                                android:src="@drawable/minus" />
+
+                            <TextView
+                                android:id="@+id/tvQuantityBasketItem"
+                                android:layout_width="35dp"
+                                android:layout_height="30dp"
+                                android:background="@drawable/shape_rect_border_ver2"
+                                android:gravity="center"
+                                android:text="12"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                android:textStyle="bold" />
+
+                            <ImageButton
+                                android:id="@+id/btnPlusBasket"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:backgroundTint="@color/orange_bold"
+                                android:src="@drawable/plus" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <LinearLayout
+                    android:id="@+id/btnRemoveBasketItem"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="Delete"
-                    android:textAlignment="center"
-                    android:textColor="@color/white" />
+                    android:layout_gravity="end"
+                    android:background="@color/red_exp"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Delete"
+                        android:textAlignment="center"
+                        android:textColor="@color/white" />
+
+                </LinearLayout>
+            </datlowashere.project.rcoffee.ui.component.SwipeRevealLayout>
 
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
-</LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="?actionBarDivider" />
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -48,15 +48,14 @@
                 </LinearLayout>
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvBasket"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="22dp"
-            android:paddingLeft="22dp"
-            android:paddingRight="22dp"
-            tools:listitem="@layout/layout_item_basket"
-            tools:itemCount="4"/>
+            android:layout_marginTop="22dp"
+            tools:itemCount="4"
+            tools:listitem="@layout/layout_item_basket" />
     </LinearLayout>
 
     <LinearLayout

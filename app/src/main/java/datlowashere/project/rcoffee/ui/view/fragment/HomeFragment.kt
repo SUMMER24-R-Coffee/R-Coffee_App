@@ -1,12 +1,15 @@
 package datlowashere.project.rcoffee.ui.view.fragment
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -21,6 +24,8 @@ import datlowashere.project.rcoffee.data.repository.HomeRepository
 import datlowashere.project.rcoffee.databinding.FragmentHomeFragmentBinding
 import datlowashere.project.rcoffee.ui.adapter.CategoryAdapter
 import datlowashere.project.rcoffee.ui.adapter.ProductAdapter
+import datlowashere.project.rcoffee.ui.view.activity.LoginActivity
+import datlowashere.project.rcoffee.ui.view.activity.basket.BastketActivity
 import datlowashere.project.rcoffee.ui.view.activity.product.ProductActivity
 import datlowashere.project.rcoffee.ui.view.activity.product.ProductInformationActivity
 import datlowashere.project.rcoffee.ui.viewmodel.AuthViewModel
@@ -61,6 +66,9 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
 
         binding.tvTitleCateory.setOnClickListener {
             startActivity(Intent(context, ProductActivity::class.java))
+        }
+        binding.fabBasket.setOnClickListener {
+            setUpButtonBasket()
         }
     }
 
@@ -175,6 +183,34 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
 
     fun getEmail(): String {
         return SharedPreferencesHelper.getUserEmail(requireContext()) ?: " "
+    }
+
+    fun setUpButtonBasket() {
+        val userEmail = SharedPreferencesHelper.getUserEmail(requireContext())
+        if (userEmail.isNullOrEmpty()) {
+            val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.layout_custom_dialog, null)
+            val alertDialog = AlertDialog.Builder(requireContext())
+                .setView(dialogView)
+                .setCancelable(false)
+                .create()
+
+            val btnGoToLogin = dialogView.findViewById<Button>(R.id.btnGoToLogin)
+            val btnCancel = dialogView.findViewById<Button>(R.id.btnCancel)
+
+            btnGoToLogin.setOnClickListener {
+                alertDialog.dismiss()
+                startActivity(Intent(requireContext(), LoginActivity::class.java))
+            }
+
+            btnCancel.setOnClickListener {
+                alertDialog.dismiss()
+            }
+
+            alertDialog.show()
+        } else {
+            startActivity(Intent(requireContext(), BastketActivity::class.java))
+
+        }
     }
 
     override fun onProductClick(product: Product) {
