@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -14,10 +15,14 @@ import com.bumptech.glide.Glide
 import datlowashere.project.rcoffee.R
 import datlowashere.project.rcoffee.databinding.ActivityProductInformationBinding
 import datlowashere.project.rcoffee.data.model.Product
+import datlowashere.project.rcoffee.data.repository.BasketRepository
 import datlowashere.project.rcoffee.data.repository.ProductRepository
 import datlowashere.project.rcoffee.ui.adapter.RatingAdapter
+import datlowashere.project.rcoffee.ui.component.DialogCustom
 import datlowashere.project.rcoffee.ui.view.activity.LoginActivity
 import datlowashere.project.rcoffee.ui.view.activity.basket.BastketActivity
+import datlowashere.project.rcoffee.ui.viewmodel.BasketViewModel
+import datlowashere.project.rcoffee.ui.viewmodel.BasketViewModelFactory
 import datlowashere.project.rcoffee.ui.viewmodel.ProductViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.ProductViewModelFactory
 import datlowashere.project.rcoffee.utils.FormatterHelper
@@ -28,6 +33,7 @@ class ProductInformationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProductInformationBinding
     private lateinit var ratingAdapter: RatingAdapter
     private lateinit var productViewModel: ProductViewModel
+    private lateinit var basketViewModel: BasketViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +59,10 @@ class ProductInformationActivity : AppCompatActivity() {
         val repository = ProductRepository()
         val factory = ProductViewModelFactory(repository)
         productViewModel = ViewModelProvider(this, factory).get(ProductViewModel::class.java)
+
+        val basketRepository = BasketRepository()
+        val basketViewModelFactory = BasketViewModelFactory(basketRepository)
+        basketViewModel = ViewModelProvider(this, basketViewModelFactory).get(BasketViewModel::class.java)
     }
     fun setupObservers(){
         val product: Product? = intent.getParcelableExtra("product")
@@ -106,28 +116,15 @@ class ProductInformationActivity : AppCompatActivity() {
     fun setUpButtonBasket() {
         val userEmail = SharedPreferencesHelper.getUserEmail(this)
         if (userEmail.isNullOrEmpty()) {
-            val dialogView = LayoutInflater.from(this).inflate(R.layout.layout_custom_dialog, null)
-            val alertDialog = AlertDialog.Builder(this)
-                .setView(dialogView)
-                .setCancelable(false)
-                .create()
-
-            val btnGoToLogin = dialogView.findViewById<Button>(R.id.btnGoToLogin)
-            val btnCancel = dialogView.findViewById<Button>(R.id.btnCancel)
-
-            btnGoToLogin.setOnClickListener {
-                alertDialog.dismiss()
-                startActivity(Intent(this, LoginActivity::class.java))
-            }
-
-            btnCancel.setOnClickListener {
-                alertDialog.dismiss()
-            }
-
-            alertDialog.show()
+            DialogCustom.showLoginDialog(this)
         } else {
+            val product: Product? = intent.getParcelableExtra("product")
+            product?.let { product ->
+                val productId = product.product_id
+                val quantity = binding.tvQuantity.text.toString().toInt()
+                basketViewModel.updateToBasket(quantity, productId, userEmail)
+            }
             startActivity(Intent(this, BastketActivity::class.java))
-
         }
     }
 

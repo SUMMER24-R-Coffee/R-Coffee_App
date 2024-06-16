@@ -7,13 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import datlowashere.project.rcoffee.R
 import datlowashere.project.rcoffee.data.model.Basket
+import datlowashere.project.rcoffee.data.model.Product
 import datlowashere.project.rcoffee.databinding.LayoutItemBasketBinding
 
 class BasketAdapter(
     var baskets: List<Basket>,
     private val onItemClicked: (Basket) -> Unit,
     private val onCheckBoxClicked: (Basket) -> Unit,
-    private val onEditClicked: (Basket) -> Unit,
     private val onQuantityChanged: (Basket, Int) -> Unit,
     private val onRemoveClicked: (Basket) -> Unit
 ) : RecyclerView.Adapter<BasketAdapter.BasketViewHolder>() {
@@ -29,17 +29,15 @@ class BasketAdapter(
             binding.tvPriceBasketProductItem.text = "${basket.price} đ"
             binding.tvQuantityBasketItem.text = basket.quantity.toString()
 
-            binding.ckItemBasket.setOnCheckedChangeListener(null)  // Prevent recycling issue
-            binding.ckItemBasket.isChecked = false  // Or set based on your logic
+            binding.ckItemBasket.setOnCheckedChangeListener(null)
+            binding.ckItemBasket.isChecked = false
             binding.ckItemBasket.setOnCheckedChangeListener { _, _ -> onCheckBoxClicked(basket) }
 
-            binding.tvEditBasketItem.setOnClickListener {
-                onEditClicked(basket)
-            }
+
 
             binding.btnMinusBasket.setOnClickListener {
                 val newQuantity = basket.quantity - 1
-                if (newQuantity > 0) {  // Ensure quantity does not go below 1
+                if (newQuantity > 0) {
                     onQuantityChanged(basket, newQuantity)
                 }
             }
@@ -70,4 +68,5 @@ class BasketAdapter(
         baskets = newBaskets
         notifyDataSetChanged()
     }
+
 }

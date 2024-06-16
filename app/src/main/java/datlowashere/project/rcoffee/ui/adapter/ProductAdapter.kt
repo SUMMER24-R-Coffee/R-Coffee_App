@@ -1,5 +1,6 @@
 package datlowashere.project.rcoffee.ui.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,6 +8,7 @@ import com.bumptech.glide.Glide
 import datlowashere.project.rcoffee.R
 import datlowashere.project.rcoffee.data.model.Product
 import datlowashere.project.rcoffee.databinding.LayoutItemProductBinding
+import datlowashere.project.rcoffee.ui.viewmodel.BasketViewModel
 import datlowashere.project.rcoffee.utils.FormatterHelper
 
 class ProductAdapter(
@@ -15,6 +17,7 @@ class ProductAdapter(
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
     private var selectedPosition = RecyclerView.NO_POSITION
+
 
     inner class ProductViewHolder(val binding: LayoutItemProductBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -52,11 +55,16 @@ class ProductAdapter(
             notifyItemChanged(selectedPosition)
             itemClickListener.onProductClick(product)
         }
+
+        holder.binding.btnAddToBasket.setOnClickListener {
+            itemClickListener.onAddBasketClick(product)
+        }
     }
 
     override fun getItemCount(): Int = products.size
 
     interface OnItemClickListener {
         fun onProductClick(product: Product)
+        fun onAddBasketClick(product: Product)
     }
 }

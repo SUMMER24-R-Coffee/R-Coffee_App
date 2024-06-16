@@ -52,11 +52,10 @@ class BastketActivity : AppCompatActivity() {
             listOf(),
             onItemClicked = { basket -> handleItemClick(basket) },
             onCheckBoxClicked = { basket -> handleCheckBoxClick(basket) },
-            onEditClicked = { basket -> handleEditClick(basket) },
             onQuantityChanged = { basket, newQuantity -> handleQuantityChange(basket, newQuantity) },
             onRemoveClicked = { basket -> handleRemoveClick(basket) }
         )
-        binding.rcvBasket.layoutManager = LinearLayoutManager(this)
+        binding.rcvBasket.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false)
         binding.rcvBasket.adapter = adapter
 
     }
@@ -73,15 +72,10 @@ class BastketActivity : AppCompatActivity() {
     private fun handleCheckBoxClick(basket: Basket) {
     }
 
-    private fun handleEditClick(basket: Basket) {
-    }
-
     private fun handleQuantityChange(basket: Basket, newQuantity: Int) {
-        basketViewModel.updateBasket(basket.basketId, basket.copy(quantity = newQuantity))
     }
 
     private fun handleRemoveClick(basket: Basket) {
-        basketViewModel.removeBasket(basket.basketId)
     }
 
     private fun getEmail(): String {

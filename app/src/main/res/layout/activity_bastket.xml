@@ -1,65 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootBasket"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".ui.view.activity.basket.BastketActivity">
 
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="10dp"
-        android:orientation="vertical">
-        <com.google.android.material.appbar.AppBarLayout
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarHome"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white">
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbarHome"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="noScroll"
+            tools:ignore="MissingConstraints">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_scrollFlags="noScroll"
-                tools:ignore="MissingConstraints">
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-                <LinearLayout
+                <ImageButton
+                    android:id="@+id/btnBackBasket"
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    android:background="@drawable/shape_rect"
+                    android:backgroundTint="@color/green_chaleston"
+                    android:src="@drawable/arrowback" />
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:text="Basket"
+                    android:paddingLeft="34.3dp"
+                    style="@style/textHeader"
+                    android:textAlignment="textStart" />
 
-                    <ImageButton
-                        android:id="@+id/btnBackBasket"
-                        android:layout_width="33dp"
-                        android:layout_height="33dp"
-                        android:background="@drawable/shape_rect"
-                        android:backgroundTint="@color/green_chaleston"
-                        android:src="@drawable/arrowback" />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Basket"
-                        android:paddingLeft="34.3dp"
-                        style="@style/textHeader"
-                        android:textAlignment="textStart"/>
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
-                </LinearLayout>
-            </androidx.appcompat.widget.Toolbar>
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcvBasket"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="22dp"
-            tools:itemCount="4"
-            tools:listitem="@layout/layout_item_basket" />
-    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvBasket"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+        app:layout_constraintVertical_bias="0.0"
+        tools:itemCount="4"
+        tools:listitem="@layout/layout_item_basket" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/bottomLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:background="@color/white"
@@ -68,7 +70,10 @@
         android:paddingBottom="22dp"
         android:paddingTop="22dp"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
             android:id="@+id/tvTotalAmountBasket"
@@ -88,4 +93,4 @@
             android:layout_weight="1"
             android:text="Check Out" />
     </LinearLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

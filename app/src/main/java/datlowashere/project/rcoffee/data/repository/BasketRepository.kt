@@ -1,6 +1,8 @@
 package datlowashere.project.rcoffee.data.repository
 
 import datlowashere.project.rcoffee.data.model.Basket
+import datlowashere.project.rcoffee.data.model.BasketRequest
+import datlowashere.project.rcoffee.data.model.BasketUpdateRequest
 import datlowashere.project.rcoffee.network.ApiClient
 import retrofit2.Call
 
@@ -9,13 +11,12 @@ class BasketRepository() {
     suspend fun getBaskets(emailUser: String): List<Basket> {
         return apiService.getBaskets(emailUser)
     }
-
-    fun insertBasket(basketItem: Basket): Call<Basket> {
-        return apiService.insertBasket(basketItem)
+    suspend fun addToBasket(request: BasketRequest): BasketRequest {
+        return apiService.addToBasket(request)
     }
 
-    fun updateBasket(basketId: Int, basketItem: Basket): Call<Basket> {
-        return apiService.updateBasket(basketId, basketItem)
+    suspend fun updateToBasket(basket: BasketUpdateRequest): BasketUpdateRequest {
+        return apiService.updateToBasket(basket)
     }
 
     fun deleteBasket(basketId: Int): Call<Void> {

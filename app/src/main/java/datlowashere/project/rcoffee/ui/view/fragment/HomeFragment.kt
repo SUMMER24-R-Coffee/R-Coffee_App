@@ -1,14 +1,12 @@
 package datlowashere.project.rcoffee.ui.view.fragment
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -20,16 +18,19 @@ import com.denzcoskun.imageslider.models.SlideModel
 import datlowashere.project.rcoffee.R
 import datlowashere.project.rcoffee.data.model.Product
 import datlowashere.project.rcoffee.data.repository.AuthRepository
+import datlowashere.project.rcoffee.data.repository.BasketRepository
 import datlowashere.project.rcoffee.data.repository.HomeRepository
 import datlowashere.project.rcoffee.databinding.FragmentHomeFragmentBinding
 import datlowashere.project.rcoffee.ui.adapter.CategoryAdapter
 import datlowashere.project.rcoffee.ui.adapter.ProductAdapter
-import datlowashere.project.rcoffee.ui.view.activity.LoginActivity
+import datlowashere.project.rcoffee.ui.component.DialogCustom
 import datlowashere.project.rcoffee.ui.view.activity.basket.BastketActivity
 import datlowashere.project.rcoffee.ui.view.activity.product.ProductActivity
 import datlowashere.project.rcoffee.ui.view.activity.product.ProductInformationActivity
 import datlowashere.project.rcoffee.ui.viewmodel.AuthViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.AuthViewModelFactory
+import datlowashere.project.rcoffee.ui.viewmodel.BasketViewModel
+import datlowashere.project.rcoffee.ui.viewmodel.BasketViewModelFactory
 import datlowashere.project.rcoffee.ui.viewmodel.HomeViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.HomeViewModelFactory
 import datlowashere.project.rcoffee.utils.Resource
@@ -43,6 +44,7 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
     private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var productAdapter: ProductAdapter
     private lateinit var authViewModel: AuthViewModel
+    private lateinit var basketViewModel: BasketViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,6 +82,10 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
         val authRepository = AuthRepository()
         val authViewModelFactory = AuthViewModelFactory(authRepository)
         authViewModel = ViewModelProvider(this, authViewModelFactory).get(AuthViewModel::class.java)
+
+        val basketRepository = BasketRepository()
+        val basketViewModelFactory = BasketViewModelFactory(basketRepository)
+        basketViewModel = ViewModelProvider(this, basketViewModelFactory).get(BasketViewModel::class.java)
     }
 
     @SuppressLint("FragmentLiveDataObserve")
@@ -175,6 +181,16 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
                 Log.e("HomeFragment", "User response is null")
             }
         })
+
+        basketViewModel.toastMessage.observe(viewLifecycleOwner, Observer { message ->
+            message?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                basketViewModel.clearToastMessage()
+
+            }
+
+        })
+
     }
 
     override fun onItemClick(categoryId: Int) {
@@ -188,25 +204,7 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
     fun setUpButtonBasket() {
         val userEmail = SharedPreferencesHelper.getUserEmail(requireContext())
         if (userEmail.isNullOrEmpty()) {
-            val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.layout_custom_dialog, null)
-            val alertDialog = AlertDialog.Builder(requireContext())
-                .setView(dialogView)
-                .setCancelable(false)
-                .create()
-
-            val btnGoToLogin = dialogView.findViewById<Button>(R.id.btnGoToLogin)
-            val btnCancel = dialogView.findViewById<Button>(R.id.btnCancel)
-
-            btnGoToLogin.setOnClickListener {
-                alertDialog.dismiss()
-                startActivity(Intent(requireContext(), LoginActivity::class.java))
-            }
-
-            btnCancel.setOnClickListener {
-                alertDialog.dismiss()
-            }
-
-            alertDialog.show()
+            DialogCustom.showLoginDialog(requireContext())
         } else {
             startActivity(Intent(requireContext(), BastketActivity::class.java))
 
@@ -218,6 +216,16 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
         intent.putExtra("product", product)
         startActivity(intent)
     }
+
+    override fun onAddBasketClick(product: Product) {
+        if (getEmail().isNullOrBlank()) {
+            DialogCustom.showLoginDialog(requireContext())
+        } else {
+            val userEmail = getEmail()
+            basketViewModel.addOrUpdateBasket(product.product_id, userEmail)
+        }
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

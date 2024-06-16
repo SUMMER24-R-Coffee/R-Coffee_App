@@ -4,6 +4,8 @@ import datlowashere.project.rcoffee.constant.AppConstant
 import datlowashere.project.rcoffee.data.model.AuthResponse
 import datlowashere.project.rcoffee.data.model.Banner
 import datlowashere.project.rcoffee.data.model.Basket
+import datlowashere.project.rcoffee.data.model.BasketRequest
+import datlowashere.project.rcoffee.data.model.BasketUpdateRequest
 import datlowashere.project.rcoffee.data.model.Category
 import datlowashere.project.rcoffee.data.model.LoginResponse
 import datlowashere.project.rcoffee.data.model.Product
@@ -17,7 +19,6 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface ApiService {
     //Banner
@@ -45,12 +46,13 @@ interface ApiService {
     @GET(AppConstant.GET_BASKET)
     suspend fun getBaskets(@Path("email_user") email_user: String): List<Basket>
 
-    @POST(AppConstant.INSERT_BASKET)
-    fun insertBasket(@Body basketItem: Basket): Call<Basket>
+    @POST(AppConstant.ADD_TO_BASKET)
+    suspend fun addToBasket(@Body basketRequest: BasketRequest): BasketRequest
 
-    @PUT(AppConstant.UPDATE_BASKET)
-    fun updateBasket(@Path("basket_id") basketId: Int, @Body basketItem: Basket): Call<Basket>
+    @POST(AppConstant.UPDATE_TO_BASKET)
+    suspend fun updateToBasket(@Body basket: BasketUpdateRequest): BasketUpdateRequest
 
     @DELETE(AppConstant.DELETE_BASKET)
     fun deleteBasket(@Path("basket_id") basketId: Int): Call<Void>
+
 }
