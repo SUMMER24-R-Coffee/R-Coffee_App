@@ -10,5 +10,10 @@ class AppConstant {
         const val GET_RATING ="ratings/{product_id}"
         const val LOGIN ="login"
         const val GET_USER ="user/{email_user}"
+        const val GET_BASKET="baskets/{email_user}"
+        const val ADD_TO_BASKET="add-to-basket"
+        const val UPDATE_BASKET ="update-basket/{basket_id}"
+        const val UPDATE_TO_BASKET="update-to-basket"
+        const val DELETE_BASKET="delete-basket/{basket_id}"
     }
 }

@@ -1,8 +1,13 @@
 package datlowashere.project.rcoffee.ui.view.activity.product
 
+import android.app.AlertDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,17 +15,25 @@ import com.bumptech.glide.Glide
 import datlowashere.project.rcoffee.R
 import datlowashere.project.rcoffee.databinding.ActivityProductInformationBinding
 import datlowashere.project.rcoffee.data.model.Product
+import datlowashere.project.rcoffee.data.repository.BasketRepository
 import datlowashere.project.rcoffee.data.repository.ProductRepository
 import datlowashere.project.rcoffee.ui.adapter.RatingAdapter
+import datlowashere.project.rcoffee.ui.component.DialogCustom
+import datlowashere.project.rcoffee.ui.view.activity.LoginActivity
+import datlowashere.project.rcoffee.ui.view.activity.basket.BastketActivity
+import datlowashere.project.rcoffee.ui.viewmodel.BasketViewModel
+import datlowashere.project.rcoffee.ui.viewmodel.BasketViewModelFactory
 import datlowashere.project.rcoffee.ui.viewmodel.ProductViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.ProductViewModelFactory
 import datlowashere.project.rcoffee.utils.FormatterHelper
 import datlowashere.project.rcoffee.utils.Resource
+import datlowashere.project.rcoffee.utils.SharedPreferencesHelper
 
 class ProductInformationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProductInformationBinding
     private lateinit var ratingAdapter: RatingAdapter
     private lateinit var productViewModel: ProductViewModel
+    private lateinit var basketViewModel: BasketViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,11 +44,30 @@ class ProductInformationActivity : AppCompatActivity() {
             finish()
         }
 
+        setUpViewModel()
+        setupObservers()
+
+        binding.btnUpdateBasket.setOnClickListener{
+            setUpButtonUpdateBasket()
+        }
+
+        binding.btnBasketPrd.setOnClickListener {
+            setUpButtonToBasket()
+        }
+
+    }
+
+    fun setUpViewModel(){
         val repository = ProductRepository()
         val factory = ProductViewModelFactory(repository)
         productViewModel = ViewModelProvider(this, factory).get(ProductViewModel::class.java)
-        val product: Product? = intent.getParcelableExtra("product")
 
+        val basketRepository = BasketRepository()
+        val basketViewModelFactory = BasketViewModelFactory(basketRepository)
+        basketViewModel = ViewModelProvider(this, basketViewModelFactory).get(BasketViewModel::class.java)
+    }
+    fun setupObservers(){
+        val product: Product? = intent.getParcelableExtra("product")
         product?.let {
             binding.tvProductNamInf.text = it.product_name
             binding.tvDescriptionPrdInf.text = it.description
@@ -80,6 +112,31 @@ class ProductInformationActivity : AppCompatActivity() {
             })
 
             handleValueQuantityWithPrice(it.price)
+        }
+    }
+
+
+    fun setUpButtonToBasket(){
+        val userEmail = SharedPreferencesHelper.getUserEmail(this)
+        if (userEmail.isNullOrEmpty()) {
+            DialogCustom.showLoginDialog(this)
+        } else {
+            startActivity(Intent(this, BastketActivity::class.java))
+        }
+    }
+
+    fun setUpButtonUpdateBasket() {
+        val userEmail = SharedPreferencesHelper.getUserEmail(this)
+        if (userEmail.isNullOrEmpty()) {
+            DialogCustom.showLoginDialog(this)
+        } else {
+            val product: Product? = intent.getParcelableExtra("product")
+            product?.let { product ->
+                val productId = product.product_id
+                val quantity = binding.tvQuantity.text.toString().toInt()
+                basketViewModel.updateToBasket(quantity, productId, userEmail)
+            }
+            startActivity(Intent(this, BastketActivity::class.java))
         }
     }
 

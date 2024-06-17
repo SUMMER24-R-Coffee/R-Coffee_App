@@ -1,35 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<datlowashere.project.rcoffee.ui.component.SwipeRevealLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="353dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="154dp"
-    android:layout_marginBottom="22dp">
+    android:layout_marginTop="22dp">
+
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="154dp"
         android:backgroundTint="@color/green_chaleston"
-        app:cardCornerRadius="16dp">
+        app:cardCornerRadius="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="MissingClass">
 
             <CheckBox
                 android:id="@+id/ckItemBasket"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1" />
+                android:layout_gravity="center" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="96dp"
                 android:layout_height="96dp"
-                android:layout_marginLeft="15dp"
                 android:layout_marginTop="25dp"
-                android:layout_marginRight="15dp"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="16dp">
 
@@ -46,20 +44,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
-                android:layout_weight="0"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tvNameBasketItem"
-                    android:layout_width="100dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="2sp"
+                    android:minWidth="100dp"
                     android:text="Cappuccino"
                     android:textColor="@color/white" />
 
                 <TextView
                     android:id="@+id/tvPriceBasketProductItem"
-                    android:layout_width="100dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="9dp"
                     android:layout_marginBottom="9dp"
@@ -72,17 +72,11 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="12dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tvEditBasketItem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Edit"
-                    android:textAlignment="center"
-                    android:textColor="@color/white" />
 
                 <ImageButton
                     android:id="@+id/btnMinusBasket"
@@ -110,30 +104,27 @@
                     android:src="@drawable/plus" />
 
             </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/btnRemoveBasketItem"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@color/red_exp"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="Delete"
-                    android:textAlignment="center"
-                    android:textColor="@color/white" />
-
-            </LinearLayout>
-
         </LinearLayout>
-
     </androidx.cardview.widget.CardView>
-</LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/btnRemoveBasketItem"
+        android:layout_width="75dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:background="@color/orange_bold"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Delete"
+            android:textAlignment="center"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+</datlowashere.project.rcoffee.ui.component.SwipeRevealLayout>
