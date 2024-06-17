@@ -1,11 +1,10 @@
 package datlowashere.project.rcoffee.data.network
 
 import datlowashere.project.rcoffee.constant.AppConstant
+import datlowashere.project.rcoffee.data.model.ApiResponse
 import datlowashere.project.rcoffee.data.model.AuthResponse
 import datlowashere.project.rcoffee.data.model.Banner
 import datlowashere.project.rcoffee.data.model.Basket
-import datlowashere.project.rcoffee.data.model.BasketRequest
-import datlowashere.project.rcoffee.data.model.BasketUpdateRequest
 import datlowashere.project.rcoffee.data.model.Category
 import datlowashere.project.rcoffee.data.model.LoginResponse
 import datlowashere.project.rcoffee.data.model.Product
@@ -47,10 +46,13 @@ interface ApiService {
     suspend fun getBaskets(@Path("email_user") email_user: String): List<Basket>
 
     @POST(AppConstant.ADD_TO_BASKET)
-    suspend fun addToBasket(@Body basketRequest: BasketRequest): BasketRequest
+    suspend fun addToBasket(@Body Basket: Basket): Basket
 
     @POST(AppConstant.UPDATE_TO_BASKET)
-    suspend fun updateToBasket(@Body basket: BasketUpdateRequest): BasketUpdateRequest
+    suspend fun updateToBasket(@Body basket: Basket): Basket
+
+    @PUT(AppConstant.UPDATE_BASKET)
+    fun updateQuanty(@Path("basket_id") basketId: Int, @Body basket: Basket): Call<ApiResponse>
 
     @DELETE(AppConstant.DELETE_BASKET)
     fun deleteBasket(@Path("basket_id") basketId: Int): Call<Void>

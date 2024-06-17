@@ -4,9 +4,12 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -53,7 +56,8 @@ class BastketActivity : AppCompatActivity() {
             onItemClicked = { basket -> handleItemClick(basket) },
             onCheckBoxClicked = { basket -> handleCheckBoxClick(basket) },
             onQuantityChanged = { basket, newQuantity -> handleQuantityChange(basket, newQuantity) },
-            onRemoveClicked = { basket -> handleRemoveClick(basket) }
+            onRemoveClicked = { basket -> handleRemoveClick(basket) },
+            this
         )
         binding.rcvBasket.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false)
         binding.rcvBasket.adapter = adapter
@@ -62,8 +66,22 @@ class BastketActivity : AppCompatActivity() {
     private fun setUpObservers() {
         basketViewModel.baskets.observe(this, { baskets ->
             adapter.updateBaskets(baskets)
+            if (baskets.isNullOrEmpty()) {
+                binding.tvMessageBasket.visibility = View.VISIBLE
+            } else {
+                binding.tvMessageBasket.visibility = View.GONE
+            }
         })
         basketViewModel.getBaskets(getEmail())
+
+        basketViewModel.toastMessage.observe(this, Observer { message ->
+            message?.let {
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                basketViewModel.clearToastMessage()
+
+            }
+
+        })
     }
 
     private fun handleItemClick(basket: Basket) {
@@ -73,9 +91,19 @@ class BastketActivity : AppCompatActivity() {
     }
 
     private fun handleQuantityChange(basket: Basket, newQuantity: Int) {
+        basket.quantity = newQuantity
+        basketViewModel.updateQuantity(basket.basket_id, newQuantity)
+
     }
 
     private fun handleRemoveClick(basket: Basket) {
+        basketViewModel.removeBasket(basket.basket_id) { success ->
+            if (success) {
+                basketViewModel.getBaskets(getEmail())
+            } else {
+                Toast.makeText(this, "Failed to remove basket item", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun getEmail(): String {

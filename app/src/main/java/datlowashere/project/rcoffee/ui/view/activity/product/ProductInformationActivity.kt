@@ -48,12 +48,14 @@ class ProductInformationActivity : AppCompatActivity() {
         setupObservers()
 
         binding.btnUpdateBasket.setOnClickListener{
-            setUpButtonBasket()
+            setUpButtonUpdateBasket()
         }
 
+        binding.btnBasketPrd.setOnClickListener {
+            setUpButtonToBasket()
+        }
 
     }
-
 
     fun setUpViewModel(){
         val repository = ProductRepository()
@@ -113,7 +115,17 @@ class ProductInformationActivity : AppCompatActivity() {
         }
     }
 
-    fun setUpButtonBasket() {
+
+    fun setUpButtonToBasket(){
+        val userEmail = SharedPreferencesHelper.getUserEmail(this)
+        if (userEmail.isNullOrEmpty()) {
+            DialogCustom.showLoginDialog(this)
+        } else {
+            startActivity(Intent(this, BastketActivity::class.java))
+        }
+    }
+
+    fun setUpButtonUpdateBasket() {
         val userEmail = SharedPreferencesHelper.getUserEmail(this)
         if (userEmail.isNullOrEmpty()) {
             DialogCustom.showLoginDialog(this)

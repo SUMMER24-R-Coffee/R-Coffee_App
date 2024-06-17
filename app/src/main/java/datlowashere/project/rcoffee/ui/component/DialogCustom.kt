@@ -31,4 +31,19 @@ object DialogCustom {
 
         alertDialog.show()
     }
+
+    fun showDeleteConfirmationDialog(context: Context, onDeleteConfirmed: () -> Unit) {
+        val alertDialogBuilder = AlertDialog.Builder(context)
+        alertDialogBuilder.apply {
+            setMessage("Are you sure you want to delete this item?")
+            setPositiveButton("Yes") { _, _ ->
+                onDeleteConfirmed()
+            }
+            setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+            create()
+            show()
+        }
+    }
 }

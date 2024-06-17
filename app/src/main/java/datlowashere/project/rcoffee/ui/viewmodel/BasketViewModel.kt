@@ -2,9 +2,8 @@ package datlowashere.project.rcoffee.ui.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.*
+import datlowashere.project.rcoffee.data.model.ApiResponse
 import datlowashere.project.rcoffee.data.model.Basket
-import datlowashere.project.rcoffee.data.model.BasketRequest
-import datlowashere.project.rcoffee.data.model.BasketUpdateRequest
 import datlowashere.project.rcoffee.data.repository.BasketRepository
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -25,6 +24,10 @@ class BasketViewModel(private val basketRepository: BasketRepository) : ViewMode
     private val _updateToBasket = MutableLiveData<Boolean>()
     val updateToBasket: LiveData<Boolean> get() = _updateToBasket
 
+
+    private val _updateQuantity = MutableLiveData<Boolean>()
+    val updateQuantity: LiveData<Boolean> = _updateQuantity
+
     private val _toastMessage = MutableLiveData<String>()
 
 
@@ -37,18 +40,20 @@ class BasketViewModel(private val basketRepository: BasketRepository) : ViewMode
             try {
                 val basketsList = basketRepository.getBaskets(emailUser)
                 _baskets.postValue(basketsList)
-                _toastMessage.postValue("Baskets fetched successfully")
             } catch (e: Exception) {
                 _toastMessage.postValue("Error fetching baskets: ${e.message}")
             }
         }
     }
 
-    fun addOrUpdateBasket(product_id: Int, email_user: String) {
+    fun addOrUpdateBasket(producId: Int, emailUser: String) {
         viewModelScope.launch {
             try {
-                val request = BasketRequest(product_id, email_user)
-                val response = basketRepository.addToBasket(request)
+                val basketItem = Basket(
+                    product_id = producId,
+                    email_user = emailUser
+                )
+                val response = basketRepository.addToBasket(basketItem)
                 _addOrUpdateResponse.postValue(true)
                 _toastMessage.postValue("Basket added successfully")
             } catch (e: Exception) {
@@ -58,10 +63,24 @@ class BasketViewModel(private val basketRepository: BasketRepository) : ViewMode
         }
     }
 
+    fun updateQuantity(basketId: Int, quantity: Int) {
+        val basket = Basket(
+            quantity = quantity,
+            basket_id = basketId
+        )
+        basketRepository.updateQuanty(basketId, basket) { response ->
+            _updateQuantity.postValue(true)
+        }
+    }
+
     fun updateToBasket(quantity: Int, product_id: Int, email_user: String) {
         viewModelScope.launch {
             try {
-                val basketItem = BasketUpdateRequest(quantity, product_id, email_user)
+                val basketItem = Basket(
+                    quantity = quantity,
+                    product_id = product_id,
+                    email_user = email_user
+                )
                 Log.d("BasketUpdate", "Basket Item: $basketItem")
 
                 val response = basketRepository.updateToBasket(basketItem)
@@ -76,26 +95,25 @@ class BasketViewModel(private val basketRepository: BasketRepository) : ViewMode
     }
 
 
-    fun removeBasket(basketId: Int) {
+    fun removeBasket(basketId: Int, callback: (Boolean) -> Unit) {
         val call = basketRepository.deleteBasket(basketId)
         call.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
-                    _deleteResponse.postValue(true)
                     _toastMessage.postValue("Basket removed successfully")
+                    callback(true)
                 } else {
-                    _deleteResponse.postValue(false)
                     _toastMessage.postValue("Failed to remove basket: ${response.message()}")
+                    callback(false)
                 }
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
-                _deleteResponse.postValue(false)
                 _toastMessage.postValue("Error removing basket: ${t.message}")
+                callback(false)
             }
         })
     }
-
     fun clearToastMessage() {
         _toastMessage.value = null
     }

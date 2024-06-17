@@ -59,6 +59,19 @@
         tools:itemCount="4"
         tools:listitem="@layout/layout_item_basket" />
 
+    <TextView
+        android:id="@+id/tvMessageBasket"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No item to show"
+        style="@style/textContent"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <LinearLayout
         android:id="@+id/bottomLayout"
         android:layout_width="0dp"
