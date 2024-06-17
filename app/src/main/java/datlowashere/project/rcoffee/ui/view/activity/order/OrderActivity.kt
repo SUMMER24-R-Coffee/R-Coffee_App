@@ -2,26 +2,30 @@ package datlowashere.project.rcoffee.ui.view.activity.order
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import datlowashere.project.rcoffee.R
+import androidx.recyclerview.widget.LinearLayoutManager
 import datlowashere.project.rcoffee.data.model.Basket
 import datlowashere.project.rcoffee.databinding.ActivityOrderBinding
+import datlowashere.project.rcoffee.ui.adapter.ItemOrderAdapter
 
 class OrderActivity : AppCompatActivity() {
-    private lateinit var binding :ActivityOrderBinding
+    private lateinit var binding: ActivityOrderBinding
+    private lateinit var selectedBaskets: ArrayList<Basket>
+    private var totalAmount: Double = 0.0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding =ActivityOrderBinding.inflate(layoutInflater)
+        binding = ActivityOrderBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val selectedBaskets = intent.getParcelableArrayListExtra<Basket>("selectedBaskets")
-        val totalAmount = intent.getDoubleExtra("totalAmount", 0.0)
+        selectedBaskets = intent.getParcelableArrayListExtra<Basket>("selectedBaskets") ?: arrayListOf()
+        totalAmount = intent.getDoubleExtra("totalAmount", 0.0)
 
-        for (basket in selectedBaskets.orEmpty()) {
-            Log.d("OrderActivity", "Selected Basket: $basket")
+        for (basket in selectedBaskets) {
         }
 
-        Log.d("OrderActivity", "Total Amount: $totalAmount")
+        val adapter = ItemOrderAdapter(this, selectedBaskets)
+        binding.rcvSelectedBasket.layoutManager = LinearLayoutManager(this)
+        binding.rcvSelectedBasket.adapter = adapter
 
         binding.btnBackOrder.setOnClickListener {
             finish()
