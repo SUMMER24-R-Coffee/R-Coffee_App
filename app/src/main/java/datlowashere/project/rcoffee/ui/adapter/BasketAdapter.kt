@@ -19,9 +19,11 @@ class BasketAdapter(
     private val onCheckBoxClicked: (Basket) -> Unit,
     private val onQuantityChanged: (Basket, Int) -> Unit,
     private val onRemoveClicked: (Basket) -> Unit,
+    private val onTotalAmountChanged: (Double) -> Unit,
     private val context: Context
 
 ) : RecyclerView.Adapter<BasketAdapter.BasketViewHolder>() {
+    private val selectedBaskets = mutableMapOf<Int, Basket>()
 
     inner class BasketViewHolder(private val binding: LayoutItemBasketBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(basket: Basket) {
@@ -35,8 +37,16 @@ class BasketAdapter(
             binding.tvQuantityBasketItem.text = basket.quantity.toString()
 
             binding.ckItemBasket.setOnCheckedChangeListener(null)
-            binding.ckItemBasket.isChecked = false
-            binding.ckItemBasket.setOnCheckedChangeListener { _, _ -> onCheckBoxClicked(basket) }
+            binding.ckItemBasket.isChecked = selectedBaskets.contains(basket.basket_id)
+            binding.ckItemBasket.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    selectedBaskets[basket.basket_id] = basket
+                } else {
+                    selectedBaskets.remove(basket.basket_id)
+                }
+                onCheckBoxClicked(basket)
+                calculateTotalAmount()
+            }
 
 
             binding.btnMinusBasket.setOnClickListener {
@@ -46,12 +56,15 @@ class BasketAdapter(
                 if (newQuantity > 0) {
                     binding.tvQuantityBasketItem.text = newQuantity.toString()
                     onQuantityChanged(basket, newQuantity)
+                    updateSelectedBasketQuantity(basket, newQuantity)
+
                 }
                 if(newQuantity <1){
                     showDeleteConfirmationDialog(basket)
                 }
-            }
+                calculateTotalAmount()
 
+            }
 
             binding.btnPlusBasket.setOnClickListener {
                 val currentQuantity = binding.tvQuantityBasketItem.text.toString().toInt()
@@ -59,6 +72,9 @@ class BasketAdapter(
 
                 binding.tvQuantityBasketItem.text = newQuantity.toString()
                 onQuantityChanged(basket, newQuantity)
+                updateSelectedBasketQuantity(basket, newQuantity)
+                calculateTotalAmount()
+
             }
             binding.btnRemoveBasketItem.setOnClickListener {
                 showDeleteConfirmationDialog(basket)
@@ -90,6 +106,8 @@ class BasketAdapter(
             setMessage("Are you sure you want to delete this item?")
             setPositiveButton("Yes") { _, _ ->
                 onRemoveClicked(basket)
+                selectedBaskets.remove(basket.basket_id)
+                calculateTotalAmount()
             }
             setNegativeButton("No") { dialog, _ ->
                 dialog.dismiss()
@@ -97,6 +115,28 @@ class BasketAdapter(
             create()
             show()
         }
+    }
+
+    private fun updateSelectedBasketQuantity(basket: Basket, newQuantity: Int) {
+        if (selectedBaskets.containsKey(basket.basket_id)) {
+            selectedBaskets[basket.basket_id] = basket.copy(quantity = newQuantity)
+        }
+    }
+
+    private fun calculateTotalAmount() {
+        var totalAmount = 0.0
+        for (basket in selectedBaskets.values) {
+            totalAmount += basket.price * basket.quantity
+        }
+        onTotalAmountChanged(totalAmount)
+    }
+
+    fun getSelectedBaskets(): List<Basket> {
+        return selectedBaskets.values.toList()
+    }
+
+    fun getTotalAmount(): Double {
+        return selectedBaskets.values.sumByDouble { it.price * it.quantity }
     }
 
 }

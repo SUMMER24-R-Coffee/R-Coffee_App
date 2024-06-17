@@ -1,5 +1,7 @@
 package datlowashere.project.rcoffee.ui.view.activity.basket
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -19,8 +21,10 @@ import datlowashere.project.rcoffee.data.model.Basket
 import datlowashere.project.rcoffee.data.repository.BasketRepository
 import datlowashere.project.rcoffee.databinding.ActivityBastketBinding
 import datlowashere.project.rcoffee.ui.adapter.BasketAdapter
+import datlowashere.project.rcoffee.ui.view.activity.order.OrderActivity
 import datlowashere.project.rcoffee.ui.viewmodel.BasketViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.BasketViewModelFactory
+import datlowashere.project.rcoffee.utils.FormatterHelper
 import datlowashere.project.rcoffee.utils.SharedPreferencesHelper
 
 class BastketActivity : AppCompatActivity() {
@@ -42,6 +46,16 @@ class BastketActivity : AppCompatActivity() {
         binding.btnBackBasket.setOnClickListener {
             finish()
         }
+        binding.btnCheckoutBasket.setOnClickListener{
+            val selectedBaskets = adapter.getSelectedBaskets()
+            val totalAmount = adapter.getTotalAmount()
+
+            val intent = Intent(this, OrderActivity::class.java)
+            intent.putParcelableArrayListExtra("selectedBaskets", ArrayList(selectedBaskets))
+            intent.putExtra("totalAmount", totalAmount)
+            startActivity(intent)
+
+        }
     }
 
     private fun setUpViewModel() {
@@ -57,6 +71,7 @@ class BastketActivity : AppCompatActivity() {
             onCheckBoxClicked = { basket -> handleCheckBoxClick(basket) },
             onQuantityChanged = { basket, newQuantity -> handleQuantityChange(basket, newQuantity) },
             onRemoveClicked = { basket -> handleRemoveClick(basket) },
+            onTotalAmountChanged = { totalAmount -> updateTotalAmount(totalAmount) },
             this
         )
         binding.rcvBasket.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false)
@@ -64,14 +79,14 @@ class BastketActivity : AppCompatActivity() {
 
     }
     private fun setUpObservers() {
-        basketViewModel.baskets.observe(this, { baskets ->
+        basketViewModel.baskets.observe(this) { baskets ->
             adapter.updateBaskets(baskets)
             if (baskets.isNullOrEmpty()) {
                 binding.tvMessageBasket.visibility = View.VISIBLE
             } else {
                 binding.tvMessageBasket.visibility = View.GONE
             }
-        })
+        }
         basketViewModel.getBaskets(getEmail())
 
         basketViewModel.toastMessage.observe(this, Observer { message ->
@@ -83,7 +98,12 @@ class BastketActivity : AppCompatActivity() {
 
         })
     }
+    @SuppressLint("SetTextI18n")
+    private fun updateTotalAmount(totalAmount: Double) {
+        binding.tvTotalAmountBasket.text ="Total Amount:\n"+ FormatterHelper.formatCurrency(totalAmount)
+        binding.btnCheckoutBasket.isEnabled = totalAmount != 0.0
 
+    }
     private fun handleItemClick(basket: Basket) {
     }
 
