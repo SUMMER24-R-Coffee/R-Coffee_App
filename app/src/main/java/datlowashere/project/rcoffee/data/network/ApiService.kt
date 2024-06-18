@@ -1,15 +1,18 @@
 package datlowashere.project.rcoffee.data.network
 
 import datlowashere.project.rcoffee.constant.AppConstant
+import datlowashere.project.rcoffee.data.model.Address
 import datlowashere.project.rcoffee.data.model.ApiResponse
 import datlowashere.project.rcoffee.data.model.AuthResponse
 import datlowashere.project.rcoffee.data.model.Banner
 import datlowashere.project.rcoffee.data.model.Basket
 import datlowashere.project.rcoffee.data.model.Category
 import datlowashere.project.rcoffee.data.model.LoginResponse
+import datlowashere.project.rcoffee.data.model.Order
 import datlowashere.project.rcoffee.data.model.Product
 import datlowashere.project.rcoffee.data.model.Rating
 import datlowashere.project.rcoffee.data.model.Users
+import datlowashere.project.rcoffee.data.model.Voucher
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
@@ -56,5 +59,16 @@ interface ApiService {
 
     @DELETE(AppConstant.DELETE_BASKET)
     fun deleteBasket(@Path("basket_id") basketId: Int): Call<Void>
+    @GET(AppConstant.GET_ADDRESS)
+    fun getAddresses(@Path("email_user") emailUser: String): Call<List<Address>>
+
+    @POST(AppConstant.ADD_ADDRESS)
+    fun addAddress(@Body address: Address): Call<Address>
+
+    @GET(AppConstant.GET_VOUCHER)
+    fun getVoucher(): Call<List<Voucher>>
+
+    @POST(AppConstant.ORDER)
+    fun orderItem(@Body order: Order): Call<Order>
 
 }

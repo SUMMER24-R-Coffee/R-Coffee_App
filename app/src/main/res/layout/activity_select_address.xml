@@ -74,12 +74,23 @@
             android:src="@drawable/plus" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tvMessageSelectedAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/textContent"
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:text="No item to show" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvSelectAddress"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:itemCount="10"
-        tools:listitem="@layout/layout_item_select_address"/>
+        tools:listitem="@layout/layout_item_select_address">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 </LinearLayout>

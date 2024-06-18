@@ -16,14 +16,13 @@ import retrofit2.Response
 class AuthRepository {
     private val apiService = ApiClient.instance
 
+    private val _userResponse = MutableLiveData<AuthResponse>()
+    val userResponse: LiveData<AuthResponse>
+        get() = _userResponse
     suspend fun login(email_user: String, password: String): Response<LoginResponse> = withContext(Dispatchers.IO) {
         val user = Users(email_user = email_user, password = password)
         apiService.loginUser(user)
     }
-
-    private val _userResponse = MutableLiveData<AuthResponse>()
-    val userResponse: LiveData<AuthResponse>
-        get() = _userResponse
 
     fun fetchUserData(userEmail: String) {
         apiService.getUser(userEmail).enqueue(object : Callback<AuthResponse> {

@@ -15,5 +15,10 @@ class AppConstant {
         const val UPDATE_BASKET ="update-basket/{basket_id}"
         const val UPDATE_TO_BASKET="update-to-basket"
         const val DELETE_BASKET="delete-basket/{basket_id}"
+        const val GET_ADDRESS="addresses/{email_user}"
+        const val ADD_ADDRESS="insert-address"
+        const val GET_VOUCHER="vouchers"
+        const val ORDER="insert-order"
+
     }
 }
