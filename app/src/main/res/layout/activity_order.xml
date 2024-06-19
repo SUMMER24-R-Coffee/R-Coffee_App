@@ -111,6 +111,10 @@
                     android:src="@drawable/arrowto" />
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?actionBarDivider"/>
             <TextView
                 style="@style/textTitle"
                 android:layout_width="match_parent"
@@ -119,14 +123,22 @@
                 android:layout_marginBottom="22dp"
                 android:paddingLeft="22dp"
                 android:text="Products Selected" />
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?actionBarDivider"
+                android:layout_marginBottom="12dp"/>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvSelectedBasket"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:itemCount="3"
                 tools:listitem="@layout/layout_item_order" />
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:background="?actionBarDivider"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -153,7 +165,11 @@
                     android:textAlignment="textEnd" />
 
             </LinearLayout>
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="?actionBarDivider"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -206,7 +222,11 @@
                 </RadioGroup>
 
             </LinearLayout>
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="?actionBarDivider"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
