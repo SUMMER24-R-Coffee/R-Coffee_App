@@ -6,6 +6,7 @@ import datlowashere.project.rcoffee.data.model.ApiResponse
 import datlowashere.project.rcoffee.data.model.AuthResponse
 import datlowashere.project.rcoffee.data.model.Banner
 import datlowashere.project.rcoffee.data.model.Basket
+import datlowashere.project.rcoffee.data.model.BasketRequest
 import datlowashere.project.rcoffee.data.model.Category
 import datlowashere.project.rcoffee.data.model.LoginResponse
 import datlowashere.project.rcoffee.data.model.Order
@@ -59,6 +60,11 @@ interface ApiService {
 
     @DELETE(AppConstant.DELETE_BASKET)
     fun deleteBasket(@Path("basket_id") basketId: Int): Call<Void>
+    @PUT(AppConstant.UPDATE_ORD_ID)
+    fun updateOrderIDBasket(@Body basketRequest: BasketRequest): Call<Void>
+
+
+    //address
     @GET(AppConstant.GET_ADDRESS)
     fun getAddresses(@Path("email_user") emailUser: String): Call<List<Address>>
 

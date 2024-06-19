@@ -9,7 +9,7 @@ import retrofit2.Response
 class OrderRepository {
     private val apiService = ApiClient.instance
 
-    suspend fun orderItem(order: Order, callback: (Order?) -> Unit) {
+    suspend fun insertOrder(order: Order, callback: (Order?) -> Unit) {
         apiService.orderItem(order).enqueue(object : Callback<Order> {
             override fun onResponse(call: Call<Order>, response: Response<Order>) {
                 if (response.isSuccessful) {

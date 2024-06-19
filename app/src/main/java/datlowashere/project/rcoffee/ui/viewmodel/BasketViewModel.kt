@@ -63,6 +63,9 @@ class BasketViewModel(private val basketRepository: BasketRepository) : ViewMode
         }
     }
 
+    fun updateOrderIDBasket(orderId: String, basketId: List<Int>): LiveData<Boolean> {
+        return basketRepository.updateOrderIDBasket(orderId, basketId)
+    }
     fun updateQuantity(basketId: Int, quantity: Int) {
         val basket = Basket(
             quantity = quantity,

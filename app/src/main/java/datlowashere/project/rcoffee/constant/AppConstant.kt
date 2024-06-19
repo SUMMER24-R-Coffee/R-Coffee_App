@@ -19,6 +19,7 @@ class AppConstant {
         const val ADD_ADDRESS="insert-address"
         const val GET_VOUCHER="vouchers"
         const val ORDER="insert-order"
+        const val UPDATE_ORD_ID="update-order-id-basket"
 
     }
 }

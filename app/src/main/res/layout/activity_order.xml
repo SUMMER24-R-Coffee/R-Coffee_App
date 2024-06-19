@@ -114,7 +114,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?actionBarDivider"/>
+                android:layout_marginTop="12dp"
+                android:background="?actionBarDivider" />
             <TextView
                 style="@style/textTitle"
                 android:layout_width="match_parent"
@@ -123,11 +124,7 @@
                 android:layout_marginBottom="22dp"
                 android:paddingLeft="22dp"
                 android:text="Products Selected" />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?actionBarDivider"
-                android:layout_marginBottom="12dp"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvSelectedBasket"
                 android:layout_width="match_parent"
@@ -151,7 +148,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableLeft="@drawable/voucher"
+                    android:drawableLeft="@drawable/couponfilled"
                     android:drawablePadding="5dp"
                     android:text="Platform Voucher" />
 
@@ -162,6 +159,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Select voucher"
+                    android:textStyle="bold"
+                    android:drawablePadding="5dp"
+                    android:drawableRight="@drawable/arrow_mini"
                     android:textAlignment="textEnd" />
 
             </LinearLayout>
@@ -169,7 +169,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
                 android:background="?actionBarDivider"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -199,7 +201,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/zalopay"
-                        android:drawablePadding="10dp"
                         android:layoutDirection="rtl"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
@@ -212,7 +213,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/vnpay"
-                        android:drawablePadding="10dp"
                         android:layoutDirection="rtl"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
@@ -227,6 +227,41 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:background="?actionBarDivider"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="22dp"
+                android:layout_marginRight="22dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/textTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/messagesend"
+                    android:drawablePadding="5dp"
+                    android:text="Message" />
+
+                <EditText
+                    android:id="@+id/edLeaveMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="53dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:maxLines="3"
+                    style="@style/textContent"
+                    android:padding="10dp"
+                    android:background="@drawable/shape_rect"
+                    android:hint="Leave your message"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="?actionBarDivider"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -247,6 +282,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="12dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -345,20 +381,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="bottom"
+        android:gravity="bottom |center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
         <TextView
             android:id="@+id/tvTotalAmountOrder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAlignment="textEnd"
             style="@style/textTitle"
-            android:paddingRight="10dp"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
             android:layout_weight="1"
-            android:text="Total Amount:\n5000d" />
+            android:paddingRight="10dp"
+            android:textAlignment="textEnd" />
 
         <Button
             android:id="@+id/btnPlaceOrder"
@@ -366,6 +402,8 @@
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_weight="1"
+            android:gravity="center"
+            android:layout_marginRight="22dp"
             android:text="Place Order" />
     </LinearLayout>
 

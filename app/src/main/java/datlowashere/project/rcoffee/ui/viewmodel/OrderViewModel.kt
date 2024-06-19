@@ -16,9 +16,9 @@ class OrderViewModel(private val orderRepository: OrderRepository) : ViewModel()
     private val _order = MutableLiveData<Order>()
     val order: LiveData<Order> get() = _order
 
-    fun orderItem(order: Order) {
+    fun insertOrder(order: Order) {
         viewModelScope.launch(Dispatchers.IO) {
-            orderRepository.orderItem(order) { result ->
+            orderRepository.insertOrder(order) { result ->
                 _order.postValue(result)
             }
         }
@@ -26,7 +26,7 @@ class OrderViewModel(private val orderRepository: OrderRepository) : ViewModel()
 }
 class OrderViewModelFactory(private val orderRepository: OrderRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(BasketViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(OrderViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return OrderViewModel(orderRepository) as T
         }
