@@ -8,6 +8,8 @@ data class Address(
     val location: String,
     val email_user: String
 ) : Parcelable {
+    constructor(location: String, email_user: String) : this(0, location, email_user)
+
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString()!!,

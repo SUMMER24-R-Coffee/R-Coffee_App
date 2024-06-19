@@ -50,10 +50,14 @@ class BastketActivity : AppCompatActivity() {
             val selectedBaskets = adapter.getSelectedBaskets()
             val totalAmount = adapter.getTotalAmount()
 
-            val intent = Intent(this, OrderActivity::class.java)
-            intent.putParcelableArrayListExtra("selectedBaskets", ArrayList(selectedBaskets))
-            intent.putExtra("totalAmount", totalAmount)
-            startActivity(intent)
+            if(totalAmount ==0.0){
+                Toast.makeText(this, "Please, select item", Toast.LENGTH_SHORT).show()
+            }else {
+                val intent = Intent(this, OrderActivity::class.java)
+                intent.putParcelableArrayListExtra("selectedBaskets", ArrayList(selectedBaskets))
+                intent.putExtra("totalAmount", totalAmount)
+                startActivity(intent)
+            }
 
         }
     }

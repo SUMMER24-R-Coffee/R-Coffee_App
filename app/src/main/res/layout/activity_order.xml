@@ -76,13 +76,31 @@
                     android:layout_weight="1"
                     android:src="@drawable/address" />
 
-                <TextView
-                    android:id="@+id/tvAddress"
-                    style="@style/textContent"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Delivery Address \nAnntonia | 0368522829\n137 Nguyễn Thị Thập\n,Hoà Minh, Liên Chiểu, Đà Nẵng" />
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:id="@+id/tvInforUserOrd"
+                        style="@style/textContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:maxLines="3"
+                        android:text="TextView" />
+
+
+                    <TextView
+                        android:id="@+id/tvAddress"
+                        style="@style/textContent"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="3" />
+                </LinearLayout>
 
                 <ImageView
                     android:id="@+id/imgAddAddress"

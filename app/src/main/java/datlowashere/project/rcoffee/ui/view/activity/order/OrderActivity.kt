@@ -1,5 +1,6 @@
 package datlowashere.project.rcoffee.ui.view.activity.order
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,7 @@ import datlowashere.project.rcoffee.ui.adapter.ItemOrderAdapter
 import datlowashere.project.rcoffee.ui.view.activity.address.AddressActivity
 import datlowashere.project.rcoffee.ui.view.activity.address.SelectAddressActivity
 import datlowashere.project.rcoffee.ui.view.activity.voucher.SelectVoucherActivity
+import datlowashere.project.rcoffee.utils.SharedPreferencesHelper
 
 class OrderActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOrderBinding
@@ -23,16 +25,17 @@ class OrderActivity : AppCompatActivity() {
         const val REQUEST_CODE_ADDRESS = 1
         const val REQUEST_CODE_VOUCHER = 2
     }
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOrderBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.tvInforUserOrd.text="Delivery Address\n"+getName()+" | "+getPhone()
+
         selectedBaskets = intent.getParcelableArrayListExtra<Basket>("selectedBaskets") ?: arrayListOf()
         totalAmount = intent.getDoubleExtra("totalAmount", 0.0)
 
-        for (basket in selectedBaskets) {
-        }
 
         val adapter = ItemOrderAdapter(this, selectedBaskets)
         binding.rcvSelectedBasket.layoutManager = LinearLayoutManager(this)
@@ -70,4 +73,12 @@ class OrderActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun getPhone(): String {
+        return SharedPreferencesHelper.getUserPhone(this) ?: " "
+    }
+    private fun getName(): String {
+        return SharedPreferencesHelper.getUserName(this) ?: " "
+    }
+
 }

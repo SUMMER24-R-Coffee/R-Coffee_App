@@ -7,6 +7,9 @@ object SharedPreferencesHelper {
     private const val PREFS_NAME = "user_prefs"
     private const val KEY_IS_LOGGED_IN = "is_logged_in"
     private const val KEY_USER_EMAIL = "user_email"
+    private const val KEY_USER_PHONE ="phone"
+    private const val KEY_USER_NAME ="name"
+
 
 
     private fun getSharedPreferences(context: Context): SharedPreferences {
@@ -29,6 +32,19 @@ object SharedPreferencesHelper {
         return getSharedPreferences(context).getString(KEY_USER_EMAIL, null)
     }
 
+    fun setUserName(context: Context, name: String) {
+        getSharedPreferences(context).edit().putString(KEY_USER_NAME, name).apply()
+    }
+    fun getUserName(context: Context): String? {
+        return getSharedPreferences(context).getString(KEY_USER_NAME, null)
+    }
+
+    fun setUserPhone(context: Context, phone: String) {
+        getSharedPreferences(context).edit().putString(KEY_USER_PHONE, phone).apply()
+    }
+    fun getUserPhone(context: Context): String? {
+        return getSharedPreferences(context).getString(KEY_USER_PHONE, null)
+    }
     fun clear(context: Context) {
         getSharedPreferences(context).edit().clear().apply()
     }

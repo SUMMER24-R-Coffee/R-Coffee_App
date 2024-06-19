@@ -7,7 +7,7 @@ import datlowashere.project.rcoffee.data.model.Address
 import datlowashere.project.rcoffee.databinding.LayoutItemSelectAddressBinding
 
 class AddressAdapter(
-    private val addresses: List<Address>,
+    private var addresses: List<Address>,
     private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<AddressAdapter.AddressViewHolder>() {
 
@@ -22,6 +22,11 @@ class AddressAdapter(
     }
 
     override fun getItemCount() = addresses.size
+
+    fun updateAddresses(newAddresses: List<Address>) {
+        addresses = newAddresses
+        notifyDataSetChanged()
+    }
 
     inner class AddressViewHolder(private val binding: LayoutItemSelectAddressBinding) : RecyclerView.ViewHolder(binding.root) {
         init {

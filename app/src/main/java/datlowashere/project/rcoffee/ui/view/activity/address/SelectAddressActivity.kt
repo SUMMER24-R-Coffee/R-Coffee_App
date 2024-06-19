@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +21,8 @@ class SelectAddressActivity : AppCompatActivity() , AddressAdapter.OnItemClickLi
     private lateinit var binding: ActivitySelectAddressBinding
     private lateinit var addressViewModel: AddressViewModel
     private lateinit var addressAdapter: AddressAdapter
+    private var allAddresses: List<Address> = emptyList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySelectAddressBinding.inflate(layoutInflater)
@@ -32,6 +36,20 @@ class SelectAddressActivity : AppCompatActivity() , AddressAdapter.OnItemClickLi
             finish()
         }
 
+        binding.btnAddAdress.setOnClickListener {
+            val intent = Intent(this, AddAddressActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.edSearchAddress.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                filterAddresses(s.toString())
+            }
+        })
         setupRecyclerView()
         observeViewModel()
         addressViewModel.getAddresses(getEmail())
@@ -46,15 +64,24 @@ class SelectAddressActivity : AppCompatActivity() , AddressAdapter.OnItemClickLi
 
     }
 
-    private fun observeViewModel(){
+    private fun observeViewModel() {
         addressViewModel.addresses.observe(this, Observer { addresses ->
             addresses?.let {
-                addressAdapter = AddressAdapter(it, this@SelectAddressActivity)
-                binding.rcvSelectAddress.adapter =addressAdapter
+                allAddresses = it
+                filterAddresses(binding.edSearchAddress.text.toString())
             }
-
-
         })
+    }
+
+    private fun filterAddresses(query: String) {
+        val filteredAddresses = if (query.isEmpty()) {
+            allAddresses
+        } else {
+            allAddresses.filter {
+                it.location.contains(query, ignoreCase = true)
+            }
+        }
+        addressAdapter.updateAddresses(filteredAddresses)
     }
 
     override fun onItemClick(address: Address) {
@@ -64,8 +91,11 @@ class SelectAddressActivity : AppCompatActivity() , AddressAdapter.OnItemClickLi
         finish()
     }
 
-
     private fun getEmail(): String {
         return SharedPreferencesHelper.getUserEmail(this) ?: " "
+    }
+    override fun onResume() {
+        super.onResume()
+        addressViewModel.getAddresses(getEmail())
     }
 }
