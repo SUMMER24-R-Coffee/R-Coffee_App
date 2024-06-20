@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import datlowashere.project.rcoffee.MainActivity
 import datlowashere.project.rcoffee.R
 import datlowashere.project.rcoffee.databinding.FragmentSettingsBinding
+import datlowashere.project.rcoffee.ui.component.DialogCustom
 import datlowashere.project.rcoffee.ui.view.activity.LoginActivity
 import datlowashere.project.rcoffee.ui.viewmodel.SettingViewModel
 import datlowashere.project.rcoffee.utils.SharedPreferencesHelper
@@ -57,10 +58,11 @@ class SettingFragment : Fragment() {
     }
     fun setUpLogout(){
         binding.btnLogout.setOnClickListener {
+            DialogCustom.showLogoutDialog(requireContext())
+
             val nonNullContext = requireNotNull(context)
             SharedPreferencesHelper.clear(nonNullContext)
 
-            startActivity(Intent(requireContext(), MainActivity::class.java))
         }
     }
 

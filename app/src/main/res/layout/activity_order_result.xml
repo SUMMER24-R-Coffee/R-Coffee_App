@@ -33,7 +33,20 @@
                     android:layout_height="wrap_content"
                     android:text="Order Result"
                     style="@style/textHeader"
+                    android:layout_weight="130"
+
                     android:textAlignment="center"/>
+
+
+                <ImageButton
+                    android:id="@+id/btnHomeIcon"
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    android:layout_marginRight="22dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_rect"
+                    android:backgroundTint="@color/green_chaleston"
+                    android:src="@drawable/home_white" />
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
@@ -56,12 +69,12 @@
             android:layout_marginTop="44dp"
             android:layout_marginRight="22dp">
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/fabBasket"
+                android:id="@+id/fabResult"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="top|center"
                 android:backgroundTint="@color/white"
-                app:icon="@drawable/success"
+                app:icon="@drawable/success_filledsvg"
                 app:iconTint="@color/green_ext"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -73,24 +86,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="25dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="5dp"
                 app:cardUseCompatPadding="true"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="50dp"
-                    android:orientation="vertical">><TextView
-                    android:id="@+id/tvStatusPayment"
-                    style="@style/textTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="TextView"
-                    android:textAlignment="center" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvStatusPayment"
+                        style="@style/textTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="TextView"
+                        android:textAlignment="center" />
 
                     <TextView
                         android:id="@+id/tvTotalPaymentR"
@@ -110,29 +128,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
-                        android:padding="13dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Payment time"
-                            android:textAlignment="textStart" />
-
-                        <TextView
-                            android:id="@+id/tvTimePayment"
-                            style="@style/textContent"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="TextView"
-                            android:textAlignment="textEnd" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:padding="13dp">
+                        android:padding="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -154,7 +150,29 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
-                        android:padding="13dp">
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Time"
+                            android:textAlignment="textStart" />
+
+                        <TextView
+                            android:id="@+id/tvTimePayment"
+                            style="@style/textContent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="TextView"
+                            android:textAlignment="textEnd" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -176,7 +194,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
-                        android:padding="13dp">
+                        android:padding="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -198,7 +216,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
-                        android:padding="13dp">
+                        android:padding="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -222,7 +240,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
-                        android:padding="13dp">
+                        android:padding="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -244,7 +262,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
-                        android:padding="13dp">
+                        android:padding="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -258,14 +276,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="TextView"
+                            android:text="None"
                             android:textAlignment="textEnd" />
                     </LinearLayout>
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="?actionBarDivider"
-                        android:layout_marginBottom="10dp"/>
+                        android:layout_marginBottom="10dp"
+                        android:background="?actionBarDivider" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"

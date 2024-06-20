@@ -4,10 +4,12 @@
     android:orientation="vertical"
     android:padding="16dp">
     <ImageView
+        android:id="@+id/imgDialogcustom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/warning"/>
     <TextView
+        android:id="@+id/tvTitleDialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -15,6 +17,7 @@
         style="@style/textTitle"
         android:textAlignment="center" />
     <TextView
+        android:id="@+id/tvMessageDialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"

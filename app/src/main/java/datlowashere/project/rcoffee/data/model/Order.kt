@@ -14,6 +14,13 @@ data class Order(
     val address_id: Int?,
     val voucher_id: Int?,
     val order_message: String,
-    val basket_id: List<Int>
-
+    val basket_id: List<Int>,
+    val quantity: Int =0,
+    val name: String="",
+    val img: String="",
+    val price: Double=0.0,
+    val location: String="",
+    val payment_status: String="",
+    val payment_id: Int=0,
+    val reason: String=""
 )

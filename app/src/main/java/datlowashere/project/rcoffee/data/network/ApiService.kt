@@ -50,6 +50,8 @@ interface ApiService {
     @GET(AppConstant.GET_BASKET)
     suspend fun getBaskets(@Path("email_user") email_user: String): List<Basket>
 
+    @GET(AppConstant.GET_BASKET_ORD)
+    suspend fun getBasketsByOrd(@Path("order_id") order_id: String): List<Basket>
     @POST(AppConstant.ADD_TO_BASKET)
     suspend fun addToBasket(@Body Basket: Basket): Basket
 
@@ -75,8 +77,14 @@ interface ApiService {
     @GET(AppConstant.GET_VOUCHER)
     fun getVoucher(): Call<List<Voucher>>
 
+    //order
     @POST(AppConstant.ORDER)
     fun orderItem(@Body order: Order): Call<Order>
+    @GET(AppConstant.GET_ORDER)
+    fun getOrders(@Path("email_user") emailUser: String): Call<List<Order>>
+
+    @PUT(AppConstant.UPDATE_STATUS_ORDER)
+    fun updateStatusOrder(@Path("order_id") orderId: String,@Body status_order:String,): Call<Void>
 
     //payment
     @POST(AppConstant.INSERT_PAYMENT)

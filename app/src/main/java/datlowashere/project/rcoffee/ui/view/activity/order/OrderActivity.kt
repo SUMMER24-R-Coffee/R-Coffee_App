@@ -143,26 +143,25 @@ class OrderActivity : AppCompatActivity() {
         try {
             val data = orderApi.createOrder(amountToPay.toString())
             val code = data.getString("returncode")
-
             if (code == "1") {
                 val token = data.getString("zptranstoken")
 
                 ZaloPaySDK.getInstance().payOrder(this@OrderActivity, token, "demozpdk://app", object : PayOrderListener {
                     override fun onPaymentSucceeded(transactionId: String, transToken: String, appTransID: String) {
                         setStatusPayment("paid")
-                        val intent=Intent(this@OrderActivity, MainActivity::class.java)
-                        startActivity(intent)
-                        finish()
+                        startOrderResultActivity("Success")
                         Toast.makeText(this@OrderActivity, "Payment Successful", Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onPaymentCanceled(zpTransToken: String, appTransID: String) {
                         setStatusPayment("unpaid")
+                        startOrderResultActivity("Pending")
                         Toast.makeText(this@OrderActivity, "Payment Cancelled", Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onPaymentError(zaloPayError: ZaloPayError, zpTransToken: String, appTransID: String) {
                         setStatusPayment("unpaid")
+                        startOrderResultActivity("Pending")
                         Toast.makeText(this@OrderActivity, "Payment Failed", Toast.LENGTH_SHORT).show()
                     }
                 })
@@ -171,10 +170,6 @@ class OrderActivity : AppCompatActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-    }
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        ZaloPaySDK.getInstance().onResult(intent)
     }
     private fun setUpViewModel(){
         val orderRepository = OrderRepository()
@@ -189,7 +184,6 @@ class OrderActivity : AppCompatActivity() {
         val payFactory =PaymentViewModelFactory(paymentRepository)
         paymentViewModel = ViewModelProvider(this, payFactory).get(PaymentViewModel::class.java)
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -216,7 +210,27 @@ class OrderActivity : AppCompatActivity() {
             }
         }
     }
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        ZaloPaySDK.getInstance().onResult(intent)
+    }
 
+
+    private fun startOrderResultActivity(paymentStatus: String) {
+        val intent = Intent(this@OrderActivity, OrderResultActivity::class.java)
+        val currentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+        intent.putExtra("order_id", orderId)
+        intent.putExtra("payment_status", paymentStatus)
+        intent.putExtra("name", getName())
+        intent.putExtra("phone", getPhone())
+        intent.putExtra("address", binding.tvAddress.text.toString())
+        intent.putExtra("total_payment", totalPayment)
+        intent.putExtra("payment_method", methodPayment)
+        intent.putExtra("time_create", currentTime)
+        intent.putExtra("message",binding.edLeaveMessage.text.toString())
+        startActivity(intent)
+        finish()
+    }
     @SuppressLint("SetTextI18n")
     private fun updatePaymentDetails() {
         discountAmount = totalAmount * (selectedVoucherPercent ?: 0.0) / 100

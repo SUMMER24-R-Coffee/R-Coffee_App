@@ -12,6 +12,7 @@ class AppConstant {
         const val GET_RATING ="ratings/{product_id}"
         const val LOGIN ="login"
         const val GET_USER ="user/{email_user}"
+        const val GET_BASKET_ORD="basket/{order_id}"
         const val GET_BASKET="baskets/{email_user}"
         const val ADD_TO_BASKET="add-to-basket"
         const val UPDATE_BASKET ="update-basket/{basket_id}"
@@ -21,9 +22,10 @@ class AppConstant {
         const val ADD_ADDRESS="insert-address"
         const val GET_VOUCHER="vouchers"
         const val ORDER="insert-order"
+        const val GET_ORDER="get-orders/{email_user}"
+        const val UPDATE_STATUS_ORDER="update-status-order/{order_id}"
         const val UPDATE_ORD_ID="update-order-id-basket"
         const val INSERT_PAYMENT="insert-payment-detail"
-
 
     }
 }
