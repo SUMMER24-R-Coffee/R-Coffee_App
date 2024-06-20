@@ -10,6 +10,7 @@ import datlowashere.project.rcoffee.data.model.BasketRequest
 import datlowashere.project.rcoffee.data.model.Category
 import datlowashere.project.rcoffee.data.model.LoginResponse
 import datlowashere.project.rcoffee.data.model.Order
+import datlowashere.project.rcoffee.data.model.PaymentDetail
 import datlowashere.project.rcoffee.data.model.Product
 import datlowashere.project.rcoffee.data.model.Rating
 import datlowashere.project.rcoffee.data.model.Users
@@ -76,5 +77,9 @@ interface ApiService {
 
     @POST(AppConstant.ORDER)
     fun orderItem(@Body order: Order): Call<Order>
+
+    //payment
+    @POST(AppConstant.INSERT_PAYMENT)
+    fun insertPaymentDetail(@Body paymentDetail: PaymentDetail): Call<Void>
 
 }

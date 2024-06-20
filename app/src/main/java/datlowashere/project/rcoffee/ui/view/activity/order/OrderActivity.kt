@@ -2,19 +2,26 @@ package datlowashere.project.rcoffee.ui.view.activity.order
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.StrictMode
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
+import datlowashere.project.rcoffee.MainActivity
+import datlowashere.project.rcoffee.constant.AppConstant
 import datlowashere.project.rcoffee.data.model.Address
 import datlowashere.project.rcoffee.data.model.Basket
 import datlowashere.project.rcoffee.data.model.Order
+import datlowashere.project.rcoffee.data.model.PaymentDetail
 import datlowashere.project.rcoffee.data.model.Voucher
 import datlowashere.project.rcoffee.data.repository.BasketRepository
 import datlowashere.project.rcoffee.data.repository.OrderRepository
+import datlowashere.project.rcoffee.data.repository.PaymentRepository
 import datlowashere.project.rcoffee.databinding.ActivityOrderBinding
 import datlowashere.project.rcoffee.ui.adapter.ItemOrderAdapter
 import datlowashere.project.rcoffee.ui.view.activity.address.AddressActivity
@@ -26,6 +33,19 @@ import datlowashere.project.rcoffee.utils.FormatterHelper
 import datlowashere.project.rcoffee.utils.SharedPreferencesHelper
 import datlowashere.project.rcoffee.viewmodel.OrderViewModel
 import datlowashere.project.rcoffee.viewmodel.OrderViewModelFactory
+import datlowashere.project.rcoffee.viewmodel.PaymentViewModel
+import datlowashere.project.rcoffee.viewmodel.PaymentViewModelFactory
+import datlowashere.project.rcoffee.zalopay.Api.CreateOrder
+import datlowashere.project.rcoffee.zalopay.Constant.AppInfo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import org.json.JSONObject
+import vn.zalopay.sdk.Environment
+import vn.zalopay.sdk.ZaloPayError
+import vn.zalopay.sdk.ZaloPaySDK
+import vn.zalopay.sdk.listeners.PayOrderListener
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -34,20 +54,18 @@ import java.util.UUID
 class OrderActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOrderBinding
     private lateinit var selectedBaskets: ArrayList<Basket>
+    private lateinit var orderViewModel: OrderViewModel
+    private lateinit var basketViewModel: BasketViewModel
+    private lateinit var paymentViewModel: PaymentViewModel
+    private lateinit var listBasketId: List<Int>
     private var totalAmount: Double = 0.0
     private var selectedAddressId: Int? = null
     private var selectedVoucherId: Int? = null
     private var selectedVoucherPercent: Double? = 0.0
     private var discountAmount: Double = 0.0
     private var totalPayment: Double = 0.0
-    private lateinit var orderViewModel: OrderViewModel
-    private lateinit var basketViewModel: BasketViewModel
-    private lateinit var listBasketId: List<Int>
-
-    companion object {
-        const val REQUEST_CODE_ADDRESS = 1
-        const val REQUEST_CODE_VOUCHER = 2
-    }
+    private var methodPayment: String =""
+    private lateinit var orderId: String
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,8 +74,17 @@ class OrderActivity : AppCompatActivity() {
         setContentView(binding.root)
         setUpViewModel()
         setUpView()
+
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+        ZaloPaySDK.init(AppInfo.APP_ID, Environment.SANDBOX);
+
+        orderId = generateOrderId()
+        //TODO: 1.for the order unpaid->re-pay.
+        //TODO 2. at History fagment ->have3 tab layout. one for pending. one for deliverd. one for cancelled
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setUpView(){
         binding.tvInforUserOrd.text = "Delivery Address\n${getName()} | ${getPhone()}"
 
@@ -81,26 +108,74 @@ class OrderActivity : AppCompatActivity() {
 
         binding.lnSelectAddress.setOnClickListener {
             val intent = Intent(this, SelectAddressActivity::class.java)
-            startActivityForResult(intent, REQUEST_CODE_ADDRESS)
+            startActivityForResult(intent, AppConstant.REQUEST_CODE_ADDRESS)
         }
 
         binding.tvSelectVoucher.setOnClickListener {
             val intent = Intent(this, SelectVoucherActivity::class.java)
-            startActivityForResult(intent, REQUEST_CODE_VOUCHER)
+            startActivityForResult(intent, AppConstant.REQUEST_CODE_VOUCHER)
         }
+
 
         binding.btnPlaceOrder.setOnClickListener {
-            if (selectedAddressId == null ) {
+            if (selectedAddressId == null) {
                 Toast.makeText(this, "Please, select address", Toast.LENGTH_SHORT).show()
+            } else if (!binding.rdoZaloPay.isChecked && !binding.rdoVNPay.isChecked) {
+                Toast.makeText(this, "Please, select a payment method", Toast.LENGTH_SHORT).show()
             } else {
-                placeOrder()
-
+                if (binding.rdoZaloPay.isChecked) {
+                    methodPayment = "Zalo Pay"
+                    placeOrder()
+                    zaloPay()
+                } else if (binding.rdoVNPay.isChecked) {
+                    methodPayment = "VNPay"
+                    Toast.makeText(this, "Feature is in progress", Toast.LENGTH_SHORT).show()
+                }
             }
         }
+
     }
 
+    private fun zaloPay(){
+        val amountToPay =totalPayment.toInt()
+        Log.d("OrderActivity", "Payment IDs: $amountToPay.tp")
+        val orderApi = CreateOrder()
+        try {
+            val data = orderApi.createOrder(amountToPay.toString())
+            val code = data.getString("returncode")
 
+            if (code == "1") {
+                val token = data.getString("zptranstoken")
 
+                ZaloPaySDK.getInstance().payOrder(this@OrderActivity, token, "demozpdk://app", object : PayOrderListener {
+                    override fun onPaymentSucceeded(transactionId: String, transToken: String, appTransID: String) {
+                        setStatusPayment("paid")
+                        val intent=Intent(this@OrderActivity, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                        Toast.makeText(this@OrderActivity, "Payment Successful", Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onPaymentCanceled(zpTransToken: String, appTransID: String) {
+                        setStatusPayment("unpaid")
+                        Toast.makeText(this@OrderActivity, "Payment Cancelled", Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onPaymentError(zaloPayError: ZaloPayError, zpTransToken: String, appTransID: String) {
+                        setStatusPayment("unpaid")
+                        Toast.makeText(this@OrderActivity, "Payment Failed", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        ZaloPaySDK.getInstance().onResult(intent)
+    }
     private fun setUpViewModel(){
         val orderRepository = OrderRepository()
         val orderFactory = OrderViewModelFactory(orderRepository)
@@ -109,6 +184,10 @@ class OrderActivity : AppCompatActivity() {
         val repository = BasketRepository()
         val factory = BasketViewModelFactory(repository)
         basketViewModel = ViewModelProvider(this, factory).get(BasketViewModel::class.java)
+
+        val paymentRepository= PaymentRepository()
+        val payFactory =PaymentViewModelFactory(paymentRepository)
+        paymentViewModel = ViewModelProvider(this, payFactory).get(PaymentViewModel::class.java)
     }
 
 
@@ -117,7 +196,7 @@ class OrderActivity : AppCompatActivity() {
 
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-                REQUEST_CODE_ADDRESS -> {
+                AppConstant.REQUEST_CODE_ADDRESS -> {
                     val address = data?.getParcelableExtra<Address>("selectedAddress")
                     address?.let {
                         binding.tvAddress.text = it.location
@@ -125,7 +204,7 @@ class OrderActivity : AppCompatActivity() {
                     }
                 }
 
-                REQUEST_CODE_VOUCHER -> {
+                AppConstant.REQUEST_CODE_VOUCHER -> {
                     val voucher = data?.getParcelableExtra<Voucher>("selectedVoucher")
                     voucher?.let {
                         binding.tvSelectVoucher.text = it.voucher_code ?: "No voucher selected"
@@ -138,6 +217,7 @@ class OrderActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updatePaymentDetails() {
         discountAmount = totalAmount * (selectedVoucherPercent ?: 0.0) / 100
         binding.tvDiscount.text = "-${FormatterHelper.formatCurrency(discountAmount)}"
@@ -147,6 +227,15 @@ class OrderActivity : AppCompatActivity() {
         binding.tvTotalAmountOrder.text = "Total Amount\n${FormatterHelper.formatCurrency(totalPayment)}"
     }
 
+    private fun setStatusPayment(status:String){
+        var paymentDetail =PaymentDetail(
+            status = status,
+            order_id = orderId
+        )
+        paymentViewModel.insertPaymentDetail(paymentDetail)
+        Log.d("OrderActivity", "status: $paymentDetail")
+
+    }
     private fun placeOrder() {
         if (listBasketId.isEmpty()) {
             Log.e("OrderActivity", "Basket ID list is empty, cannot place order")
@@ -154,9 +243,9 @@ class OrderActivity : AppCompatActivity() {
         }
 
         val order = Order(
-            order_id = generateOrderId(),
+            order_id = orderId,
             update_at = null,
-            payment_method = "Zalo Pay",
+            payment_method = methodPayment,
             total_amount = totalPayment,
             discount_amount = discountAmount,
             address_id = selectedAddressId,
@@ -185,4 +274,7 @@ class OrderActivity : AppCompatActivity() {
     private fun getName(): String {
         return SharedPreferencesHelper.getUserName(this) ?: " "
     }
+
+
+
 }

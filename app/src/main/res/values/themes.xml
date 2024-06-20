@@ -39,6 +39,14 @@
         <item name="cornerSizeBottomLeft">7dp</item>
         <item name="backgroundColor">@color/light_gray</item>
     </style>
+    <style name="customFABRounded">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">50dp</item>
+        <item name="cornerSizeTopLeft">50dp</item>
+        <item name="cornerSizeBottomRight">50dp</item>
+        <item name="cornerSizeBottomLeft">50dp</item>
+        <item name="backgroundColor">@color/white</item>
+    </style>
     <!--title -->
     <style name="textTitle">
         <item name="android:textSize">16sp</item>
