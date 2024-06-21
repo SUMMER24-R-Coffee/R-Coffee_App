@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import datlowashere.project.rcoffee.data.model.Order
+import datlowashere.project.rcoffee.data.model.response.OrderResponse
 import datlowashere.project.rcoffee.data.repository.OrderRepository
 import datlowashere.project.rcoffee.ui.viewmodel.BasketViewModel
 import kotlinx.coroutines.Dispatchers
@@ -38,9 +39,12 @@ class OrderViewModel(private val orderRepository: OrderRepository) : ViewModel()
         }
     }
 
-    fun updateStatusOrder(statusOrder: String, orderId: String) {
+    fun updateStatusOrder( orderId: String, statusOrder: String) {
+        val order = OrderResponse(
+            status_order = statusOrder
+        )
         viewModelScope.launch(Dispatchers.IO) {
-            orderRepository.updateStatusOrder(statusOrder, orderId) { isSuccess ->
+            orderRepository.updateStatusOrder(orderId, order) { isSuccess ->
                 _statusUpdated.postValue(isSuccess)
             }
         }

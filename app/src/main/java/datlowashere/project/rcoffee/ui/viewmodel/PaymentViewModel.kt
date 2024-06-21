@@ -22,6 +22,14 @@ class PaymentViewModel(private val paymentRepository: PaymentRepository) : ViewM
             }
         }
     }
+    fun updatePaymentStatus(orderId: String, status: String) {
+        var paymentDetail = PaymentDetail(0,status,orderId)
+        viewModelScope.launch(Dispatchers.IO) {
+            paymentRepository.updatePaymentStatus(orderId, paymentDetail) { isSuccess ->
+                _paymentStatus.postValue(isSuccess)
+            }
+        }
+    }
 }
 
 class PaymentViewModelFactory(private val paymentRepository: PaymentRepository) : ViewModelProvider.Factory {

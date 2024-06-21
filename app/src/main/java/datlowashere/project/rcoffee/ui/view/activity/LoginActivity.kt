@@ -9,7 +9,6 @@ import com.google.android.material.textfield.TextInputLayout
 import datlowashere.project.rcoffee.MainActivity
 import datlowashere.project.rcoffee.data.repository.AuthRepository
 import datlowashere.project.rcoffee.databinding.ActivityLoginBinding
-import datlowashere.project.rcoffee.network.ApiClient
 import datlowashere.project.rcoffee.ui.viewmodel.AuthViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.AuthViewModelFactory
 import datlowashere.project.rcoffee.utils.SharedPreferencesHelper

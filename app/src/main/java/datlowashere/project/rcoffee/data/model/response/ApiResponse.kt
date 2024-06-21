@@ -1,4 +1,4 @@
-package datlowashere.project.rcoffee.data.model
+package datlowashere.project.rcoffee.data.model.response
 
 data class ApiResponse(
     val status: String,

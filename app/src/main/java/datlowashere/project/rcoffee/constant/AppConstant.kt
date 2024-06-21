@@ -26,6 +26,7 @@ class AppConstant {
         const val UPDATE_STATUS_ORDER="update-status-order/{order_id}"
         const val UPDATE_ORD_ID="update-order-id-basket"
         const val INSERT_PAYMENT="insert-payment-detail"
+        const val UPDATE_PAYMENT_STATUS="update-payment/{order_id}"
 
     }
 }

@@ -3,10 +3,10 @@ package datlowashere.project.rcoffee.data.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import datlowashere.project.rcoffee.data.model.AuthResponse
-import datlowashere.project.rcoffee.data.model.LoginResponse
+import datlowashere.project.rcoffee.data.model.response.AuthResponse
+import datlowashere.project.rcoffee.data.model.response.LoginResponse
 import datlowashere.project.rcoffee.data.model.Users
-import datlowashere.project.rcoffee.network.ApiClient
+import datlowashere.project.rcoffee.data.network.ApiClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Call

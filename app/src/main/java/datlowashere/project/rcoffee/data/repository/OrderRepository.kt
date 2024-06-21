@@ -1,7 +1,9 @@
 package datlowashere.project.rcoffee.data.repository
 
+import android.util.Log
 import datlowashere.project.rcoffee.data.model.Order
-import datlowashere.project.rcoffee.network.ApiClient
+import datlowashere.project.rcoffee.data.model.response.OrderResponse
+import datlowashere.project.rcoffee.data.network.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -42,15 +44,25 @@ class OrderRepository {
         })
     }
 
-    suspend fun updateStatusOrder(orderId: String,statusOrder: String, callback: (Boolean) -> Unit) {
-        apiService.updateStatusOrder( orderId,statusOrder).enqueue(object : Callback<Void> {
+    fun updateStatusOrder(orderId: String, order: OrderResponse, callback: (Boolean) -> Unit) {
+        apiService.updateStatusOrder(orderId, order).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                callback(response.isSuccessful)
+                Log.d("OrderRepository", "Response received: Code=${response.code()}, Message=${response.message()}")
+                if (response.isSuccessful || response.code() == 204) {
+                    Log.d("OrderRepository", "Order status update successful")
+                    callback(true)
+                } else {
+                    Log.e("OrderRepository", "Order status update failed: ${response.errorBody()?.string()}")
+                    callback(false)
+                }
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("OrderRepository", "Order status update failed: ${t.message}")
                 callback(false)
             }
         })
     }
+
+
 }

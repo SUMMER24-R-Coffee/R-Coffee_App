@@ -1,7 +1,7 @@
 package datlowashere.project.rcoffee.data.repository
 
 import datlowashere.project.rcoffee.data.model.Address
-import datlowashere.project.rcoffee.network.ApiClient
+import datlowashere.project.rcoffee.data.network.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

@@ -2,7 +2,6 @@ package datlowashere.project.rcoffee.ui.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.*
-import datlowashere.project.rcoffee.data.model.ApiResponse
 import datlowashere.project.rcoffee.data.model.Basket
 import datlowashere.project.rcoffee.data.repository.BasketRepository
 import kotlinx.coroutines.launch
@@ -116,6 +115,14 @@ class BasketViewModel(private val basketRepository: BasketRepository) : ViewMode
                 callback(false)
             }
         })
+    }
+
+
+
+    fun getBasketByOrd(orderId: String) {
+        basketRepository.getBasketByOrderId(orderId) { basketList ->
+            _baskets.postValue(basketList)
+        }
     }
     fun clearToastMessage() {
         _toastMessage.value = null

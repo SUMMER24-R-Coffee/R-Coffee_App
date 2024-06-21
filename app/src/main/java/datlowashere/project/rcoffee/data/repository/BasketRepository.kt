@@ -2,10 +2,10 @@ package datlowashere.project.rcoffee.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import datlowashere.project.rcoffee.data.model.ApiResponse
 import datlowashere.project.rcoffee.data.model.Basket
+import datlowashere.project.rcoffee.data.model.response.ApiResponse
 import datlowashere.project.rcoffee.data.model.BasketRequest
-import datlowashere.project.rcoffee.network.ApiClient
+import datlowashere.project.rcoffee.data.network.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -52,6 +52,23 @@ class BasketRepository() {
             }
         })
         return isSuccess
+    }
+
+    fun getBasketByOrderId(orderId: String, onResult: (List<Basket>?) -> Unit) {
+        val call = ApiClient.instance.getBasketByOrderId(orderId)
+        call.enqueue(object : Callback<List<Basket>> {
+            override fun onResponse(call: Call<List<Basket>>, response: Response<List<Basket>>) {
+                if (response.isSuccessful) {
+                    onResult(response.body())
+                } else {
+                    onResult(null)
+                }
+            }
+
+            override fun onFailure(call: Call<List<Basket>>, t: Throwable) {
+                onResult(null)
+            }
+        })
     }
     fun deleteBasket(basketId: Int): Call<Void> {
         return apiService.deleteBasket(basketId)

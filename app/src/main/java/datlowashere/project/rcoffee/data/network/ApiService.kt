@@ -2,19 +2,20 @@ package datlowashere.project.rcoffee.data.network
 
 import datlowashere.project.rcoffee.constant.AppConstant
 import datlowashere.project.rcoffee.data.model.Address
-import datlowashere.project.rcoffee.data.model.ApiResponse
-import datlowashere.project.rcoffee.data.model.AuthResponse
+import datlowashere.project.rcoffee.data.model.response.ApiResponse
+import datlowashere.project.rcoffee.data.model.response.AuthResponse
 import datlowashere.project.rcoffee.data.model.Banner
 import datlowashere.project.rcoffee.data.model.Basket
 import datlowashere.project.rcoffee.data.model.BasketRequest
 import datlowashere.project.rcoffee.data.model.Category
-import datlowashere.project.rcoffee.data.model.LoginResponse
+import datlowashere.project.rcoffee.data.model.response.LoginResponse
 import datlowashere.project.rcoffee.data.model.Order
 import datlowashere.project.rcoffee.data.model.PaymentDetail
 import datlowashere.project.rcoffee.data.model.Product
 import datlowashere.project.rcoffee.data.model.Rating
 import datlowashere.project.rcoffee.data.model.Users
 import datlowashere.project.rcoffee.data.model.Voucher
+import datlowashere.project.rcoffee.data.model.response.OrderResponse
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
@@ -51,7 +52,7 @@ interface ApiService {
     suspend fun getBaskets(@Path("email_user") email_user: String): List<Basket>
 
     @GET(AppConstant.GET_BASKET_ORD)
-    suspend fun getBasketsByOrd(@Path("order_id") order_id: String): List<Basket>
+    fun getBasketByOrderId(@Path("order_id") orderId: String): Call<List<Basket>>
     @POST(AppConstant.ADD_TO_BASKET)
     suspend fun addToBasket(@Body Basket: Basket): Basket
 
@@ -84,10 +85,12 @@ interface ApiService {
     fun getOrders(@Path("email_user") emailUser: String): Call<List<Order>>
 
     @PUT(AppConstant.UPDATE_STATUS_ORDER)
-    fun updateStatusOrder(@Path("order_id") orderId: String,@Body status_order:String,): Call<Void>
+    fun updateStatusOrder(@Path("order_id") orderId: String, @Body order: OrderResponse): Call<Void>
 
     //payment
     @POST(AppConstant.INSERT_PAYMENT)
     fun insertPaymentDetail(@Body paymentDetail: PaymentDetail): Call<Void>
+    @PUT(AppConstant.UPDATE_PAYMENT_STATUS)
+    suspend fun updatePaymentDetail(@Path("order_id") orderId: String, @Body paymentDetail: PaymentDetail): Call<Void>
 
 }

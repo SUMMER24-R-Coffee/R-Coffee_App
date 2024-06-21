@@ -1,5 +1,6 @@
 package datlowashere.project.rcoffee.ui.view.fragment.order
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,9 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import datlowashere.project.rcoffee.data.model.Order
 import datlowashere.project.rcoffee.data.repository.OrderRepository
 import datlowashere.project.rcoffee.databinding.FragmentOrderCompletedBinding
 import datlowashere.project.rcoffee.ui.adapter.OrderItemAdapter
+import datlowashere.project.rcoffee.ui.view.activity.order.OrderInnformationActivity
 import datlowashere.project.rcoffee.utils.SharedPreferencesHelper
 import datlowashere.project.rcoffee.viewmodel.OrderViewModel
 import datlowashere.project.rcoffee.viewmodel.OrderViewModelFactory
@@ -36,7 +39,7 @@ class OrderCompletedFragment : Fragment() {
 
         orderItemAdapter = OrderItemAdapter(
             listOf(),
-            onItemClicked = { order ->
+            onItemClicked = { order ->handleItemClick(order)
             },
 
             )
@@ -55,7 +58,11 @@ class OrderCompletedFragment : Fragment() {
         orderViewModel.getOrders(getEmail())
     }
 
-
+    private fun handleItemClick(order: Order) {
+        val intent = Intent(requireContext(), OrderInnformationActivity::class.java)
+        intent.putExtra("ORDER", order)
+        startActivity(intent)
+    }
     private fun getEmail():String{
         return SharedPreferencesHelper.getUserEmail(requireContext()) ?: " "
 
