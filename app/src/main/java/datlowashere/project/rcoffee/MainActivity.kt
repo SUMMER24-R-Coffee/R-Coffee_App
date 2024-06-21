@@ -1,6 +1,5 @@
 package datlowashere.project.rcoffee
 
-import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapShader
 import android.graphics.Canvas
@@ -11,9 +10,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.core.content.ContextCompat
-import androidx.core.view.forEach
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -26,11 +23,12 @@ import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import datlowashere.project.rcoffee.data.repository.AuthRepository
 import datlowashere.project.rcoffee.databinding.ActivityMainBinding
+import datlowashere.project.rcoffee.ui.view.fragment.OrderHistoryFragment
 import datlowashere.project.rcoffee.ui.viewmodel.AuthViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.AuthViewModelFactory
 import datlowashere.project.rcoffee.utils.SharedPreferencesHelper
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() , OrderCancellationListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var authViewModel: AuthViewModel
@@ -50,7 +48,9 @@ class MainActivity : AppCompatActivity() {
         )
         navView.setupWithNavController(navController)
         setupViewModels()
-
+        if (intent.getBooleanExtra("NAVIGATE_TO_HISTORY", false)) {
+            navController.navigate(R.id.nav_history)
+        }
         val emailUser = getEmailUser()
 
         if (emailUser.isNotEmpty()) {
@@ -62,6 +62,33 @@ class MainActivity : AppCompatActivity() {
         //TODO: Set icontint for each nav when selected (case login)
         authViewModel.getUserData(emailUser)
         setUpImage()
+
+        if (intent.getBooleanExtra("NAVIGATE_TO_HISTORY", false)) {
+            val bundle = Bundle().apply {
+                putBoolean("SWITCH_TO_CANCELLED", true)
+            }
+            navController.navigate(R.id.nav_history, bundle)
+        }
+
+    }
+    //TODO: Handle can;t not access to home fragment after finish from orderinformationactivity
+
+    override fun onOrderCancelled() {
+        supportFragmentManager.setFragmentResultListener(
+            "orderHistoryReady",
+            this
+        ) { _, bundle ->
+            val isReady = bundle.getBoolean("isReady")
+            if (isReady) {
+                val orderHistoryFragment = supportFragmentManager
+                    .findFragmentById(R.id.nav_host_fragment_activiy)
+                    ?.childFragmentManager
+                    ?.fragments
+                    ?.firstOrNull() as? OrderHistoryFragment
+
+                orderHistoryFragment?.switchToCancelledOrdersTab()
+            }
+        }
     }
 
     private fun setupViewModels() {
