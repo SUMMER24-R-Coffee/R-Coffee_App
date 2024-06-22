@@ -9,7 +9,6 @@ import com.google.android.material.textfield.TextInputLayout
 import datlowashere.project.rcoffee.MainActivity
 import datlowashere.project.rcoffee.data.repository.AuthRepository
 import datlowashere.project.rcoffee.databinding.ActivityLoginBinding
-import datlowashere.project.rcoffee.network.ApiClient
 import datlowashere.project.rcoffee.ui.viewmodel.AuthViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.AuthViewModelFactory
 import datlowashere.project.rcoffee.utils.SharedPreferencesHelper
@@ -56,7 +55,7 @@ class LoginActivity : AppCompatActivity() {
 
     }
     fun setUpObserve(){
-        authViewModel.loginResult.observe(this, { resource ->
+        authViewModel.loginResult.observe(this) { resource ->
             when (resource) {
                 is Resource.Success -> {
                     val response = resource.data
@@ -64,19 +63,31 @@ class LoginActivity : AppCompatActivity() {
                         Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
                         SharedPreferencesHelper.setLoggedIn(this, true)
                         SharedPreferencesHelper.setUserEmail(this, response.users?.email_user ?: "")
+                        SharedPreferencesHelper.setUserPhone(this, response.users?.phone?: " ")
+                        SharedPreferencesHelper.setUserName(this, response.users?.name?: " ")
                         startActivity(Intent(this, MainActivity::class.java))
                         finish()
                     } else {
-                        Toast.makeText(this, response?.message.toString() ?: "Login failed", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this,
+                            response?.message.toString() ?: "Login failed",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
+
                 is Resource.Error -> {
-                    Toast.makeText(this, resource.message.toString() ?: "Login failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        resource.message.toString() ?: "Login failed",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
+
                 is Resource.Loading -> {
                 }
             }
-        })
+        }
     }
 
     private fun validateInputs(email: String, password: String): Boolean {

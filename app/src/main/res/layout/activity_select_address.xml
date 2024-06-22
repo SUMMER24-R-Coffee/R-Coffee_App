@@ -45,41 +45,53 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="22dp"
-        android:layout_marginRight="22dp"
         android:layout_marginTop="22dp"
-        android:layout_marginBottom="44dp">
+        android:layout_marginBottom="44dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
         <EditText
             android:id="@+id/edSearchAddress"
+            style="@style/textContent"
             android:layout_width="300dp"
             android:layout_height="50dp"
-            android:paddingLeft="22dp"
-            android:ems="10"
-            android:inputType="text"
-            android:text="...Search"
             android:background="@drawable/shape_rect"
             android:drawableLeft="@drawable/search"
             android:drawablePadding="10dp"
-            style="@style/textContent" />
+            android:ems="10"
+            android:inputType="text"
+            android:paddingLeft="22dp"
+            android:hint="...Search" />
+
         <ImageButton
             android:id="@+id/btnAddAdress"
-            android:layout_width="53dp"
-            android:layout_height="53dp"
-            android:layout_marginLeft="10dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/shape_rect_filled_ver2"
             android:src="@drawable/plus" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvMessageSelectedAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/textContent"
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:text="No item to show" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvSelectAddress"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:itemCount="10"
-        tools:listitem="@layout/layout_item_select_address"/>
+        tools:listitem="@layout/layout_item_select_address">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 </LinearLayout>

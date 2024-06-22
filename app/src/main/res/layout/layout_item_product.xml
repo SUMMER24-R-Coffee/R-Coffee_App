@@ -70,7 +70,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
                     android:gravity="center_vertical"
-                    android:maxLength="10"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:lineSpacingExtra="4sp"
                     android:text="cappuccino"
                     android:textColor="@color/white" />
@@ -97,12 +98,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:layout_marginLeft="12dp"
+                android:paddingRight="12dp"
                 android:fontFamily="@font/inter_light"
                 android:text="TextView"
-                android:maxLength="20"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:lineSpacingExtra="9sp"
                 android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ln" />
 
             <TextView

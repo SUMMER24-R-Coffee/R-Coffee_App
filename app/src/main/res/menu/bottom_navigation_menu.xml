@@ -3,20 +3,20 @@
 
     <item
         android:id="@+id/nav_home"
-        android:icon="@drawable/home"
+        android:icon="@drawable/home_nav"
         android:title="Home" />
     <item
         android:id="@+id/nav_history"
-        android:icon="@drawable/history"
+        android:icon="@drawable/fourbox"
         android:title="History" />
 
     <item
         android:id="@+id/nav_fav"
-        android:icon="@drawable/heart"
+        android:icon="@drawable/heart_nav"
         android:title="Favorite" />
     <item
         android:id="@+id/nav_settting"
-        android:icon="@drawable/user_circle"
+        android:icon="@drawable/user_circle_filled"
         android:title="Settings" />
 
 </menu>

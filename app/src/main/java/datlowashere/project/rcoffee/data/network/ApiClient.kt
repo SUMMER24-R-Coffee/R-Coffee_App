@@ -1,7 +1,7 @@
-package datlowashere.project.rcoffee.network
+package datlowashere.project.rcoffee.data.network
 
+import com.android.volley.BuildConfig
 import datlowashere.project.rcoffee.constant.AppConstant
-import datlowashere.project.rcoffee.data.network.ApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -11,7 +11,11 @@ object ApiClient {
     private val appConstant = AppConstant()
 
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
+        level = if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor.Level.BODY
+        } else {
+            HttpLoggingInterceptor.Level.NONE
+        }
     }
 
     private val okHttpClient = OkHttpClient.Builder()

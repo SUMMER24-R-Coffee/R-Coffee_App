@@ -3,6 +3,7 @@
     <style name="Base.Theme.RCoffee" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
          <item name="colorPrimary">@color/orange_bold</item>
+        <item name="colorSecondary">@color/orange_bold</item>
         <item name="android:statusBarColor">@color/black</item>
         <item name="android:fontFamily">@font/inter</item>
     </style>
@@ -38,6 +39,14 @@
         <item name="cornerSizeBottomRight">7dp</item>
         <item name="cornerSizeBottomLeft">7dp</item>
         <item name="backgroundColor">@color/light_gray</item>
+    </style>
+    <style name="customFABRounded">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">50dp</item>
+        <item name="cornerSizeTopLeft">50dp</item>
+        <item name="cornerSizeBottomRight">50dp</item>
+        <item name="cornerSizeBottomLeft">50dp</item>
+        <item name="backgroundColor">@color/white</item>
     </style>
     <!--title -->
     <style name="textTitle">

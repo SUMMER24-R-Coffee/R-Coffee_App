@@ -5,6 +5,7 @@
     android:layout_marginLeft="22dp"
     android:layout_marginRight="22dp"
     android:padding="10dp"
+    android:id="@+id/lnAddressSelected"
     android:orientation="vertical">
 
     <TextView
@@ -17,7 +18,7 @@
         android:text="TextView" />
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:layout_marginTop="12dp"
         android:background="?actionBarDivider"/>
 </LinearLayout>

@@ -20,4 +20,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "RCoffee"
 include(":app")
- 
+include(":zalopay")

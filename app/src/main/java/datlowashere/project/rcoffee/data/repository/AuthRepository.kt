@@ -3,10 +3,10 @@ package datlowashere.project.rcoffee.data.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import datlowashere.project.rcoffee.data.model.AuthResponse
-import datlowashere.project.rcoffee.data.model.LoginResponse
+import datlowashere.project.rcoffee.data.model.response.AuthResponse
+import datlowashere.project.rcoffee.data.model.response.LoginResponse
 import datlowashere.project.rcoffee.data.model.Users
-import datlowashere.project.rcoffee.network.ApiClient
+import datlowashere.project.rcoffee.data.network.ApiClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Call
@@ -16,14 +16,13 @@ import retrofit2.Response
 class AuthRepository {
     private val apiService = ApiClient.instance
 
+    private val _userResponse = MutableLiveData<AuthResponse>()
+    val userResponse: LiveData<AuthResponse>
+        get() = _userResponse
     suspend fun login(email_user: String, password: String): Response<LoginResponse> = withContext(Dispatchers.IO) {
         val user = Users(email_user = email_user, password = password)
         apiService.loginUser(user)
     }
-
-    private val _userResponse = MutableLiveData<AuthResponse>()
-    val userResponse: LiveData<AuthResponse>
-        get() = _userResponse
 
     fun fetchUserData(userEmail: String) {
         apiService.getUser(userEmail).enqueue(object : Callback<AuthResponse> {

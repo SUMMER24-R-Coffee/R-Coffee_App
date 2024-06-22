@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import datlowashere.project.rcoffee.data.model.AuthResponse
-import datlowashere.project.rcoffee.data.model.LoginResponse
+import datlowashere.project.rcoffee.data.model.response.AuthResponse
+import datlowashere.project.rcoffee.data.model.response.LoginResponse
 import datlowashere.project.rcoffee.data.repository.AuthRepository
 import datlowashere.project.rcoffee.utils.Resource
 import kotlinx.coroutines.launch
