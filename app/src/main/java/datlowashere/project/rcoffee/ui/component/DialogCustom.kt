@@ -80,4 +80,19 @@ object DialogCustom {
             show()
         }
     }
+    fun showReceiveConfirmationDialog(context: Context, onComfirmReceive: () -> Unit) {
+        val alertDialogBuilder = AlertDialog.Builder(context)
+        alertDialogBuilder.apply {
+            setTitle("Confirm Received")
+            setMessage("Are you sure you want to confirm this?")
+            setPositiveButton("Yes") { _, _ ->
+                onComfirmReceive()
+            }
+            setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+            create()
+            show()
+        }
+    }
 }

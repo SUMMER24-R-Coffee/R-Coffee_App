@@ -22,6 +22,7 @@ import datlowashere.project.rcoffee.data.repository.PaymentRepository
 import datlowashere.project.rcoffee.databinding.ActivityOrderInnformationBinding
 import datlowashere.project.rcoffee.ui.adapter.ItemOrderAdapter
 import datlowashere.project.rcoffee.ui.component.CancelOrderBottomSheetDialogFragment
+import datlowashere.project.rcoffee.ui.component.DialogCustom
 import datlowashere.project.rcoffee.ui.viewmodel.BasketViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.BasketViewModelFactory
 import datlowashere.project.rcoffee.utils.FormatterHelper
@@ -83,10 +84,13 @@ class OrderInnformationActivity : AppCompatActivity() {
             zaloPay()
         }
         binding.btnReceiveOrder.setOnClickListener {
-            onReceivedOrder()
+            DialogCustom.showReceiveConfirmationDialog(this@OrderInnformationActivity, onComfirmReceive = {->
+                onReceivedOrder()
+            })
+
         }
     }
-    //TODO: re-unpaid for order have not paid yet
+    //TODO: Set up rating->activity rating
 
     private fun setUpRecyclerView() {
         itemOrderItemAdapter = ItemOrderAdapter(this, emptyList())
