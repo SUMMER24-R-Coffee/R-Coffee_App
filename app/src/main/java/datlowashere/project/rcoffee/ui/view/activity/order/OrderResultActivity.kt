@@ -17,22 +17,23 @@ class OrderResultActivity : AppCompatActivity() {
         binding =ActivityOrderResultBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val orderId = intent.getStringExtra("order_id")
-        val paymentStatus = intent.getStringExtra("payment_status")
+        val orderId = intent.getStringExtra("order_id") ?: "None"
+        val paymentStatus = intent.getStringExtra("payment_status") ?: "None"
         val totalPayment = intent.getDoubleExtra("total_payment", 0.0)
-        val paymentMethod = intent.getStringExtra("payment_method")
-        val name = intent.getStringExtra("name")
-        val phone = intent.getStringExtra("phone")
-        val address = intent.getStringExtra("address")
-        val time = intent.getStringExtra("time_create")
-        val message =intent.getStringExtra("message")
+        val paymentMethod = intent.getStringExtra("payment_method") ?: "None"
+        val name = intent.getStringExtra("name") ?: "None"
+        val phone = intent.getStringExtra("phone") ?: "None"
+        val address = intent.getStringExtra("address") ?: "None"
+        val time = intent.getStringExtra("time_create") ?: "None"
+        val message = intent.getStringExtra("message") ?: "None"
 
 
-        if(paymentStatus.equals("Pending")){
+        if (paymentStatus.equals("Pending")) {
             val pendingIcon: Drawable? = ContextCompat.getDrawable(this, R.drawable.error_filledsvg)
-            binding.fabResult.icon = pendingIcon
-            binding.fabResult.iconTint = ContextCompat.getColorStateList(this, R.color.yellow_erth)
+            binding.fabResult.setImageDrawable(pendingIcon)
+            binding.fabResult.imageTintList = ContextCompat.getColorStateList(this, R.color.yellow_erth)
         }
+
 
         binding.tvORDID.text = orderId
         binding.tvStatusPayment.text = paymentStatus

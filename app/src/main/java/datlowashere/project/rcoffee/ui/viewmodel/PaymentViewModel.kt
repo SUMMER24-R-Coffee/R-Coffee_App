@@ -1,5 +1,6 @@
 package datlowashere.project.rcoffee.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,9 +24,14 @@ class PaymentViewModel(private val paymentRepository: PaymentRepository) : ViewM
         }
     }
     fun updatePaymentStatus(orderId: String, status: String) {
-        var paymentDetail = PaymentDetail(0,status,orderId)
+        var paymentDetail = PaymentDetail(
+            payment_id = 0,
+            status = status,
+            order_id = orderId
+        )
         viewModelScope.launch(Dispatchers.IO) {
             paymentRepository.updatePaymentStatus(orderId, paymentDetail) { isSuccess ->
+                Log.d("PaymentViewModel", "success")
                 _paymentStatus.postValue(isSuccess)
             }
         }

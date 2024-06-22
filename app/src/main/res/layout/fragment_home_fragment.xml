@@ -11,7 +11,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="bottom|center_horizontal|end"
-        android:layout_marginRight="30dp"
+        android:layout_marginRight="22dp"
         android:layout_marginBottom="90dp"
         android:backgroundTint="@color/light_gray"
         app:icon="@drawable/cart"

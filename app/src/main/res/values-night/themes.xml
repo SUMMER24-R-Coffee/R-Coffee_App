@@ -3,6 +3,7 @@
     <style name="Base.Theme.RCoffee" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <item name="colorPrimary">@color/orange_bold</item>
+        <item name="colorSecondary">@color/orange_bold</item>
         <item name="android:navigationBarColor">?android:attr/colorPrimaryDark</item>
         <item name="android:fontFamily">@font/inter</item>
     </style>

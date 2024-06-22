@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.StrictMode
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import datlowashere.project.rcoffee.MainActivity
 import datlowashere.project.rcoffee.R
 import datlowashere.project.rcoffee.data.model.Order
+import datlowashere.project.rcoffee.data.model.PaymentDetail
 import datlowashere.project.rcoffee.data.repository.BasketRepository
 import datlowashere.project.rcoffee.data.repository.OrderRepository
 import datlowashere.project.rcoffee.data.repository.PaymentRepository
@@ -27,6 +30,15 @@ import datlowashere.project.rcoffee.viewmodel.OrderViewModel
 import datlowashere.project.rcoffee.viewmodel.OrderViewModelFactory
 import datlowashere.project.rcoffee.viewmodel.PaymentViewModel
 import datlowashere.project.rcoffee.viewmodel.PaymentViewModelFactory
+import datlowashere.project.rcoffee.zalopay.Api.CreateOrder
+import datlowashere.project.rcoffee.zalopay.Constant.AppInfo
+import vn.zalopay.sdk.Environment
+import vn.zalopay.sdk.ZaloPayError
+import vn.zalopay.sdk.ZaloPaySDK
+import vn.zalopay.sdk.listeners.PayOrderListener
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class OrderInnformationActivity : AppCompatActivity() {
 
@@ -36,17 +48,23 @@ class OrderInnformationActivity : AppCompatActivity() {
     private lateinit var paymentViewModel: PaymentViewModel
     private lateinit var itemOrderItemAdapter: ItemOrderAdapter
     private lateinit var orderId: String
+    private var totalPayment: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOrderInnformationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+        ZaloPaySDK.tearDown();
+        ZaloPaySDK.init(2553, Environment.SANDBOX);
 
         setUpViewModel()
 
         val order: Order? = intent.getParcelableExtra("ORDER")
         order?.let {
             orderId = it.order_id
+            totalPayment = it.total_amount
             displayOrderDetails(it)
         }
 
@@ -62,12 +80,13 @@ class OrderInnformationActivity : AppCompatActivity() {
         }
 
         binding.btnRepay.setOnClickListener {
-            // Implement handling for repaying
+            zaloPay()
         }
         binding.btnReceiveOrder.setOnClickListener {
             onReceivedOrder()
         }
     }
+    //TODO: re-unpaid for order have not paid yet
 
     private fun setUpRecyclerView() {
         itemOrderItemAdapter = ItemOrderAdapter(this, emptyList())
@@ -112,6 +131,7 @@ class OrderInnformationActivity : AppCompatActivity() {
         binding.tvPaymentMethodOrdInf.text = order.payment_method
         binding.tvStatusOrderInf.text = order.status_order
         binding.tvAddress.text = order.location
+        binding.tvReason.text = order.reason
 
         when (order.status_order) {
             "cancelled" -> binding.tvStatusOrderInf.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red_exp))
@@ -127,6 +147,9 @@ class OrderInnformationActivity : AppCompatActivity() {
                     if (order.payment_status == "unpaid") {
                         btnRepay.visibility = View.VISIBLE
                     }
+                }
+                "preparing" ->{
+                    btnCancelOrder.visibility = View.VISIBLE
                 }
                 "delivering" -> {
                     btnReceiveOrder.visibility = View.VISIBLE
@@ -183,6 +206,74 @@ class OrderInnformationActivity : AppCompatActivity() {
         finish()
     }
 
+    private fun zaloPay(){
+        val amountToPay =totalPayment.toInt()
+        Log.d("OrderInformation",amountToPay.toString())
+        val orderApi = CreateOrder()
+        try {
+            val data = orderApi.createOrder(amountToPay.toString())
+            val code = data.getString("returncode")
+            if (code == "1") {
+                val token = data.getString("zptranstoken")
+
+                ZaloPaySDK.getInstance().payOrder(this@OrderInnformationActivity, token, "demozpdkt://appt", object :
+                    PayOrderListener {
+                    override fun onPaymentSucceeded(transactionId: String, transToken: String, appTransID: String) {
+                        setStatusPayment("paid")
+                        startOrderResultActivity("Success")
+                        Toast.makeText(this@OrderInnformationActivity, "Payment Successful", Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onPaymentCanceled(zpTransToken: String, appTransID: String) {
+                        setStatusPayment("unpaid")
+                        startOrderResultActivity("Pending")
+                        Toast.makeText(this@OrderInnformationActivity, "Payment Cancelled", Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onPaymentError(zaloPayError: ZaloPayError, zpTransToken: String, appTransID: String) {
+                        setStatusPayment("unpaid")
+                        startOrderResultActivity("Pending")
+                        Toast.makeText(this@OrderInnformationActivity, "Payment Failed", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+    private fun startOrderResultActivity(paymentStatus: String) {
+        val intent = Intent(this@OrderInnformationActivity, OrderResultActivity::class.java)
+        val currentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+        intent.putExtra("order_id", orderId)
+        intent.putExtra("payment_status", paymentStatus)
+        intent.putExtra("name", getName())
+        intent.putExtra("phone", getPhone())
+        intent.putExtra("address", binding.tvAddress.text.toString())
+        intent.putExtra("total_payment", totalPayment)
+        intent.putExtra("payment_method", binding.tvPaymentMethodOrdInf.text.toString())
+        intent.putExtra("time_create", currentTime)
+        intent.putExtra("message",binding.tvMessageOrdInf.text.toString())
+        startActivity(intent)
+        finish()
+    }
+    private fun setStatusPayment(status:String){
+        var paymentDetail = PaymentDetail(
+            status = status,
+            order_id = orderId
+        )
+        paymentViewModel.updatePaymentStatus(orderId,status)
+        paymentViewModel.paymentStatus.observe(this@OrderInnformationActivity, Observer {isSuccess ->
+            if (isSuccess) {
+                Toast.makeText(this@OrderInnformationActivity, "Re-pay order successfully", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this@OrderInnformationActivity, "Failed to Re-pay  order", Toast.LENGTH_SHORT).show()
+            }
+        })
+        Log.d("OrderActivityInf", "status: $paymentDetail")
+
+    }
+
     private fun getEmail(): String {
         return SharedPreferencesHelper.getUserEmail(this) ?: ""
     }
@@ -194,6 +285,9 @@ class OrderInnformationActivity : AppCompatActivity() {
     private fun getName(): String {
         return SharedPreferencesHelper.getUserName(this) ?: ""
     }
-
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        ZaloPaySDK.getInstance().onResult(intent)
+    }
 
 }

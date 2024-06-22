@@ -80,8 +80,6 @@ class OrderActivity : AppCompatActivity() {
         ZaloPaySDK.init(AppInfo.APP_ID, Environment.SANDBOX);
 
         orderId = generateOrderId()
-        //TODO: 1.for the order unpaid->re-pay.
-        //TODO 2. at History fagment ->have3 tab layout. one for pending. one for deliverd. one for cancelled-->DONE
     }
 
     @SuppressLint("SetTextI18n")
