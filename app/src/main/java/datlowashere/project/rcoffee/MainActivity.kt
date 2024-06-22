@@ -13,6 +13,7 @@ import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -23,22 +24,23 @@ import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import datlowashere.project.rcoffee.data.repository.AuthRepository
 import datlowashere.project.rcoffee.databinding.ActivityMainBinding
-import datlowashere.project.rcoffee.ui.view.fragment.OrderHistoryFragment
 import datlowashere.project.rcoffee.ui.viewmodel.AuthViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.AuthViewModelFactory
 import datlowashere.project.rcoffee.utils.SharedPreferencesHelper
 
-class MainActivity : AppCompatActivity() , OrderCancellationListener {
+class MainActivity : AppCompatActivity()  {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var authViewModel: AuthViewModel
     private lateinit var navView: BottomNavigationView
+    private var destinationChangedListener: NavController.OnDestinationChangedListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setupViewModels()
 
         navView = binding.bottomNav
         val navController = findNavController(R.id.nav_host_fragment_activiy)
@@ -47,10 +49,7 @@ class MainActivity : AppCompatActivity() , OrderCancellationListener {
             setOf(R.id.nav_home, R.id.nav_history, R.id.nav_fav, R.id.nav_settting)
         )
         navView.setupWithNavController(navController)
-        setupViewModels()
-        if (intent.getBooleanExtra("NAVIGATE_TO_HISTORY", false)) {
-            navController.navigate(R.id.nav_history)
-        }
+
         val emailUser = getEmailUser()
 
         if (emailUser.isNotEmpty()) {
@@ -63,34 +62,46 @@ class MainActivity : AppCompatActivity() , OrderCancellationListener {
         authViewModel.getUserData(emailUser)
         setUpImage()
 
-        if (intent.getBooleanExtra("NAVIGATE_TO_HISTORY", false)) {
-            val bundle = Bundle().apply {
-                putBoolean("SWITCH_TO_CANCELLED", true)
-            }
+
+        val switchToCancelled = intent.getBooleanExtra("SWITCH_TO_CANCELLED", false)
+        val switchToCompleted = intent.getBooleanExtra("SWITCH_TO_COMPLETED", false)
+        val bundle = Bundle().apply {
+            putBoolean("SWITCH_TO_CANCELLED", switchToCancelled)
+            putBoolean("SWITCH_TO_COMPLETED", switchToCompleted)
+    }
+        if (switchToCancelled || switchToCompleted) {
             navController.navigate(R.id.nav_history, bundle)
         }
 
-    }
-    //TODO: Handle can;t not access to home fragment after finish from orderinformationactivity
-
-    override fun onOrderCancelled() {
-        supportFragmentManager.setFragmentResultListener(
-            "orderHistoryReady",
-            this
-        ) { _, bundle ->
-            val isReady = bundle.getBoolean("isReady")
-            if (isReady) {
-                val orderHistoryFragment = supportFragmentManager
-                    .findFragmentById(R.id.nav_host_fragment_activiy)
-                    ?.childFragmentManager
-                    ?.fragments
-                    ?.firstOrNull() as? OrderHistoryFragment
-
-                orderHistoryFragment?.switchToCancelledOrdersTab()
+        navView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    navController.navigate(R.id.nav_home)
+                    true
+                }
+                R.id.nav_history -> {
+                    navController.navigate(R.id.nav_history)
+                    true
+                }
+                R.id.nav_fav -> {
+                    navController.navigate(R.id.nav_fav)
+                    true
+                }
+                R.id.nav_settting -> {
+                    navController.navigate(R.id.nav_settting)
+                    true
+                }
+                else -> false
             }
         }
-    }
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            destinationChangedListener?.let {
+                navController.removeOnDestinationChangedListener(it)
+                destinationChangedListener = null
+            }
+        }
 
+    }
     private fun setupViewModels() {
         val authRepository = AuthRepository()
         val authViewModelFactory = AuthViewModelFactory(authRepository)

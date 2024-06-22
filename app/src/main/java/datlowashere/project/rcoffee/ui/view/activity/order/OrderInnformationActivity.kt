@@ -18,6 +18,7 @@ import datlowashere.project.rcoffee.data.repository.OrderRepository
 import datlowashere.project.rcoffee.data.repository.PaymentRepository
 import datlowashere.project.rcoffee.databinding.ActivityOrderInnformationBinding
 import datlowashere.project.rcoffee.ui.adapter.ItemOrderAdapter
+import datlowashere.project.rcoffee.ui.component.CancelOrderBottomSheetDialogFragment
 import datlowashere.project.rcoffee.ui.viewmodel.BasketViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.BasketViewModelFactory
 import datlowashere.project.rcoffee.utils.FormatterHelper
@@ -63,6 +64,9 @@ class OrderInnformationActivity : AppCompatActivity() {
         binding.btnRepay.setOnClickListener {
             // Implement handling for repaying
         }
+        binding.btnReceiveOrder.setOnClickListener {
+            onReceivedOrder()
+        }
     }
 
     private fun setUpRecyclerView() {
@@ -91,7 +95,6 @@ class OrderInnformationActivity : AppCompatActivity() {
                 itemOrderItemAdapter.updateData(it)
             }
         })
-
 
         orderViewModel.getOrders(getEmail())
         basketViewModel.getBasketByOrd(orderId)
@@ -143,24 +146,43 @@ class OrderInnformationActivity : AppCompatActivity() {
     }
 
     private fun handleCancelOrder() {
-        orderViewModel.updateStatusOrder(orderId, "cancelled")
+        val bottomSheet = CancelOrderBottomSheetDialogFragment()
+        bottomSheet.setOnReasonSelectedListener(object : CancelOrderBottomSheetDialogFragment.OnReasonSelectedListener {
+            override fun onReasonSelected(reason: String) {
+                orderViewModel.updateStatusOrder(orderId, "cancelled",reason)
+                orderViewModel.statusUpdated.observe(this@OrderInnformationActivity, Observer { isSuccess ->
+                    if (isSuccess) {
+                        Toast.makeText(this@OrderInnformationActivity, "Order cancelled successfully", Toast.LENGTH_SHORT).show()
+                        navigateToOrderHistory("SWITCH_TO_CANCELLED")
+                    } else {
+                        Toast.makeText(this@OrderInnformationActivity, "Failed to cancel order", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            }
+        })
+        bottomSheet.show(supportFragmentManager, "CancelOrderBottomSheet")
+    }
+
+    private fun onReceivedOrder() {
+        orderViewModel.updateStatusOrder(orderId, "delivered","")
         orderViewModel.statusUpdated.observe(this, Observer { isSuccess ->
             if (isSuccess) {
-                Toast.makeText(this, "Order cancelled successfully", Toast.LENGTH_SHORT).show()
-                navigateToOrderHistory()
+                Toast.makeText(this, "Order Received", Toast.LENGTH_SHORT).show()
+                navigateToOrderHistory("SWITCH_TO_COMPLETED")
             } else {
-                Toast.makeText(this, "Failed to cancel order", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Failed to receive order", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
-    private fun navigateToOrderHistory() {
+    private fun navigateToOrderHistory(switchType: String) {
         val intent = Intent(this, MainActivity::class.java).apply {
-            putExtra("NAVIGATE_TO_HISTORY", true)
+            putExtra(switchType, true)
         }
         startActivity(intent)
         finish()
     }
+
     private fun getEmail(): String {
         return SharedPreferencesHelper.getUserEmail(this) ?: ""
     }

@@ -55,7 +55,7 @@ class OrderHistoryFragment : Fragment() {
 
         }.attach()
 
-        checkAndSwitchToCancelledTab()
+        checkAndSwitchTabs()
 
         return binding.root
     }
@@ -69,18 +69,24 @@ class OrderHistoryFragment : Fragment() {
         tabTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
         return tabTextView
     }
-    private fun checkAndSwitchToCancelledTab() {
+    private fun checkAndSwitchTabs() {
         val switchToCancelled = arguments?.getBoolean("SWITCH_TO_CANCELLED", false) ?: false
+        val switchToCompleted = arguments?.getBoolean("SWITCH_TO_COMPLETED", false) ?: false
         if (switchToCancelled) {
-            viewPager.post {
-                switchToCancelledOrdersTab()
-            }
+            viewPager.post { switchToCancelledOrdersTab() }
+        } else if (switchToCompleted) {
+            viewPager.post { switchToCompletedOrdersTab() }
         }
     }
 
-    fun switchToCancelledOrdersTab() {
+    private fun switchToCancelledOrdersTab() {
         Log.d("OrderHistoryFragment", "Switching to Cancelled Orders Tab")
         binding.viewpager2Ord.currentItem = 2
+    }
+
+    private fun switchToCompletedOrdersTab() {
+        Log.d("OrderHistoryFragment", "Switching to Completed Orders Tab")
+        binding.viewpager2Ord.currentItem = 1
     }
     override fun onDestroyView() {
         super.onDestroyView()
