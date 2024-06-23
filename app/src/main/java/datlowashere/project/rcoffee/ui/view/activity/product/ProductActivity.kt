@@ -10,14 +10,18 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import datlowashere.project.rcoffee.R
+import datlowashere.project.rcoffee.data.model.Favorite
 import datlowashere.project.rcoffee.data.model.Product
 import datlowashere.project.rcoffee.data.repository.BasketRepository
+import datlowashere.project.rcoffee.data.repository.FavoriteRepository
 import datlowashere.project.rcoffee.databinding.ActivityProductBinding
 import datlowashere.project.rcoffee.data.repository.ProductRepository
 import datlowashere.project.rcoffee.ui.adapter.ProductAdapter
 import datlowashere.project.rcoffee.ui.component.DialogCustom
 import datlowashere.project.rcoffee.ui.viewmodel.BasketViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.BasketViewModelFactory
+import datlowashere.project.rcoffee.ui.viewmodel.FavoriteViewModel
+import datlowashere.project.rcoffee.ui.viewmodel.FavoriteViewModelFactory
 import datlowashere.project.rcoffee.ui.viewmodel.ProductViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.ProductViewModelFactory
 import datlowashere.project.rcoffee.utils.GridSpacingItemDecoration
@@ -30,6 +34,7 @@ class ProductActivity : AppCompatActivity(), ProductAdapter.OnItemClickListener 
     private lateinit var productViewModel: ProductViewModel
     private lateinit var productAdapter: ProductAdapter
     private lateinit var basketViewModel: BasketViewModel
+    private lateinit var favoriteViewModel: FavoriteViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,25 +61,37 @@ class ProductActivity : AppCompatActivity(), ProductAdapter.OnItemClickListener 
         val basketRepository = BasketRepository()
         val basketViewModelFactory = BasketViewModelFactory(basketRepository)
         basketViewModel = ViewModelProvider(this, basketViewModelFactory).get(BasketViewModel::class.java)
+
+        val favoriteRepository = FavoriteRepository()
+        val favoriteViewModelFactory = FavoriteViewModelFactory(favoriteRepository)
+        favoriteViewModel= ViewModelProvider(this, favoriteViewModelFactory).get(FavoriteViewModel::class.java)
     }
     private fun observeViewModel() {
-        productViewModel.products.observe(this, { resource ->
+        productViewModel.products.observe(this) { resource ->
             when (resource) {
                 is Resource.Success -> {
                     resource.data?.let {
                         productAdapter = ProductAdapter(it, this)
                         binding.rcvProducts.layoutManager = GridLayoutManager(this, 2)
                         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.item_spacing)
-                        binding.rcvProducts.addItemDecoration(GridSpacingItemDecoration(2, spacingInPixels, true))
+                        binding.rcvProducts.addItemDecoration(
+                            GridSpacingItemDecoration(
+                                2,
+                                spacingInPixels,
+                                true
+                            )
+                        )
                         binding.rcvProducts.adapter = productAdapter
                     }
                 }
+
                 is Resource.Error -> {
                 }
+
                 is Resource.Loading -> {
                 }
             }
-        })
+        }
 
         basketViewModel.toastMessage.observe(this, Observer { message ->
             message?.let {
@@ -101,6 +118,17 @@ class ProductActivity : AppCompatActivity(), ProductAdapter.OnItemClickListener 
         } else {
             val userEmail = getEmail()
             basketViewModel.addOrUpdateBasket(product.product_id, userEmail)
+        }
+    }
+
+    override fun onFavoriteClick(product: Product) {
+        if (getEmail().isNullOrBlank()) {
+            DialogCustom.showLoginDialog(this)
+        } else {
+            val userEmail = getEmail()
+            val favorite = Favorite(0,product.product_id,userEmail)
+
+            favoriteViewModel.insertOrDeleteFavorite(favorite)
         }
     }
 }

@@ -53,6 +53,7 @@ class OrderCompletedFragment : Fragment() {
             val filteredOrders = orders.filter {
                 it.status_order == "delivered"
             }
+            binding.tvMessageOrderCompletedFragment.visibility = if (filteredOrders.isEmpty()) View.VISIBLE else View.GONE
             orderItemAdapter.updateOrders(filteredOrders)
         }
         orderViewModel.getOrders(getEmail())

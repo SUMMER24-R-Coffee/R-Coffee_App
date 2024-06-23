@@ -4,7 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.view.fragment.order.OrderCompletedFragment">
-
+    <TextView
+        android:id="@+id/tvMessageOrderCompletedFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="No item to show"
+        style="@style/textContent"
+        android:visibility="gone"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvCompleted"
         android:layout_width="match_parent"

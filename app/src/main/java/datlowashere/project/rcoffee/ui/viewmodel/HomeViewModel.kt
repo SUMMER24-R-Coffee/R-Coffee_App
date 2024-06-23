@@ -73,8 +73,22 @@ class HomeViewModel(private val repository: HomeRepository,
             filteredProducts.value = Resource.Success(filteredList)
         }
     }
-}
+    fun getProductsWithFavorites(userEmail: String) {
+        viewModelScope.launch {
+            _products.postValue(Resource.Loading())
+            try {
+                val response = repository.getProducts(userEmail)
+                _products.postValue(Resource.Success(response))
 
+                val filteredList = response.filter { it.favorite_id != null }
+                filteredProducts.postValue(Resource.Success(filteredList))
+            } catch (e: Exception) {
+                _products.postValue(Resource.Error(e.message ?: "An error occurred"))
+                filteredProducts.postValue(Resource.Error(e.message ?: "An error occurred"))
+            }
+        }
+    }
+}
 class HomeViewModelFactory(private val repository: HomeRepository,
                             private val context: Context) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

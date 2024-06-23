@@ -80,6 +80,8 @@ class OrderActivity : AppCompatActivity() {
         ZaloPaySDK.init(AppInfo.APP_ID, Environment.SANDBOX);
 
         orderId = generateOrderId()
+
+        //TODO: For the order have move to zalo pay browser but not given a result back. then set re-pay for it
     }
 
     @SuppressLint("SetTextI18n")

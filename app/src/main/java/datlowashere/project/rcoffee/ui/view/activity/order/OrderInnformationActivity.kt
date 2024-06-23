@@ -91,6 +91,7 @@ class OrderInnformationActivity : AppCompatActivity() {
         }
     }
     //TODO: Set up rating->activity rating
+    //TODO: Add a textview status payment beside the textview show time order
 
     private fun setUpRecyclerView() {
         itemOrderItemAdapter = ItemOrderAdapter(this, emptyList())
@@ -125,26 +126,26 @@ class OrderInnformationActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun displayOrderDetails(order: Order) {
-        binding.tvOrderIDInf.text = order.order_id
-        binding.tvTimeOrderInf.text = order.create_at?.let { FormatterHelper.formatDateTime(it) }
-        binding.tvUserInforOrdInf.text = "${getName()} | ${getPhone()}"
-        binding.tvTotalPaymentOrdInf.text = FormatterHelper.formatCurrency(order.total_amount)
-        binding.tvMerchandiseOrdInf.text = FormatterHelper.formatCurrency(order.total_amount + order.discount_amount)
-        binding.tvDiscountOrdInf.text = FormatterHelper.formatCurrency(order.discount_amount)
-        binding.tvMessageOrdInf.text = order.order_message?.takeIf { it.isNotEmpty() } ?: "None"
-        binding.tvPaymentMethodOrdInf.text = order.payment_method
-        binding.tvStatusOrderInf.text = order.status_order
-        binding.tvAddress.text = order.location
-        binding.tvReason.text = order.reason
-
-        when (order.status_order) {
-            "cancelled" -> binding.tvStatusOrderInf.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red_exp))
-            "delivered" -> binding.tvStatusOrderInf.setTextColor(ContextCompat.getColor(binding.root.context, R.color.green_ext))
-            "delivering" -> binding.tvStatusOrderInf.setTextColor(ContextCompat.getColor(binding.root.context, R.color.blue_bld))
-            else -> binding.tvStatusOrderInf.setTextColor(ContextCompat.getColor(binding.root.context, R.color.yellow_erth))
-        }
-
         binding.apply {
+            tvOrderIDInf.text = order.order_id
+            tvTimeOrderInf.text = order.create_at?.let { FormatterHelper.formatDateTime(it) }
+            tvUserInforOrdInf.text = "${getName()} | ${getPhone()}"
+            tvTotalPaymentOrdInf.text = FormatterHelper.formatCurrency(order.total_amount)
+            tvMerchandiseOrdInf.text = FormatterHelper.formatCurrency(order.total_amount + order.discount_amount)
+            tvDiscountOrdInf.text = FormatterHelper.formatCurrency(order.discount_amount)
+            tvMessageOrdInf.text = order.order_message?.takeIf { it.isNotEmpty() } ?: "None"
+            tvPaymentMethodOrdInf.text = order.payment_method
+            tvStatusOrderInf.text = order.status_order
+            tvAddress.text = order.location
+            tvReason.text = order.reason
+
+            when (order.status_order) {
+                "cancelled" -> tvStatusOrderInf.setTextColor(ContextCompat.getColor(root.context, R.color.red_exp))
+                "delivered" -> tvStatusOrderInf.setTextColor(ContextCompat.getColor(root.context, R.color.green_ext))
+                "delivering" -> tvStatusOrderInf.setTextColor(ContextCompat.getColor(root.context, R.color.blue_bld))
+                else -> tvStatusOrderInf.setTextColor(ContextCompat.getColor(root.context, R.color.yellow_erth))
+            }
+
             when (order.status_order) {
                 "pending" -> {
                     btnCancelOrder.visibility = View.VISIBLE

@@ -8,6 +8,7 @@ import datlowashere.project.rcoffee.data.model.Banner
 import datlowashere.project.rcoffee.data.model.Basket
 import datlowashere.project.rcoffee.data.model.BasketRequest
 import datlowashere.project.rcoffee.data.model.Category
+import datlowashere.project.rcoffee.data.model.Favorite
 import datlowashere.project.rcoffee.data.model.response.LoginResponse
 import datlowashere.project.rcoffee.data.model.Order
 import datlowashere.project.rcoffee.data.model.PaymentDetail
@@ -92,5 +93,9 @@ interface ApiService {
     fun insertPaymentDetail(@Body paymentDetail: PaymentDetail): Call<Void>
     @PUT(AppConstant.UPDATE_PAYMENT_STATUS)
     suspend fun updatePaymentDetail(@Path("order_id") orderId: String, @Body paymentDetail: PaymentDetail): Call<Void>
+
+    //favorite
+    @POST(AppConstant.IN_DEL_FAV)
+    suspend fun insertOrDelFav(@Body favorite: Favorite): Favorite
 
 }
