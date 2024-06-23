@@ -1,7 +1,7 @@
 package datlowashere.project.rcoffee.constant
 
 class AppConstant {
-     val BASE_URL = "http://192.168.1.5:3000/api-app/"
+     val BASE_URL = "http://192.168.1.9:3000/api-app/"
 
     companion object {
         const val REQUEST_CODE_ADDRESS = 1
@@ -27,6 +27,7 @@ class AppConstant {
         const val UPDATE_ORD_ID="update-order-id-basket"
         const val INSERT_PAYMENT="insert-payment-detail"
         const val UPDATE_PAYMENT_STATUS="update-payment/{order_id}"
+        const val IN_DEL_FAV="in-del-favorite"
 
     }
 }

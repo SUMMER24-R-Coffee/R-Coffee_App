@@ -54,6 +54,8 @@ class OrderFragment : Fragment() {
             val filteredOrders = orders.filter {
                 it.status_order != "cancelled" && it.status_order != "delivered"
             }
+            binding.tvMessageOrderFragment.visibility = if (filteredOrders.isEmpty()) View.VISIBLE else View.GONE
+
             orderItemAdapter.updateOrders(filteredOrders)
         }
         orderViewModel.getOrders(getEmail())

@@ -74,7 +74,7 @@ class ProductInformationActivity : AppCompatActivity() {
             binding.tvProductPriceInf.text = FormatterHelper.formatCurrency(it.price)
             binding.tvAverageStarInf.text =String.format("%.1f", it.average_rating)
 
-            if (product.favourite_id != null) {
+            if (product.favorite_id != null) {
                 binding.btnFavoritePrd.setImageResource(R.drawable.red_heart)
             } else {
                 binding.btnFavoritePrd.setImageResource(R.drawable.hert)
@@ -88,7 +88,7 @@ class ProductInformationActivity : AppCompatActivity() {
 
             productViewModel.getRatings(it.product_id)
 
-            productViewModel.ratings.observe(this, { resource ->
+            productViewModel.ratings.observe(this) { resource ->
                 when (resource) {
                     is Resource.Success -> {
                         resource.data?.let { ratings ->
@@ -96,7 +96,8 @@ class ProductInformationActivity : AppCompatActivity() {
                                 binding.tvViewAllReview.visibility = View.VISIBLE
                                 ratingAdapter = RatingAdapter(ratings)
                                 binding.rcvReviews.apply {
-                                    layoutManager = LinearLayoutManager(this@ProductInformationActivity)
+                                    layoutManager =
+                                        LinearLayoutManager(this@ProductInformationActivity)
                                     adapter = ratingAdapter
                                 }
                             } else {
@@ -104,12 +105,14 @@ class ProductInformationActivity : AppCompatActivity() {
                             }
                         }
                     }
+
                     is Resource.Error -> {
                     }
+
                     is Resource.Loading -> {
                     }
                 }
-            })
+            }
 
             handleValueQuantityWithPrice(it.price)
         }

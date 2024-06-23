@@ -11,14 +11,17 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
 import datlowashere.project.rcoffee.R
+import datlowashere.project.rcoffee.data.model.Favorite
 import datlowashere.project.rcoffee.data.model.Product
 import datlowashere.project.rcoffee.data.repository.AuthRepository
 import datlowashere.project.rcoffee.data.repository.BasketRepository
+import datlowashere.project.rcoffee.data.repository.FavoriteRepository
 import datlowashere.project.rcoffee.data.repository.HomeRepository
 import datlowashere.project.rcoffee.databinding.FragmentHomeFragmentBinding
 import datlowashere.project.rcoffee.ui.adapter.CategoryAdapter
@@ -31,6 +34,8 @@ import datlowashere.project.rcoffee.ui.viewmodel.AuthViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.AuthViewModelFactory
 import datlowashere.project.rcoffee.ui.viewmodel.BasketViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.BasketViewModelFactory
+import datlowashere.project.rcoffee.ui.viewmodel.FavoriteViewModel
+import datlowashere.project.rcoffee.ui.viewmodel.FavoriteViewModelFactory
 import datlowashere.project.rcoffee.ui.viewmodel.HomeViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.HomeViewModelFactory
 import datlowashere.project.rcoffee.utils.Resource
@@ -45,6 +50,7 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
     private lateinit var productAdapter: ProductAdapter
     private lateinit var authViewModel: AuthViewModel
     private lateinit var basketViewModel: BasketViewModel
+    private lateinit var favoriteViewModel: FavoriteViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -86,6 +92,10 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
         val basketRepository = BasketRepository()
         val basketViewModelFactory = BasketViewModelFactory(basketRepository)
         basketViewModel = ViewModelProvider(this, basketViewModelFactory).get(BasketViewModel::class.java)
+
+        val favoriteRepository = FavoriteRepository()
+        val favoriteViewModelFactory = FavoriteViewModelFactory(favoriteRepository)
+        favoriteViewModel= ViewModelProvider(this, favoriteViewModelFactory).get(FavoriteViewModel::class.java)
     }
 
     @SuppressLint("FragmentLiveDataObserve")
@@ -190,6 +200,20 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
             }
 
         })
+        //Toast message for clicked img favorite
+
+//        favoriteViewModel.favoriteResponse.observe(this) { favorite ->
+//            favorite?.let {
+//                Toast.makeText(requireContext(), "Favorite operation successful: ${it}", Toast.LENGTH_SHORT)
+//                    .show()
+//            }
+//        }
+//
+//        favoriteViewModel.errorMessage.observe(this) { message ->
+//            message?.let {
+//                Toast.makeText(requireContext(), "Error: $it", Toast.LENGTH_SHORT).show()
+//            }
+//        }
 
     }
 
@@ -223,6 +247,17 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
         } else {
             val userEmail = getEmail()
             basketViewModel.addOrUpdateBasket(product.product_id, userEmail)
+        }
+    }
+
+    override fun onFavoriteClick(product: Product) {
+        if (getEmail().isNullOrBlank()) {
+            DialogCustom.showLoginDialog(requireContext())
+        } else {
+            val userEmail = getEmail()
+            val favorite = Favorite(0,product.product_id,userEmail)
+
+            favoriteViewModel.insertOrDeleteFavorite(favorite)
         }
     }
 

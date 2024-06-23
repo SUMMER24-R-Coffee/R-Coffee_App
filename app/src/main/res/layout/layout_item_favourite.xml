@@ -3,9 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="343dp"
     android:layout_height="154dp"
-    android:layout_marginBottom="22dp">
+    android:layout_gravity="center|top"
+    android:layout_marginLeft="22dp"
+    android:layout_marginRight="22dp"
+    android:paddingTop="11dp"
+    android:paddingBottom="11dp">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewItemFav"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:backgroundTint="@color/green_chaleston"
@@ -20,9 +25,8 @@
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="25dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginBottom="16dp"
+                android:layout_gravity="center"
                 app:cardCornerRadius="16dp">
 
                 <ImageView
@@ -36,7 +40,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:layout_weight="1"
                 android:orientation="vertical">

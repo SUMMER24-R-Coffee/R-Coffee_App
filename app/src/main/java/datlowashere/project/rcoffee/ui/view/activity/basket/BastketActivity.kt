@@ -85,11 +85,8 @@ class BastketActivity : AppCompatActivity() {
     private fun setUpObservers() {
         basketViewModel.baskets.observe(this) { baskets ->
             adapter.updateBaskets(baskets)
-            if (baskets.isNullOrEmpty()) {
-                binding.tvMessageBasket.visibility = View.VISIBLE
-            } else {
-                binding.tvMessageBasket.visibility = View.GONE
-            }
+            binding.tvMessageBasket.visibility = if(baskets.isEmpty()) View.VISIBLE else View.GONE
+
         }
         basketViewModel.getBaskets(getEmail())
 

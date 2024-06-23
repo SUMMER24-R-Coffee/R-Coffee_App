@@ -40,11 +40,12 @@ class ProductAdapter(
                 .placeholder(R.drawable.img_default)
                 .into(imgProductItemImg)
 
-            if (product.favourite_id != null) {
+            if (product.favorite_id!=null) {
                 imgFavProduct.setImageResource(R.drawable.red_heart)
             } else {
                 imgFavProduct.setImageResource(R.drawable.hert)
             }
+            updateFavoriteIcon(product.favorite_id != null, this)
 
             root.isSelected = selectedPosition == position
         }
@@ -59,12 +60,27 @@ class ProductAdapter(
         holder.binding.btnAddToBasket.setOnClickListener {
             itemClickListener.onAddBasketClick(product)
         }
+        holder.binding.imgFavProduct.setOnClickListener {
+            val isCurrentlyFavorite = product.favorite_id != null
+            val newFavoriteStatus = !isCurrentlyFavorite
+            updateFavoriteIcon(newFavoriteStatus, holder.binding)
+            product.favorite_id = if (newFavoriteStatus) 1 else null
+            itemClickListener.onFavoriteClick(product)
+        }
     }
 
     override fun getItemCount(): Int = products.size
-
+    private fun updateFavoriteIcon(isFavorite: Boolean, binding: LayoutItemProductBinding) {
+        if (isFavorite) {
+            binding.imgFavProduct.setImageResource(R.drawable.red_heart)
+        } else {
+            binding.imgFavProduct.setImageResource(R.drawable.hert)
+        }
+    }
     interface OnItemClickListener {
         fun onProductClick(product: Product)
         fun onAddBasketClick(product: Product)
+
+        fun onFavoriteClick(product: Product)
     }
 }
