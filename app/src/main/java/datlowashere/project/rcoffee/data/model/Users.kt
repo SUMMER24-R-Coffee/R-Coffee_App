@@ -6,6 +6,7 @@ data class Users(
     val gender: String? = null,
     val phone: String? = null,
     val user_img: String? = null,
-    val name: String? = null
+    val name: String? = null,
+    val token: String =""
 )
 

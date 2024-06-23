@@ -28,6 +28,7 @@ class AppConstant {
         const val INSERT_PAYMENT="insert-payment-detail"
         const val UPDATE_PAYMENT_STATUS="update-payment/{order_id}"
         const val IN_DEL_FAV="in-del-favorite"
+        const val UPDATE_TOKEN_USER="update-token/{email_user}"
 
     }
 }
