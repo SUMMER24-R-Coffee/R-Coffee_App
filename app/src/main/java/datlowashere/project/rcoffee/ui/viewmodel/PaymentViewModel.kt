@@ -23,11 +23,13 @@ class PaymentViewModel(private val paymentRepository: PaymentRepository) : ViewM
             }
         }
     }
-    fun updatePaymentStatus(orderId: String, status: String) {
+    fun updatePaymentStatus(orderId: String, status: String, emailUser:String, token: String) {
         var paymentDetail = PaymentDetail(
             payment_id = 0,
             status = status,
-            order_id = orderId
+            order_id = orderId,
+            email_user = emailUser,
+            token= token
         )
         viewModelScope.launch(Dispatchers.IO) {
             paymentRepository.updatePaymentStatus(orderId, paymentDetail) { isSuccess ->

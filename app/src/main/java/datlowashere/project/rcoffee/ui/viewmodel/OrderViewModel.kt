@@ -39,10 +39,13 @@ class OrderViewModel(private val orderRepository: OrderRepository) : ViewModel()
         }
     }
 
-    fun updateStatusOrder( orderId: String, statusOrder: String, reason:String) {
+    fun updateStatusOrder( orderId: String, statusOrder: String, reason:String,emailUser: String, token: String) {
         val order = OrderResponse(
             status_order = statusOrder,
-            reason = reason
+            reason = reason,
+            order_id = orderId,
+            email_user = emailUser,
+            token = token
         )
         viewModelScope.launch(Dispatchers.IO) {
             orderRepository.updateStatusOrder(orderId, order) { isSuccess ->
