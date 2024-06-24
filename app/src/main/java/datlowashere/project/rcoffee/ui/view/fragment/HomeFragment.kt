@@ -8,14 +8,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.OptIn
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
+import com.google.android.material.badge.BadgeDrawable
+import com.google.android.material.badge.BadgeUtils
+import com.google.android.material.badge.ExperimentalBadgeUtils
 import datlowashere.project.rcoffee.R
 import datlowashere.project.rcoffee.data.model.Favorite
 import datlowashere.project.rcoffee.data.model.Product
@@ -23,6 +27,7 @@ import datlowashere.project.rcoffee.data.repository.AuthRepository
 import datlowashere.project.rcoffee.data.repository.BasketRepository
 import datlowashere.project.rcoffee.data.repository.FavoriteRepository
 import datlowashere.project.rcoffee.data.repository.HomeRepository
+import datlowashere.project.rcoffee.data.repository.NotificationRepository
 import datlowashere.project.rcoffee.databinding.FragmentHomeFragmentBinding
 import datlowashere.project.rcoffee.ui.adapter.CategoryAdapter
 import datlowashere.project.rcoffee.ui.adapter.ProductAdapter
@@ -39,8 +44,11 @@ import datlowashere.project.rcoffee.ui.viewmodel.FavoriteViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.FavoriteViewModelFactory
 import datlowashere.project.rcoffee.ui.viewmodel.HomeViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.HomeViewModelFactory
+import datlowashere.project.rcoffee.ui.viewmodel.NotificationViewModel
+import datlowashere.project.rcoffee.ui.viewmodel.NotificationViewModelFactory
 import datlowashere.project.rcoffee.utils.Resource
 import datlowashere.project.rcoffee.utils.SharedPreferencesHelper
+
 
 class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAdapter.OnItemClickListener {
 
@@ -52,6 +60,8 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
     private lateinit var authViewModel: AuthViewModel
     private lateinit var basketViewModel: BasketViewModel
     private lateinit var favoriteViewModel: FavoriteViewModel
+    private lateinit var notificationViewModel: NotificationViewModel
+    private lateinit var badgeDrawable: BadgeDrawable
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,11 +71,14 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
         return binding.root
     }
 
+    @ExperimentalBadgeUtils
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setupViewModels()
         setupObservers()
+//        setupBadge()
+        //TODO: FIX displaying badge
 
         homeViewModel.getData()
         authViewModel.getUserData(getEmail())
@@ -82,6 +95,7 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
         binding.imgNotification.setOnClickListener {
             startActivity(Intent(context, NotificationActivity::class.java))
         }
+
     }
 
     private fun setupViewModels() {
@@ -100,6 +114,10 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
         val favoriteRepository = FavoriteRepository()
         val favoriteViewModelFactory = FavoriteViewModelFactory(favoriteRepository)
         favoriteViewModel= ViewModelProvider(this, favoriteViewModelFactory).get(FavoriteViewModel::class.java)
+
+        val notificatonRepository = NotificationRepository()
+        val notificationViewModelFactory = NotificationViewModelFactory(notificatonRepository)
+        notificationViewModel= ViewModelProvider(this, notificationViewModelFactory).get(NotificationViewModel::class.java)
     }
 
     @SuppressLint("FragmentLiveDataObserve")
@@ -204,20 +222,7 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
             }
 
         })
-        //Toast message for clicked img favorite
 
-//        favoriteViewModel.favoriteResponse.observe(this) { favorite ->
-//            favorite?.let {
-//                Toast.makeText(requireContext(), "Favorite operation successful: ${it}", Toast.LENGTH_SHORT)
-//                    .show()
-//            }
-//        }
-//
-//        favoriteViewModel.errorMessage.observe(this) { message ->
-//            message?.let {
-//                Toast.makeText(requireContext(), "Error: $it", Toast.LENGTH_SHORT).show()
-//            }
-//        }
 
     }
 
@@ -225,9 +230,41 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
         homeViewModel.filterProductsByCategory(categoryId)
     }
 
-    fun getEmail(): String {
-        return SharedPreferencesHelper.getUserEmail(requireContext()) ?: " "
-    }
+//    @OptIn(ExperimentalBadgeUtils::class)
+//    private fun setupBadge() {
+//        badgeDrawable = BadgeDrawable.create(requireContext())
+//        badgeDrawable.number = 0
+//        badgeDrawable.isVisible = true
+//        badgeDrawable.badgeTextColor = ContextCompat.getColor(requireContext(), android.R.color.white)
+//        badgeDrawable.backgroundColor = ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark)
+//        badgeDrawable.badgeGravity = BadgeDrawable.TOP_END
+//        badgeDrawable.horizontalOffset = -80
+//        badgeDrawable.verticalOffset = 30
+//
+//        BadgeUtils.attachBadgeDrawable(badgeDrawable, binding.imgNotification, binding.frameNotification)
+//
+//        getUnreadNotificationCount()
+//    }
+//
+//    private fun getUnreadNotificationCount() {
+//        val emailUser = getEmail()
+//        notificationViewModel.getUnreadNotificationCount(
+//            emailUser,
+//            onSuccess = { count ->
+//                updateBadgeCount(count)
+//                Log.e("HomeFragment", "Count: $count")
+//            },
+//            onError = { errorMessage ->
+//                Log.e("HomeFragment", "Error: $errorMessage")
+//            }
+//        )
+//    }
+//
+//    @OptIn(ExperimentalBadgeUtils::class)
+//    private fun updateBadgeCount(count: Int) {
+//        badgeDrawable.number = count
+//        BadgeUtils.attachBadgeDrawable(badgeDrawable, binding.imgNotification, binding.frameNotification)
+//    }
 
     fun setUpButtonBasket() {
         val userEmail = SharedPreferencesHelper.getUserEmail(requireContext())
@@ -265,7 +302,9 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
         }
     }
 
-
+    fun getEmail(): String {
+        return SharedPreferencesHelper.getUserEmail(requireContext()) ?: " "
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

@@ -3,6 +3,7 @@ package datlowashere.project.rcoffee.data.repository
 import android.util.Log
 import datlowashere.project.rcoffee.data.model.Notification
 import datlowashere.project.rcoffee.data.network.ApiClient
+import datlowashere.project.rcoffee.utils.Resource
 import retrofit2.Response
 
 class NotificationRepository {
@@ -25,5 +26,13 @@ class NotificationRepository {
 
     suspend fun deleteNotification(notificationId: Int): Response<Void> {
         return apiService.deleteNotification(notificationId)
+    }
+    suspend fun getUnreadNotificationCount(emailUser: String): Int {
+        return try {
+            val response = apiService.getUnreadNotificationCount(emailUser)
+            response.firstOrNull()?.total_remain ?: 0
+        } catch (e: Exception) {
+            0
+        }
     }
 }

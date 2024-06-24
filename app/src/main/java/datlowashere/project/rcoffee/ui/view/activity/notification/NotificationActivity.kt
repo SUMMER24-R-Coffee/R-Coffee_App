@@ -35,7 +35,6 @@ class NotificationActivity : AppCompatActivity() {
 
         binding.btnBackNotifications.setOnClickListener { finish() }
         notificationViewModel.getNotifications(getEmail())
-        //TODO: FIX LAYOUT ITEM NOTIFICATION, REVIEW, REPOSITORY, DELETE, MARK AS READ
     }
 
     private fun setupRecyclerView() {
@@ -84,4 +83,5 @@ class NotificationActivity : AppCompatActivity() {
     private fun getEmail(): String {
         return SharedPreferencesHelper.getUserEmail(this) ?: ""
     }
+
 }

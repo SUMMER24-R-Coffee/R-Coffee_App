@@ -19,6 +19,8 @@ import datlowashere.project.rcoffee.data.model.Users
 import datlowashere.project.rcoffee.data.model.Voucher
 import datlowashere.project.rcoffee.data.model.response.OrderResponse
 import datlowashere.project.rcoffee.data.model.response.TokenResponse
+import datlowashere.project.rcoffee.data.model.response.TotalUnread
+import datlowashere.project.rcoffee.utils.Resource
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
@@ -108,6 +110,9 @@ interface ApiService {
     suspend fun markAsReadNotification(@Path("notification_id") notificationId: Int): Response<Void>
     @DELETE(AppConstant.DELETE_NOTIFICATION)
     suspend fun deleteNotification(@Path("notification_id") notificationId: Int): Response<Void>
+
+    @GET(AppConstant.GET_UNREAD_NOTIFICATION)
+    suspend fun getUnreadNotificationCount(@Path("email_user") emailUser: String): List<TotalUnread>
 
     //TODO: Fix update, delete basket
 

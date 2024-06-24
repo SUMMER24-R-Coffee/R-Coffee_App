@@ -3,6 +3,7 @@ package datlowashere.project.rcoffee.ui.viewmodel
 import androidx.lifecycle.*
 import datlowashere.project.rcoffee.data.model.Notification
 import datlowashere.project.rcoffee.data.repository.NotificationRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
@@ -55,6 +56,16 @@ class NotificationViewModel(private val notificationRepository: NotificationRepo
                 }
             } catch (e: Exception) {
                 _deleteNotificationResult.postValue(Result.failure(e))
+            }
+        }
+    }
+    fun getUnreadNotificationCount(emailUser: String, onSuccess: (Int) -> Unit, onError: (String) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val count = notificationRepository.getUnreadNotificationCount(emailUser)
+                onSuccess(count)
+            } catch (e: Exception) {
+                onError(e.message ?: "An error occurred")
             }
         }
     }
