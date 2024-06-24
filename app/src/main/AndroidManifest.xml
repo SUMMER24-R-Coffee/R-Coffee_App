@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
 
     <queries>
         <package android:name="vn.com.vng.zalopay" />
@@ -24,6 +26,14 @@
         android:theme="@style/Theme.RCoffee"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <service
+            android:name=".data.remote.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".ui.view.activity.order.OrderResultActivity"
             android:exported="false" />

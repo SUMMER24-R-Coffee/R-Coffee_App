@@ -12,6 +12,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import datlowashere.project.rcoffee.MainActivity
 import datlowashere.project.rcoffee.R
 import datlowashere.project.rcoffee.data.model.Order
@@ -50,11 +52,14 @@ class OrderInnformationActivity : AppCompatActivity() {
     private lateinit var itemOrderItemAdapter: ItemOrderAdapter
     private lateinit var orderId: String
     private var totalPayment: Double = 0.0
+    private lateinit var tokenFcm:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOrderInnformationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        getToken()
+
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
         ZaloPaySDK.tearDown();
@@ -177,7 +182,7 @@ class OrderInnformationActivity : AppCompatActivity() {
         val bottomSheet = CancelOrderBottomSheetDialogFragment()
         bottomSheet.setOnReasonSelectedListener(object : CancelOrderBottomSheetDialogFragment.OnReasonSelectedListener {
             override fun onReasonSelected(reason: String) {
-                orderViewModel.updateStatusOrder(orderId, "cancelled",reason)
+                orderViewModel.updateStatusOrder(orderId, "cancelled",reason,getEmail(), tokenFcm)
                 orderViewModel.statusUpdated.observe(this@OrderInnformationActivity, Observer { isSuccess ->
                     if (isSuccess) {
                         Toast.makeText(this@OrderInnformationActivity, "Order cancelled successfully", Toast.LENGTH_SHORT).show()
@@ -192,7 +197,7 @@ class OrderInnformationActivity : AppCompatActivity() {
     }
 
     private fun onReceivedOrder() {
-        orderViewModel.updateStatusOrder(orderId, "delivered","")
+        orderViewModel.updateStatusOrder(orderId, "delivered","",getEmail(), tokenFcm)
         orderViewModel.statusUpdated.observe(this, Observer { isSuccess ->
             if (isSuccess) {
                 Toast.makeText(this, "Order Received", Toast.LENGTH_SHORT).show()
@@ -263,11 +268,7 @@ class OrderInnformationActivity : AppCompatActivity() {
         finish()
     }
     private fun setStatusPayment(status:String){
-        var paymentDetail = PaymentDetail(
-            status = status,
-            order_id = orderId
-        )
-        paymentViewModel.updatePaymentStatus(orderId,status)
+        paymentViewModel.updatePaymentStatus(orderId,status,getEmail(),tokenFcm)
         paymentViewModel.paymentStatus.observe(this@OrderInnformationActivity, Observer {isSuccess ->
             if (isSuccess) {
                 Toast.makeText(this@OrderInnformationActivity, "Re-pay order successfully", Toast.LENGTH_SHORT).show()
@@ -275,7 +276,6 @@ class OrderInnformationActivity : AppCompatActivity() {
                 Toast.makeText(this@OrderInnformationActivity, "Failed to Re-pay  order", Toast.LENGTH_SHORT).show()
             }
         })
-        Log.d("OrderActivityInf", "status: $paymentDetail")
 
     }
 
@@ -289,6 +289,19 @@ class OrderInnformationActivity : AppCompatActivity() {
 
     private fun getName(): String {
         return SharedPreferencesHelper.getUserName(this) ?: ""
+    }
+    private fun getToken(){
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful){
+                Log.w("TAG","Failed token", task.exception)
+                return@OnCompleteListener
+            }
+            val token1 =task.result
+            tokenFcm=token1
+            Log.i("Token",token1)
+
+        })
+
     }
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)

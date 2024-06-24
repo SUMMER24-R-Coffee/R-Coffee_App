@@ -3,7 +3,10 @@ package datlowashere.project.rcoffee.ui.view.activity.order
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.StrictMode
@@ -12,6 +15,8 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import datlowashere.project.rcoffee.MainActivity
 import datlowashere.project.rcoffee.constant.AppConstant
 import datlowashere.project.rcoffee.data.model.Address
@@ -66,6 +71,7 @@ class OrderActivity : AppCompatActivity() {
     private var totalPayment: Double = 0.0
     private var methodPayment: String =""
     private lateinit var orderId: String
+    private lateinit var tokenFcm: String
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,6 +80,8 @@ class OrderActivity : AppCompatActivity() {
         setContentView(binding.root)
         setUpViewModel()
         setUpView()
+        getToken()
+
 
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
@@ -214,8 +222,6 @@ class OrderActivity : AppCompatActivity() {
         super.onNewIntent(intent)
         ZaloPaySDK.getInstance().onResult(intent)
     }
-
-
     private fun startOrderResultActivity(paymentStatus: String) {
         val intent = Intent(this@OrderActivity, OrderResultActivity::class.java)
         val currentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
@@ -244,7 +250,9 @@ class OrderActivity : AppCompatActivity() {
     private fun setStatusPayment(status:String){
         var paymentDetail =PaymentDetail(
             status = status,
-            order_id = orderId
+            order_id = orderId,
+            email_user = getEmail(),
+            token = tokenFcm
         )
         paymentViewModel.insertPaymentDetail(paymentDetail)
         Log.d("OrderActivity", "status: $paymentDetail")
@@ -265,7 +273,10 @@ class OrderActivity : AppCompatActivity() {
             address_id = selectedAddressId,
             voucher_id = selectedVoucherId,
             order_message = binding.edLeaveMessage.text.toString(),
-            basket_id = listBasketId
+            basket_id = listBasketId,
+            email_user = getEmail(),
+            token = tokenFcm
+
         )
 
         orderViewModel.insertOrder(order)
@@ -288,7 +299,21 @@ class OrderActivity : AppCompatActivity() {
     private fun getName(): String {
         return SharedPreferencesHelper.getUserName(this) ?: " "
     }
+    private fun getEmail(): String {
+        return SharedPreferencesHelper.getUserEmail(this) ?: ""
+    }
+    private fun getToken(){
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful){
+                Log.w("TAG","Failed token", task.exception)
+                return@OnCompleteListener
+            }
+            val token =task.result
+            tokenFcm=token
+            Log.i("Token",token)
 
+        })
 
+    }
 
 }

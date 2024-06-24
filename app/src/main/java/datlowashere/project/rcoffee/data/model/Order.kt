@@ -25,7 +25,9 @@ data class Order(
     val location: String = "",
     val payment_status: String = "",
     val payment_id: Int = 0,
-    val reason: String = ""
+    val reason: String = "",
+    val email_user: String =" ",
+    val token:String=" "
 ) : Parcelable {
     constructor(order_id: String, status_order: String) : this(
         order_id = order_id,
@@ -48,7 +50,9 @@ data class Order(
         location = "",
         payment_status = "",
         payment_id = 0,
-        reason = ""
+        reason = "",
+        email_user=" ",
+        token = " "
     )
     constructor(parcel: Parcel) : this(
         order_id = parcel.readString() ?: "",

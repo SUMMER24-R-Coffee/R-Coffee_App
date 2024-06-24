@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "762084875570",
+    "project_id": "r-coffee-ee438",
+    "storage_bucket": "r-coffee-ee438.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:762084875570:android:1e138f9f4d50ddc074cb2b",
+        "android_client_info": {
+          "package_name": "datlowashere.project.rcoffee"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6DIPGdljE_331w4nqGzKntKwubZ5KCAI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

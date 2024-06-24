@@ -37,11 +37,6 @@
                     android:textAlignment="center"
                     style="@style/textTitle"/>
 
-                <ImageView
-                    android:id="@+id/imgNotificationOrdHistory"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/alert" />
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
 

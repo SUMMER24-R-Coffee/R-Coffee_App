@@ -9,6 +9,7 @@ import datlowashere.project.rcoffee.data.model.Basket
 import datlowashere.project.rcoffee.data.model.BasketRequest
 import datlowashere.project.rcoffee.data.model.Category
 import datlowashere.project.rcoffee.data.model.Favorite
+import datlowashere.project.rcoffee.data.model.Notification
 import datlowashere.project.rcoffee.data.model.response.LoginResponse
 import datlowashere.project.rcoffee.data.model.Order
 import datlowashere.project.rcoffee.data.model.PaymentDetail
@@ -17,6 +18,9 @@ import datlowashere.project.rcoffee.data.model.Rating
 import datlowashere.project.rcoffee.data.model.Users
 import datlowashere.project.rcoffee.data.model.Voucher
 import datlowashere.project.rcoffee.data.model.response.OrderResponse
+import datlowashere.project.rcoffee.data.model.response.TokenResponse
+import datlowashere.project.rcoffee.data.model.response.TotalUnread
+import datlowashere.project.rcoffee.utils.Resource
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
@@ -46,6 +50,9 @@ interface ApiService {
     @POST(AppConstant.LOGIN)
     suspend fun loginUser(@Body user: Users): Response<LoginResponse>
 
+    @PUT(AppConstant.UPDATE_TOKEN_USER)
+    suspend fun updateTokenUser(@Path("email_user")emailUser: String, @Body tokenResponse: TokenResponse): Call<Void>
+
     @GET(AppConstant.GET_USER)
     fun getUser(@Path("email_user") email_user: String): Call<AuthResponse>
     //Basket
@@ -67,7 +74,6 @@ interface ApiService {
     fun deleteBasket(@Path("basket_id") basketId: Int): Call<Void>
     @PUT(AppConstant.UPDATE_ORD_ID)
     fun updateOrderIDBasket(@Body basketRequest: BasketRequest): Call<Void>
-
 
     //address
     @GET(AppConstant.GET_ADDRESS)
@@ -97,5 +103,17 @@ interface ApiService {
     //favorite
     @POST(AppConstant.IN_DEL_FAV)
     suspend fun insertOrDelFav(@Body favorite: Favorite): Favorite
+    //notification
+    @GET(AppConstant.GET_NOTIFICATION)
+    suspend fun getNotification(@Path("email_user") emailUser: String): List<Notification>
+    @PUT(AppConstant.UPDATE_NOTIFICATION)
+    suspend fun markAsReadNotification(@Path("notification_id") notificationId: Int): Response<Void>
+    @DELETE(AppConstant.DELETE_NOTIFICATION)
+    suspend fun deleteNotification(@Path("notification_id") notificationId: Int): Response<Void>
+
+    @GET(AppConstant.GET_UNREAD_NOTIFICATION)
+    suspend fun getUnreadNotificationCount(@Path("email_user") emailUser: String): List<TotalUnread>
+
+    //TODO: Fix update, delete basket
 
 }
