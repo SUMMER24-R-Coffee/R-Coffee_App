@@ -29,6 +29,9 @@ class AppConstant {
         const val UPDATE_PAYMENT_STATUS="update-payment/{order_id}"
         const val IN_DEL_FAV="in-del-favorite"
         const val UPDATE_TOKEN_USER="update-token/{email_user}"
+        const val GET_NOTIFICATION="notifications/{email_user}"
+        const val UPDATE_NOTIFICATION="notification/{notification_id}/read"
+        const val DELETE_NOTIFICATION="notification/{notification_id}/delete"
 
     }
 }

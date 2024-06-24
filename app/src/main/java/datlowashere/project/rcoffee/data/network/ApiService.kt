@@ -9,6 +9,7 @@ import datlowashere.project.rcoffee.data.model.Basket
 import datlowashere.project.rcoffee.data.model.BasketRequest
 import datlowashere.project.rcoffee.data.model.Category
 import datlowashere.project.rcoffee.data.model.Favorite
+import datlowashere.project.rcoffee.data.model.Notification
 import datlowashere.project.rcoffee.data.model.response.LoginResponse
 import datlowashere.project.rcoffee.data.model.Order
 import datlowashere.project.rcoffee.data.model.PaymentDetail
@@ -101,5 +102,12 @@ interface ApiService {
     //favorite
     @POST(AppConstant.IN_DEL_FAV)
     suspend fun insertOrDelFav(@Body favorite: Favorite): Favorite
+    //notification
+    @GET(AppConstant.GET_NOTIFICATION)
+    suspend fun getNotification(@Path("email_user") emailUser: String): List<Notification>
+    @PUT(AppConstant.UPDATE_NOTIFICATION)
+    suspend fun markAsReadNotification(@Path("notification_id") notificationId: Int): Call<Void>
+    @DELETE(AppConstant.DELETE_NOTIFICATION)
+    suspend fun deleteNotification(@Path("notification_id") notificationId: Int): Call<Void>
 
 }

@@ -55,7 +55,7 @@ class BasketRepository() {
     }
 
     fun getBasketByOrderId(orderId: String, onResult: (List<Basket>?) -> Unit) {
-        val call = ApiClient.instance.getBasketByOrderId(orderId)
+        val call = apiService.getBasketByOrderId(orderId)
         call.enqueue(object : Callback<List<Basket>> {
             override fun onResponse(call: Call<List<Basket>>, response: Response<List<Basket>>) {
                 if (response.isSuccessful) {

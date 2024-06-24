@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lnContainerNotification"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:orientation="vertical">
+
+    <datlowashere.project.rcoffee.ui.component.SwipeRevealLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/containerNotification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="11dp"
+            android:paddingBottom="11dp">
+
+            <ImageView
+                android:id="@+id/imgProductNotifi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@drawable/logo_mini" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvTitleMessageNoti"
+                    style="@style/textContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textAlignment="textStart"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tvMessageNoti"
+                    style="@style/textContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textAlignment="textStart" />
+
+                <TextView
+                    android:id="@+id/tvCreateNoti"
+                    style="@style/textContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textAlignment="textStart"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvDeleteNotification"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="#E64A19"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Delete"
+            android:textAlignment="center"
+            android:textColor="@android:color/white" />
+
+    </datlowashere.project.rcoffee.ui.component.SwipeRevealLayout>
+</LinearLayout>

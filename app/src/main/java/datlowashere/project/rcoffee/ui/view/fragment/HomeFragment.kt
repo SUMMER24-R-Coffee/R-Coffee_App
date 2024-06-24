@@ -28,6 +28,7 @@ import datlowashere.project.rcoffee.ui.adapter.CategoryAdapter
 import datlowashere.project.rcoffee.ui.adapter.ProductAdapter
 import datlowashere.project.rcoffee.ui.component.DialogCustom
 import datlowashere.project.rcoffee.ui.view.activity.basket.BastketActivity
+import datlowashere.project.rcoffee.ui.view.activity.notification.NotificationActivity
 import datlowashere.project.rcoffee.ui.view.activity.product.ProductActivity
 import datlowashere.project.rcoffee.ui.view.activity.product.ProductInformationActivity
 import datlowashere.project.rcoffee.ui.viewmodel.AuthViewModel
@@ -77,6 +78,9 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
         }
         binding.fabBasket.setOnClickListener {
             setUpButtonBasket()
+        }
+        binding.imgNotification.setOnClickListener {
+            startActivity(Intent(context, NotificationActivity::class.java))
         }
     }
 
