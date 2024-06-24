@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/lnContainerNotification"
     android:layout_width="match_parent"
-    android:layout_height="90dp"
+    android:layout_height="110dp"
+    android:background="@color/light_pink"
     android:orientation="vertical">
 
     <datlowashere.project.rcoffee.ui.component.SwipeRevealLayout
@@ -19,10 +20,12 @@
 
             <ImageView
                 android:id="@+id/imgProductNotifi"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="96dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
+                android:layout_marginRight="11dp"
                 android:layout_weight="1"
+                android:paddingLeft="11dp"
                 android:src="@drawable/logo_mini" />
 
             <LinearLayout
@@ -32,14 +35,33 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tvTitleMessageNoti"
-                    style="@style/textContent"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
-                    android:textAlignment="textStart"
-                    android:textSize="15sp" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvTitleMessageNoti"
+                        style="@style/textContent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:minHeight="22dp"
+                        android:text="TextView"
+                        android:textAlignment="textStart"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tvCheckMessage"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_weight="1"
+                        android:drawableRight="@drawable/double_check_5290147"
+                        android:gravity="end"
+                        android:paddingRight="22dp"
+                        android:visibility="gone" />
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tvMessageNoti"
@@ -47,6 +69,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView"
+                    android:maxLines="3"
+                    android:ellipsize="end"
                     android:textAlignment="textStart" />
 
                 <TextView
@@ -54,6 +78,7 @@
                     style="@style/textContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingTop="2dp"
                     android:text="TextView"
                     android:textAlignment="textStart"
                     android:textSize="12sp" />
@@ -64,9 +89,10 @@
             android:id="@+id/tvDeleteNotification"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:background="#E64A19"
             android:gravity="center"
-            android:padding="10dp"
+            android:padding="20dp"
             android:text="Delete"
             android:textAlignment="center"
             android:textColor="@android:color/white" />

@@ -73,7 +73,6 @@ interface ApiService {
     @PUT(AppConstant.UPDATE_ORD_ID)
     fun updateOrderIDBasket(@Body basketRequest: BasketRequest): Call<Void>
 
-
     //address
     @GET(AppConstant.GET_ADDRESS)
     fun getAddresses(@Path("email_user") emailUser: String): Call<List<Address>>
@@ -106,8 +105,10 @@ interface ApiService {
     @GET(AppConstant.GET_NOTIFICATION)
     suspend fun getNotification(@Path("email_user") emailUser: String): List<Notification>
     @PUT(AppConstant.UPDATE_NOTIFICATION)
-    suspend fun markAsReadNotification(@Path("notification_id") notificationId: Int): Call<Void>
+    suspend fun markAsReadNotification(@Path("notification_id") notificationId: Int): Response<Void>
     @DELETE(AppConstant.DELETE_NOTIFICATION)
-    suspend fun deleteNotification(@Path("notification_id") notificationId: Int): Call<Void>
+    suspend fun deleteNotification(@Path("notification_id") notificationId: Int): Response<Void>
+
+    //TODO: Fix update, delete basket
 
 }

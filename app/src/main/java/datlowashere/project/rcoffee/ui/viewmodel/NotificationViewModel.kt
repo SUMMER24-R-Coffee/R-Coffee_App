@@ -1,24 +1,21 @@
 package datlowashere.project.rcoffee.ui.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import datlowashere.project.rcoffee.data.model.Notification
 import datlowashere.project.rcoffee.data.repository.NotificationRepository
 import kotlinx.coroutines.launch
+import retrofit2.Response
 
 class NotificationViewModel(private val notificationRepository: NotificationRepository) : ViewModel() {
 
     private val _notifications = MutableLiveData<List<Notification>>()
     val notifications: LiveData<List<Notification>> get() = _notifications
 
-    private val _notificationReadStatus = MutableLiveData<Boolean>()
-    val notificationReadStatus: LiveData<Boolean> get() = _notificationReadStatus
+    private val _markAsReadResult = MutableLiveData<Result<Void>>()
+    val markAsReadResult: LiveData<Result<Void>> get() = _markAsReadResult
 
-    private val _notificationDeleteStatus = MutableLiveData<Boolean>()
-    val notificationDeleteStatus: LiveData<Boolean> get() = _notificationDeleteStatus
+    private val _deleteNotificationResult = MutableLiveData<Result<Void>>()
+    val deleteNotificationResult: LiveData<Result<Void>> get() = _deleteNotificationResult
 
     fun getNotifications(emailUser: String) {
         viewModelScope.launch {
@@ -32,17 +29,33 @@ class NotificationViewModel(private val notificationRepository: NotificationRepo
         }
     }
 
-    fun markNotificationAsRead(notificationId: Int) {
+    fun markAsRead(notificationId: Int) {
         viewModelScope.launch {
-            val success = notificationRepository.markAsRead(notificationId)
-            _notificationReadStatus.postValue(success)
+            try {
+                val response: Response<Void> = notificationRepository.markAsRead(notificationId)
+                if (response.isSuccessful) {
+                    _markAsReadResult.postValue(Result.success(response.body()) as Result<Void>?)
+                } else {
+                    _markAsReadResult.postValue(Result.failure(Exception("Failed to mark notification as read")))
+                }
+            } catch (e: Exception) {
+                _markAsReadResult.postValue(Result.failure(e))
+            }
         }
     }
 
     fun deleteNotification(notificationId: Int) {
         viewModelScope.launch {
-            val success = notificationRepository.deleteNotification(notificationId)
-            _notificationDeleteStatus.postValue(success)
+            try {
+                val response: Response<Void> = notificationRepository.deleteNotification(notificationId)
+                if (response.isSuccessful) {
+                    _deleteNotificationResult.postValue(Result.success(response.body()) as Result<Void>?)
+                } else {
+                    _deleteNotificationResult.postValue(Result.failure(Exception("Failed to delete notification")))
+                }
+            } catch (e: Exception) {
+                _deleteNotificationResult.postValue(Result.failure(e))
+            }
         }
     }
 }

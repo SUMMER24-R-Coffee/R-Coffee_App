@@ -1,6 +1,7 @@
 package datlowashere.project.rcoffee.ui.view.activity.notification
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -34,16 +35,14 @@ class NotificationActivity : AppCompatActivity() {
 
         binding.btnBackNotifications.setOnClickListener { finish() }
         notificationViewModel.getNotifications(getEmail())
-        //TODO: FIX LAYOUT ITEM NOTIFICATION, REVIEW, REPOSITORY, DELETE, MARK AS REAS
+        //TODO: FIX LAYOUT ITEM NOTIFICATION, REVIEW, REPOSITORY, DELETE, MARK AS READ
     }
 
     private fun setupRecyclerView() {
         notificationAdapter = NotificationAdapter(
             notifications = listOf(),
-            onDeleteClick = { notification ->handleDeleteClick(notification)
-            },
-            onReadClick = { notification ->handleOnReadClick(notification)
-            },
+            onDeleteClick = { notification -> handleDeleteClick(notification) },
+            onReadClick = { notification -> handleOnReadClick(notification) }
         )
         binding.rcvNotification.layoutManager = LinearLayoutManager(this)
         binding.rcvNotification.adapter = notificationAdapter
@@ -55,34 +54,33 @@ class NotificationActivity : AppCompatActivity() {
             binding.tvMessageNotification.visibility = if (notifications.isEmpty()) View.VISIBLE else View.GONE
         }
 
-        notificationViewModel.notificationReadStatus.observe(this) { success ->
-            if (success) {
-                Toast.makeText(this,"Mask at read successful", Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(this,"Failed mask as read", Toast.LENGTH_SHORT).show()
-
+        notificationViewModel.markAsReadResult.observe(this) { result ->
+            result.onSuccess {
+                Log.d("NotificationActivity","Masked as read successful")
+                notificationViewModel.getNotifications(getEmail())
+            }.onFailure {
+                Log.d("NotificationActivity","Masked as read failed")
             }
         }
 
-        notificationViewModel.notificationDeleteStatus.observe(this) { success ->
-            if (success) {
-                Toast.makeText(this,"Notification has been deleted", Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(this,"Failed deleting", Toast.LENGTH_SHORT).show()
-
+        notificationViewModel.deleteNotificationResult.observe(this) { result ->
+            result.onSuccess {
+                Toast.makeText(this, "Notification has been deleted", Toast.LENGTH_SHORT).show()
+                notificationViewModel.getNotifications(getEmail())
+            }.onFailure {
+                Toast.makeText(this, "Failed to delete notification", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun handleOnReadClick(notification: Notification){
-//        notificationViewModel.markNotificationAsRead(notification.notification_id)
-//        notificationViewModel.getNotifications(getEmail())
-
+    private fun handleOnReadClick(notification: Notification) {
+        notificationViewModel.markAsRead(notification.notification_id)
     }
-    private fun handleDeleteClick(notification: Notification){
+
+    private fun handleDeleteClick(notification: Notification) {
         notificationViewModel.deleteNotification(notification.notification_id)
-        notificationViewModel.getNotifications(getEmail())
     }
+
     private fun getEmail(): String {
         return SharedPreferencesHelper.getUserEmail(this) ?: ""
     }

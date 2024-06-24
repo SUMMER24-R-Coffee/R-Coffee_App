@@ -1,6 +1,7 @@
 package datlowashere.project.rcoffee.ui.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import datlowashere.project.rcoffee.R
@@ -19,32 +20,34 @@ class NotificationAdapter(
         val binding = LayoutItemNotificationBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return NotificationViewHolder(binding)
     }
+
     inner class NotificationViewHolder(private val binding: LayoutItemNotificationBinding) : RecyclerView.ViewHolder(binding.root) {
         private val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
 
-        fun bind(notification: Notification){
+        fun bind(notification: Notification) {
             binding.tvTitleMessageNoti.text = notification.title
             binding.tvMessageNoti.text = notification.message
             binding.tvCreateNoti.text = dateFormatter.format(notification.create_at)
 
             if (notification.is_read == 1) {
                 binding.lnContainerNotification.setBackgroundResource(R.color.white)
+                binding.tvCheckMessage.visibility =View.VISIBLE
             } else {
                 binding.lnContainerNotification.setBackgroundResource(R.color.light_pink)
+                binding.tvCheckMessage.visibility =View.GONE
             }
 
-            binding.containerNotification.setOnClickListener{
+            binding.imgProductNotifi.setOnClickListener {
                 onReadClick(notification)
                 binding.lnContainerNotification.setBackgroundResource(R.color.white)
-
             }
 
             binding.tvDeleteNotification.setOnClickListener {
                 onDeleteClick(notification)
             }
-
         }
     }
+
     override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {
         holder.bind(notifications[position])
     }
@@ -57,6 +60,4 @@ class NotificationAdapter(
         notifications = newNotifications
         notifyDataSetChanged()
     }
-
-
 }

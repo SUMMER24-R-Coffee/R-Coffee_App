@@ -3,6 +3,8 @@ package datlowashere.project.rcoffee.data.repository
 import android.util.Log
 import datlowashere.project.rcoffee.data.model.Notification
 import datlowashere.project.rcoffee.data.network.ApiClient
+import retrofit2.Response
+
 class NotificationRepository {
 
     private val apiService = ApiClient.instance
@@ -17,21 +19,11 @@ class NotificationRepository {
             emptyList()
         }
     }
-    suspend fun markAsRead(notificationId: Int): Boolean {
-        return try {
-            val response = apiService.markAsReadNotification(notificationId).execute()
-            response.isSuccessful
-        } catch (e: Exception) {
-            false
-        }
+    suspend fun markAsRead(notificationId: Int): Response<Void> {
+        return apiService.markAsReadNotification(notificationId)
     }
 
-    suspend fun deleteNotification(notificationId: Int): Boolean {
-        return try {
-            val response = apiService.deleteNotification(notificationId).execute()
-            response.isSuccessful
-        } catch (e: Exception) {
-            false
-        }
+    suspend fun deleteNotification(notificationId: Int): Response<Void> {
+        return apiService.deleteNotification(notificationId)
     }
 }
