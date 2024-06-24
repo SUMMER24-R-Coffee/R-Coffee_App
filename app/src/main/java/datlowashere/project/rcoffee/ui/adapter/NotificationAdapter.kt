@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import datlowashere.project.rcoffee.R
 import datlowashere.project.rcoffee.data.model.Notification
 import datlowashere.project.rcoffee.databinding.LayoutItemNotificationBinding
+import datlowashere.project.rcoffee.utils.FormatterHelper
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -22,12 +23,11 @@ class NotificationAdapter(
     }
 
     inner class NotificationViewHolder(private val binding: LayoutItemNotificationBinding) : RecyclerView.ViewHolder(binding.root) {
-        private val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
 
         fun bind(notification: Notification) {
             binding.tvTitleMessageNoti.text = notification.title
             binding.tvMessageNoti.text = notification.message
-            binding.tvCreateNoti.text = dateFormatter.format(notification.create_at)
+            binding.tvCreateNoti.text = FormatterHelper.formatTme(notification.create_at)
 
             if (notification.is_read == 1) {
                 binding.lnContainerNotification.setBackgroundResource(R.color.white)
