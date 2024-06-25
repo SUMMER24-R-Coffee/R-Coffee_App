@@ -31,22 +31,7 @@ class RatingAdapter(
                 .placeholder(R.drawable.img_default)
                 .into(imgUserComment)
 
-            lnStarComent.removeAllViews()
-
-            val fullStars = rating.rating
-            val halfStar = rating.rating % 1 != 0
-
-            for (i in 1..fullStars) {
-                val starImage = ImageView(holder.itemView.context)
-                starImage.setImageResource(R.drawable.star)
-                lnStarComent.addView(starImage)
-            }
-
-            if (halfStar) {
-                val starImage = ImageView(holder.itemView.context)
-                starImage.setImageResource(R.drawable.half_star)
-                lnStarComent.addView(starImage)
-            }
+            ratingBarComment.rating = rating.rating.toFloat()
         }
     }
 

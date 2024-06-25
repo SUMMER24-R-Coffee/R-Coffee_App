@@ -48,24 +48,38 @@
             app:layout_constraintLeft_toRightOf="@+id/tv_name_user_comment"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/img_star_comment"
+            <RatingBar
+                android:id="@+id/ratingBarComment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:src="@drawable/star" />
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_toEndOf="@id/ratingstring"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:max="5"
+                android:numStars="5"
+                android:rating="0"
+                android:stepSize="1"
+                app:layout_constraintLeft_toRightOf="@id/ratingstring"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
         </LinearLayout>
 
         <TextView
             android:id="@+id/tv_comment"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:text="TextView"
             android:textColor="@color/black"
+            android:inputType="text|textMultiLine"
+            android:maxLines="5"
             app:layout_constraintLeft_toRightOf="@+id/img_user_comment"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name_user_comment" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_name_user_comment"
+            app:layout_constraintRight_toRightOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

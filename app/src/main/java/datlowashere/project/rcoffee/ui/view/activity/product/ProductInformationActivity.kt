@@ -57,7 +57,7 @@ class ProductInformationActivity : AppCompatActivity() {
 
     }
 
-    fun setUpViewModel(){
+    private fun setUpViewModel(){
         val repository = ProductRepository()
         val factory = ProductViewModelFactory(repository)
         productViewModel = ViewModelProvider(this, factory).get(ProductViewModel::class.java)
@@ -66,18 +66,22 @@ class ProductInformationActivity : AppCompatActivity() {
         val basketViewModelFactory = BasketViewModelFactory(basketRepository)
         basketViewModel = ViewModelProvider(this, basketViewModelFactory).get(BasketViewModel::class.java)
     }
-    fun setupObservers(){
+    private fun setupObservers(){
         val product: Product? = intent.getParcelableExtra("product")
         product?.let {
-            binding.tvProductNamInf.text = it.product_name
-            binding.tvDescriptionPrdInf.text = it.description
-            binding.tvProductPriceInf.text = FormatterHelper.formatCurrency(it.price)
-            binding.tvAverageStarInf.text =String.format("%.1f", it.average_rating)
+            binding.apply {
+                tvProductNamInf.text = it.product_name
+                tvDescriptionPrdInf.text = it.description
+                tvProductPriceInf.text = FormatterHelper.formatCurrency(it.price)
+                tvAverageStarInf.text =String.format("%.1f", it.average_rating)
 
-            if (product.favorite_id != null) {
-                binding.btnFavoritePrd.setImageResource(R.drawable.red_heart)
-            } else {
-                binding.btnFavoritePrd.setImageResource(R.drawable.hert)
+                binding.ratingBarProduct.rating= it.average_rating.toFloat()
+                if (product.favorite_id != null) {
+                    btnFavoritePrd.setImageResource(R.drawable.red_heart)
+                } else {
+                    btnFavoritePrd.setImageResource(R.drawable.hert)
+                }
+
             }
 
             Glide.with(this)
@@ -119,7 +123,7 @@ class ProductInformationActivity : AppCompatActivity() {
     }
 
 
-    fun setUpButtonToBasket(){
+    private fun setUpButtonToBasket(){
         val userEmail = SharedPreferencesHelper.getUserEmail(this)
         if (userEmail.isNullOrEmpty()) {
             DialogCustom.showLoginDialog(this)
@@ -128,7 +132,7 @@ class ProductInformationActivity : AppCompatActivity() {
         }
     }
 
-    fun setUpButtonUpdateBasket() {
+    private fun setUpButtonUpdateBasket() {
         val userEmail = SharedPreferencesHelper.getUserEmail(this)
         if (userEmail.isNullOrEmpty()) {
             DialogCustom.showLoginDialog(this)
