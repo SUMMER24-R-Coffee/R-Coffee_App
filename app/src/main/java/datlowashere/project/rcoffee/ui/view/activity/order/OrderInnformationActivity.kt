@@ -25,6 +25,7 @@ import datlowashere.project.rcoffee.databinding.ActivityOrderInnformationBinding
 import datlowashere.project.rcoffee.ui.adapter.ItemOrderAdapter
 import datlowashere.project.rcoffee.ui.component.CancelOrderBottomSheetDialogFragment
 import datlowashere.project.rcoffee.ui.component.DialogCustom
+import datlowashere.project.rcoffee.ui.view.activity.review.AddReviewActivity
 import datlowashere.project.rcoffee.ui.viewmodel.BasketViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.BasketViewModelFactory
 import datlowashere.project.rcoffee.utils.FormatterHelper
@@ -53,6 +54,9 @@ class OrderInnformationActivity : AppCompatActivity() {
     private lateinit var orderId: String
     private var totalPayment: Double = 0.0
     private lateinit var tokenFcm:String
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,6 +97,14 @@ class OrderInnformationActivity : AppCompatActivity() {
                 onReceivedOrder()
             })
 
+        }
+
+        binding.btnRating.setOnClickListener {
+            basketViewModel.baskets.value?.let { baskets ->
+                val intent = Intent(this, AddReviewActivity::class.java)
+                intent.putParcelableArrayListExtra("BASKETS", ArrayList(baskets))
+                startActivity(intent)
+            }
         }
     }
     //TODO: Set up rating->activity rating
