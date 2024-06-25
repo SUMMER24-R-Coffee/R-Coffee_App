@@ -25,7 +25,7 @@ class AddRatingAdapter(
                     .centerCrop()
                     .into(imgProductRating)
                 tvNamePrRating.text = basket.name
-                tvPricePrRating.text = basket.price.toString()
+                tvPricePrRating.text = FormatterHelper.formatCurrency(basket.price)
 
                 if (rating != null) {
                     btnSaveRating.visibility = View.GONE
