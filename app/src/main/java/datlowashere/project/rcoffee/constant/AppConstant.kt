@@ -10,6 +10,8 @@ class AppConstant {
         const val GET_CATEGORY ="categories"
         const val GET_PRODUCT = "products/{email_user}"
         const val GET_RATING ="ratings/{product_id}"
+        const val GET_RATING_BASKET="rattings-basket-ids"
+        const val INSERT_RATING="insert-rating"
         const val LOGIN ="login"
         const val GET_USER ="user/{email_user}"
         const val GET_BASKET_ORD="basket/{order_id}"

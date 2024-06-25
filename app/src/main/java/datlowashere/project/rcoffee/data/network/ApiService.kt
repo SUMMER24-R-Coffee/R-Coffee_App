@@ -29,6 +29,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
     //Banner
@@ -45,7 +46,10 @@ interface ApiService {
 
     @GET(AppConstant.GET_RATING)
     suspend fun getRatings(@Path("product_id") productId: Int): List<Rating>
-
+    @GET(AppConstant.GET_RATING_BASKET)
+    suspend fun getRatingsByBasketIds(@Query("basket_ids") basketIds: String): List<Rating>
+    @POST(AppConstant.INSERT_RATING)
+    suspend fun insertRating(@Body rating: Rating): Rating
     //Login, user
     @POST(AppConstant.LOGIN)
     suspend fun loginUser(@Body user: Users): Response<LoginResponse>
