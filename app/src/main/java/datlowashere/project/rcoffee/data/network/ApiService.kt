@@ -18,6 +18,7 @@ import datlowashere.project.rcoffee.data.model.Rating
 import datlowashere.project.rcoffee.data.model.Users
 import datlowashere.project.rcoffee.data.model.Voucher
 import datlowashere.project.rcoffee.data.model.response.OrderResponse
+import datlowashere.project.rcoffee.data.model.response.RegisterResponese
 import datlowashere.project.rcoffee.data.model.response.TokenResponse
 import datlowashere.project.rcoffee.data.model.response.TotalUnread
 import datlowashere.project.rcoffee.utils.Resource
@@ -50,12 +51,19 @@ interface ApiService {
     suspend fun getRatingsByBasketIds(@Query("basket_ids") basketIds: String): List<Rating>
     @POST(AppConstant.INSERT_RATING)
     suspend fun insertRating(@Body rating: Rating): Rating
-    //Login, user
+    //Login, register user
+    @POST(AppConstant.GET_VERTIFICATION)
+    suspend fun requestCode(@Body registerResponese: RegisterResponese): Response<ApiResponse>
+
+    @POST(AppConstant.REGISTER)
+    suspend fun registerUser(@Body registerResponese: RegisterResponese): Response<ApiResponse>
+
     @POST(AppConstant.LOGIN)
     suspend fun loginUser(@Body user: Users): Response<LoginResponse>
 
     @PUT(AppConstant.UPDATE_TOKEN_USER)
     suspend fun updateTokenUser(@Path("email_user")emailUser: String, @Body tokenResponse: TokenResponse): Call<Void>
+
 
     @GET(AppConstant.GET_USER)
     fun getUser(@Path("email_user") email_user: String): Call<AuthResponse>
