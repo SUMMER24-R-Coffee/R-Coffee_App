@@ -19,6 +19,7 @@ import datlowashere.project.rcoffee.ui.viewmodel.AuthViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.AuthViewModelFactory
 import datlowashere.project.rcoffee.ui.viewmodel.UserViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.UserViewModelFactory
+import datlowashere.project.rcoffee.ui.component.ProgressDialogCustom
 import datlowashere.project.rcoffee.utils.Resource
 import datlowashere.project.rcoffee.utils.SharedPreferencesHelper
 import java.util.regex.Pattern
@@ -29,6 +30,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var authViewModel: AuthViewModel
     private lateinit var userViewModel: UserViewModel
     private lateinit var tokenFcm: String
+    private lateinit var progressDialogHelper: ProgressDialogCustom
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +38,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setUpViewModel()
+        progressDialogHelper = ProgressDialogCustom(this)
         getToken()
 
         binding.btnBackLogin.setOnClickListener {
@@ -43,6 +46,7 @@ class LoginActivity : AppCompatActivity() {
         }
         binding.tvRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
+            finish()
         }
 
         binding.btnLogin.setOnClickListener {
@@ -51,6 +55,7 @@ class LoginActivity : AppCompatActivity() {
             val temail = binding.tilEmail
             val tpassword = binding.tilPassword
             if (validateEmail(email, temail) && validatePassword(password, tpassword)) {
+                progressDialogHelper.show()
                 authViewModel.login(email, password)
             }
         }
@@ -71,6 +76,7 @@ class LoginActivity : AppCompatActivity() {
         authViewModel.loginResult.observe(this) { resource ->
             when (resource) {
                 is Resource.Success -> {
+                    progressDialogHelper.dismiss()
                     val response = resource.data
                     if (response != null && response.status == "success") {
                         Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
@@ -95,6 +101,7 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 is Resource.Error -> {
+                    progressDialogHelper.dismiss()
                     Toast.makeText(
                         this,
                         resource.message.toString() ?: "Login failed",
@@ -103,7 +110,7 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 is Resource.Loading -> {
-                    // Show loading indicator if needed
+                    progressDialogHelper.show()
                 }
             }
         }
