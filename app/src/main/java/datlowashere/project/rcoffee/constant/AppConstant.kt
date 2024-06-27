@@ -13,6 +13,8 @@ class AppConstant {
         const val GET_RATING_BASKET="rattings-basket-ids"
         const val INSERT_RATING="insert-rating"
         const val LOGIN ="login"
+        const val REGISTER ="register"
+        const val GET_VERTIFICATION="request-code"
         const val GET_USER ="user/{email_user}"
         const val GET_BASKET_ORD="basket/{order_id}"
         const val GET_BASKET="baskets/{email_user}"

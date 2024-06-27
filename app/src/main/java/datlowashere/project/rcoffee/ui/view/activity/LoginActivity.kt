@@ -14,6 +14,7 @@ import datlowashere.project.rcoffee.data.model.response.TokenResponse
 import datlowashere.project.rcoffee.data.repository.AuthRepository
 import datlowashere.project.rcoffee.data.repository.UserRepository
 import datlowashere.project.rcoffee.databinding.ActivityLoginBinding
+import datlowashere.project.rcoffee.ui.view.activity.register.RegisterActivity
 import datlowashere.project.rcoffee.ui.viewmodel.AuthViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.AuthViewModelFactory
 import datlowashere.project.rcoffee.ui.viewmodel.UserViewModel
