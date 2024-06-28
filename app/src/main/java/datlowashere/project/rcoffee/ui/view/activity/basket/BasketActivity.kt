@@ -2,21 +2,13 @@ package datlowashere.project.rcoffee.ui.view.activity.basket
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import datlowashere.project.rcoffee.R
 import datlowashere.project.rcoffee.data.model.Basket
 import datlowashere.project.rcoffee.data.repository.BasketRepository
 import datlowashere.project.rcoffee.databinding.ActivityBastketBinding
@@ -27,7 +19,7 @@ import datlowashere.project.rcoffee.ui.viewmodel.BasketViewModelFactory
 import datlowashere.project.rcoffee.utils.FormatterHelper
 import datlowashere.project.rcoffee.utils.SharedPreferencesHelper
 
-class BastketActivity : AppCompatActivity() {
+class BasketActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBastketBinding
     private lateinit var basketViewModel: BasketViewModel

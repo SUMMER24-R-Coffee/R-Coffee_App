@@ -67,6 +67,12 @@ interface ApiService {
 
     @GET(AppConstant.GET_USER)
     fun getUser(@Path("email_user") email_user: String): Call<AuthResponse>
+
+    @PUT(AppConstant.UPDATE_USER)
+    suspend fun updateUser(@Body user: Users): Response<ApiResponse>
+
+    @PUT(AppConstant.UPDATE_PASSWORD)
+    suspend fun updatePassword(@Body params: Map<String, String>): Response<ApiResponse>
     //Basket
     @GET(AppConstant.GET_BASKET)
     suspend fun getBaskets(@Path("email_user") email_user: String): List<Basket>

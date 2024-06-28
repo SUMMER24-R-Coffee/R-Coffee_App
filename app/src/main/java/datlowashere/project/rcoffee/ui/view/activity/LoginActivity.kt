@@ -79,12 +79,16 @@ class LoginActivity : AppCompatActivity() {
                     progressDialogHelper.dismiss()
                     val response = resource.data
                     if (response != null && response.status == "success") {
+                        val password = binding.tedPassword.text.toString().trim()
+
                         Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
                         SharedPreferencesHelper.setLoggedIn(this, true)
                         SharedPreferencesHelper.setUserEmail(this, response.users?.email_user ?: "")
                         SharedPreferencesHelper.setUserPhone(this, response.users?.phone ?: " ")
                         SharedPreferencesHelper.setUserName(this, response.users?.name ?: " ")
-                        SharedPreferencesHelper.setUserToken(this, response.users?.token ?: " ")
+                        SharedPreferencesHelper.setUserToken(this, tokenFcm)
+                        SharedPreferencesHelper.setUserPassword(this,password )
+
 
                         val email = response.users?.email_user ?: ""
                         userViewModel.updateTokenUser(email, TokenResponse(tokenFcm))

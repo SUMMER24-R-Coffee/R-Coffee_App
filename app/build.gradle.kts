@@ -92,6 +92,8 @@ dependencies {
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:33.1.1"))
     implementation ("com.google.firebase:firebase-messaging:23.0.0")
+    implementation ("com.google.firebase:firebase-storage:20.0.0")
+
 
     //otpview
     implementation ("com.github.aabhasr1:OtpView:v1.1.2-ktx") // kotlin

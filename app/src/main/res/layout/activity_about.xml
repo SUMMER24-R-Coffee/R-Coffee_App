@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.view.activity.other.AboutActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarAbout"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="noScroll"
+            tools:ignore="MissingConstraints">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/btnBackAbout"
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    android:background="@drawable/shape_rect"
+                    android:backgroundTint="@color/green_chaleston"
+                    android:src="@drawable/arrowback" />
+
+                <TextView
+                    style="@style/textHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="34.3dp"
+                    android:text="About"
+                    android:textAlignment="textStart" />
+
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                style="@style/textHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:text="About R'Coffee"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/black" />
+
+            <TextView
+                style="@style/textContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:text="R'Coffee is your go-to app for all your coffee needs. Whether you want to order your favorite coffee, track your orders, or manage your favorite coffee list, R'Coffee has got you covered. Our app also offers seamless payment through ZaloPay."
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textColor="@color/black" />
+
+            <TextView
+                style="@style/textTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="Key Features:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/black" />
+
+            <TextView
+                style="@style/textContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
+                android:text="• Order your favorite coffee\n• Receive notifications about your order\n• Manage your list of favorite coffees\n• Track your coffee orders in real-time\n• Make payments easily with ZaloPay"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="@color/black" />
+
+            <TextView
+                style="@style/textTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="Our Mission"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/black" />
+
+            <TextView
+                style="@style/textContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
+                android:text="At R'Coffee, our mission is to provide a seamless and enjoyable coffee ordering experience. We aim to bring convenience and quality to every coffee lover's daily routine."
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="@color/black" />
+
+            <TextView
+                style="@style/textTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="Contact Us"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/black" />
+
+            <TextView
+                style="@style/textContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
+                android:text="We'd love to hear from you! If you have any questions, feedback, or suggestions, feel free to contact us at support@rcoffee.com."
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

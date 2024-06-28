@@ -8,8 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.annotation.OptIn
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -18,7 +16,6 @@ import com.bumptech.glide.Glide
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
 import com.google.android.material.badge.BadgeDrawable
-import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.badge.ExperimentalBadgeUtils
 import datlowashere.project.rcoffee.R
 import datlowashere.project.rcoffee.data.model.Favorite
@@ -32,7 +29,7 @@ import datlowashere.project.rcoffee.databinding.FragmentHomeFragmentBinding
 import datlowashere.project.rcoffee.ui.adapter.CategoryAdapter
 import datlowashere.project.rcoffee.ui.adapter.ProductAdapter
 import datlowashere.project.rcoffee.ui.component.DialogCustom
-import datlowashere.project.rcoffee.ui.view.activity.basket.BastketActivity
+import datlowashere.project.rcoffee.ui.view.activity.basket.BasketActivity
 import datlowashere.project.rcoffee.ui.view.activity.notification.NotificationActivity
 import datlowashere.project.rcoffee.ui.view.activity.product.ProductActivity
 import datlowashere.project.rcoffee.ui.view.activity.product.ProductInformationActivity
@@ -198,7 +195,7 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
                 authResponse.users?.let { users ->
                     if (users.isNotEmpty()) {
                         val user = users[0]
-                        binding.tvNameUser.text = "Hello, Welcome back\n${user.name}!"
+                        binding.tvNameUser.text = "Hello, Welcome back\n${user.name ?: ""}!"
                         Glide.with(binding.imgUser)
                             .load(user.user_img)
                             .centerCrop()
@@ -266,12 +263,12 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
 //        BadgeUtils.attachBadgeDrawable(badgeDrawable, binding.imgNotification, binding.frameNotification)
 //    }
 
-    fun setUpButtonBasket() {
+    private fun setUpButtonBasket() {
         val userEmail = SharedPreferencesHelper.getUserEmail(requireContext())
         if (userEmail.isNullOrEmpty()) {
             DialogCustom.showLoginDialog(requireContext())
         } else {
-            startActivity(Intent(requireContext(), BastketActivity::class.java))
+            startActivity(Intent(requireContext(), BasketActivity::class.java))
 
         }
     }

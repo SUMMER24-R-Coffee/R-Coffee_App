@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.view.activity.other.HelpCenterActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarHelpCentre"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="noScroll"
+            tools:ignore="MissingConstraints">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/btnBackHelpCentre"
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    android:background="@drawable/shape_rect"
+                    android:backgroundTint="@color/green_chaleston"
+                    android:src="@drawable/arrowback" />
+
+                <TextView
+                    style="@style/textHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="34.3dp"
+                    android:text="Help Centre"
+                    android:textAlignment="textStart" />
+
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                style="@style/textHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:text="Help Center"
+                android:textColor="@color/black" />
+
+            <TextView
+                style="@style/textContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
+                android:text="Welcome to the R'Coffee Help Center. Here you can find answers to frequently asked questions and get support for any issues you may encounter while using our app."
+                android:textColor="@color/black" />
+
+            <TextView
+                style="@style/textTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:text="Frequently Asked Questions"
+                android:textColor="@color/black" />
+
+            <TextView
+                style="@style/textContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:text="Q: How do I place an order?\nA: To place an order, simply browse our menu, select your desired coffee, customize your order, and proceed to checkout."
+                android:textColor="@color/black" />
+
+            <TextView
+                style="@style/textContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:text="Q: How can I track my order?\nA: You can track your order in real-time by navigating to the 'Order Tracking' section in the app."
+                android:textColor="@color/black" />
+
+            <TextView
+                style="@style/textContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:text="Q: How do I add a coffee to my favorites?\nA: To add a coffee to your favorites, simply tap the heart icon next to the coffee item."
+                android:textColor="@color/black" />
+
+            <TextView
+                style="@style/textContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:text="Q: What payment methods are available?\nA: Currently, we accept payments through ZaloPay."
+                android:textColor="@color/black" />
+
+            <TextView
+                style="@style/textContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="Need further assistance? Contact our support team at support@rcoffee.com."
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>
