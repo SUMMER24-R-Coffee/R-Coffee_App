@@ -175,6 +175,11 @@ class MainActivity : AppCompatActivity()  {
         return SharedPreferencesHelper.getUserEmail(this) ?: ""
     }
 
+    override fun onResume() {
+        super.onResume()
+        authViewModel.getUserData(getEmailUser())
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         SharedPreferencesHelper.clear(this)

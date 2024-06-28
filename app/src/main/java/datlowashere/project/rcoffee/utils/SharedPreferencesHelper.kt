@@ -9,7 +9,8 @@ object SharedPreferencesHelper {
     private const val KEY_USER_EMAIL = "user_email"
     private const val KEY_USER_PHONE = "phone"
     private const val KEY_USER_NAME = "name"
-    private const val KEY_USER_TOKEN = "key_user_token"
+    private const val KEY_USER_PASSWORD = "password"
+    private const val KEY_USER_TOKEN = "token"
 
 
     private fun getSharedPreferences(context: Context): SharedPreferences {
@@ -52,6 +53,13 @@ object SharedPreferencesHelper {
 
     fun getUserToken(context: Context): String? {
         return getSharedPreferences(context).getString(KEY_USER_TOKEN, null)
+    }
+    fun setUserPassword(context: Context, password: String) {
+        getSharedPreferences(context).edit().putString(KEY_USER_PASSWORD, password).apply()
+    }
+
+    fun getUserPassword(context: Context): String? {
+        return getSharedPreferences(context).getString(KEY_USER_PASSWORD, null)
     }
     fun clear(context: Context) {
         getSharedPreferences(context).edit().clear().apply()

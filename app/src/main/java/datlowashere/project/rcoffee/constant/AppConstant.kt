@@ -16,6 +16,8 @@ class AppConstant {
         const val REGISTER ="register"
         const val GET_VERTIFICATION="request-code"
         const val GET_USER ="user/{email_user}"
+        const val UPDATE_USER="update-user"
+        const val UPDATE_PASSWORD="update-password"
         const val GET_BASKET_ORD="basket/{order_id}"
         const val GET_BASKET="baskets/{email_user}"
         const val ADD_TO_BASKET="add-to-basket"
@@ -37,6 +39,7 @@ class AppConstant {
         const val UPDATE_NOTIFICATION="notification/{notification_id}/read"
         const val DELETE_NOTIFICATION="notification/{notification_id}/delete"
         const val GET_UNREAD_NOTIFICATION ="/api-app/unread/{email_user}"
+        const val REQUEST_IMAGE_PICK = 100
 
     }
 }
