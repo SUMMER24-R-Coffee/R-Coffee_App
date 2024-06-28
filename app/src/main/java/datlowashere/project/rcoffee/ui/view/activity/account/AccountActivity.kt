@@ -73,6 +73,8 @@ class AccountActivity : AppCompatActivity() {
         val name = binding.tedNameAccount.text.toString().trim()
         val phone = binding.tedPhoneAccount.text.toString().trim()
         val gender = if (binding.rdoMale.isChecked) "Male" else "Female"
+        SharedPreferencesHelper.setUserName(this, name)
+        SharedPreferencesHelper.setUserPhone(this, phone)
 
         selectedImageUri?.let { uri ->
             progressDialog.show()
