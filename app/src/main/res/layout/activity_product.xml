@@ -22,33 +22,93 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:orientation="horizontal">
 
                 <ImageButton
                     android:id="@+id/btnBackProduct"
                     android:layout_width="33dp"
                     android:layout_height="33dp"
+                    android:layout_gravity="center|start"
                     android:background="@drawable/shape_rect"
                     android:backgroundTint="@color/green_chaleston"
                     android:src="@drawable/arrowback" />
 
                 <TextView
                     style="@style/textHeader"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="34.3dp"
+                    android:layout_gravity="center|start"
                     android:text="Products"
                     android:textAlignment="textStart" />
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"/>
+                <ImageButton
+                    android:id="@+id/btnFiletrProduct"
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    android:background="@drawable/shape_rect"
+                    android:layout_gravity="center|right"
+                    android:backgroundTint="@color/green_chaleston"
+                    android:src="@drawable/filleft"
+                    android:layout_marginRight="22dp"/>
 
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvProducts"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="11dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginRight="22dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edSearchProduct"
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_rect"
+            android:drawableLeft="@drawable/search"
+            android:drawablePadding="17dp"
+            android:hint="...Search"
+            android:paddingLeft="17dp"
+            android:textSize="14sp" />
+
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvMessageProduct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            style="@style/textContent"
+            android:visibility="gone"
+            android:text="No item to show" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvProducts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

@@ -112,14 +112,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvFind">
 
                 <EditText
-                    android:id="@+id/editTextTextPassword"
+                    android:id="@+id/edSearchHome"
                     android:layout_width="wrap_content"
                     android:layout_height="53dp"
                     android:layout_weight="1"
                     android:background="@drawable/shape_rect"
                     android:drawableLeft="@drawable/search"
                     android:drawablePadding="17dp"
-                    android:ems="10"
+                    android:focusable="false"
                     android:hint="...Search"
                     android:paddingLeft="17dp"
                     android:textSize="14sp" />
