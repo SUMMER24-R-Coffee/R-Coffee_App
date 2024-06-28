@@ -177,7 +177,7 @@ class ProductActivity : AppCompatActivity(), ProductAdapter.OnItemClickListener,
     }
 
     private fun getEmail(): String {
-        return SharedPreferencesHelper.getUserEmail(this) ?: ""
+        return SharedPreferencesHelper.getUserEmail(this) ?: " "
     }
 
     override fun onFilterSelected(priceRange: PriceRange) {
