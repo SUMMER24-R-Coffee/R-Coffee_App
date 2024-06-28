@@ -6,13 +6,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import datlowashere.project.rcoffee.R
+import datlowashere.project.rcoffee.data.model.Address
 import datlowashere.project.rcoffee.data.model.Product
 import datlowashere.project.rcoffee.databinding.LayoutItemProductBinding
 import datlowashere.project.rcoffee.ui.viewmodel.BasketViewModel
 import datlowashere.project.rcoffee.utils.FormatterHelper
 
 class ProductAdapter(
-    private val products: List<Product>,
+    private var products: List<Product>,
     private val itemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
@@ -70,6 +71,10 @@ class ProductAdapter(
     }
 
     override fun getItemCount(): Int = products.size
+    fun updateProducts(newProducts: List<Product>) {
+        products = newProducts
+        notifyDataSetChanged()
+    }
     private fun updateFavoriteIcon(isFavorite: Boolean, binding: LayoutItemProductBinding) {
         if (isFavorite) {
             binding.imgFavProduct.setImageResource(R.drawable.red_heart)

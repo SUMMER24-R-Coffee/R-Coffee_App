@@ -58,7 +58,10 @@ class MainActivity : AppCompatActivity()  {
             binding.bottomNav.setItemIconTintList(null)
 
         }
-        //TODO: Set icontint for each nav when selected (case login)
+        //TODO: Set icon-tint for each nav when selected (case login)
+        //TODO: First: add tracking layout in order information activity
+        //TODO: Second: Fix badge ad notification icon
+        //TODO: Forth: clean code
         authViewModel.getUserData(emailUser)
         setUpImage()
 

@@ -81,7 +81,8 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
         authViewModel.getUserData(getEmail())
         homeViewModel.getProducts(getEmail())
 
-        Log.d("EMAIL USER", getEmail())
+
+        binding.edSearchHome.setOnClickListener{startActivity(Intent(requireContext(),ProductActivity::class.java))}
 
         binding.tvTitleCateory.setOnClickListener {
             startActivity(Intent(context, ProductActivity::class.java))

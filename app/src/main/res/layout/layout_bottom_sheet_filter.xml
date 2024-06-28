@@ -1,0 +1,74 @@
+<!-- res/layout/bottom_sheet_filter.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Filter by Price"
+        style="@style/textTitle" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="16dp">
+
+        <RadioButton
+            android:id="@+id/radio_all"
+            style="@style/textContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="All" />
+
+        <RadioButton
+            android:id="@+id/radio_less_than_20000"
+            style="@style/textContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Less than 20,000" />
+
+        <RadioButton
+            android:id="@+id/radio_20000_to_40000"
+            style="@style/textContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20,000 to 40,000" />
+
+        <RadioButton
+            android:id="@+id/radio_greater_than_40000"
+            style="@style/textContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Greater than 40,000" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:id="@+id/tvCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:textColor="@color/red_exp"
+            android:padding="8dp"
+            android:layout_marginEnd="8dp"/>
+
+        <TextView
+            android:id="@+id/tvOk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OK"
+            android:textColor="@color/blue_bld"
+            android:padding="8dp" />
+    </LinearLayout>
+</LinearLayout>
