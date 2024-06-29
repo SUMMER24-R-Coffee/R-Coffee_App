@@ -50,9 +50,9 @@ You need to install the [Backend](https://github.com/SUMMER24-R-Coffee/R-Coffee_
 | **Order Information** | **Order History** |
 | ![order history](/readme-img/h2.jpg) | ![order history](/readme-img/h3.jpg) |
 | **Order History** | **Order History** |
-| ![rating](/readme-img/rt1.jpg) | ![notification](/readme-img/notf1.jpg) |
+| ![rating](/readme-img/rt1.jpg) | ![notification](/readme-img/not2.jpg) |
 | **Rating** | **Notification** 
-| ![notification](./readme-img/not2.jpg) | ![account](/readme-img/aif.jpg) |
+| ![notification](./readme-img/notf1.jpg) | ![account](/readme-img/aif.jpg) |
 | **Notification** | **Account** |
 | ![setting](./readme-img/au.jpg) | ![setting](/readme-img/ac.jpg) |
 | **Settings User** | **Settings Client** |
