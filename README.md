@@ -29,7 +29,7 @@ R-Coffee app is a frontend application that follows the Model-View-ViewModel (MV
 ### Usage
 You need to install the [Backend](https://github.com/SUMMER24-R-Coffee/R-Coffee_Server) first. Then, run the backend and the MySQL database using XAMPP or Workbench before installing the app. After running the app, you can start managing your coffee-related tasks. The app provides an intuitive UI to help you get started quickly. 
 
-## Screen shot
+## Screens shot
 | | |
 |---|---|
 | ![login](/readme-img/lg.jpg) | ![register](./readme-img/reg.jpg) |
