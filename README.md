@@ -27,7 +27,7 @@ R-Coffee app is a frontend application that follows the Model-View-ViewModel (MV
 3. Sync the project with Gradle files.
 4. Run the application on an emulator or a connected device.
 ### Usage
-You have to installed [Backend](https://github.com/SUMMER24-R-Coffee/R-Coffee_Server) run backend with xampp or workbench before install the app, you can start managing your coffee-related tasks after run app. The app provides an intuitive UI to help you get started quickly., 
+You need to install the [Backend](https://github.com/SUMMER24-R-Coffee/R-Coffee_Server) first. Then, run the backend and the MySQL database using XAMPP or Workbench before installing the app. After running the app, you can start managing your coffee-related tasks. The app provides an intuitive UI to help you get started quickly. 
 
 ### Screen shot
 | | |
