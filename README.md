@@ -33,18 +33,18 @@ Once the app is installed, you can start managing your coffee-related tasks. The
 | |  |
 |---|---|
 |![Home screen for client](/readme-img/hone-c.jpg)<h4 align="center">Home screen for client</h4> |![home](./readme-img/hu.jpg)<h4 align="center">Home screen for user</h4> |
-|![Home screen for client](/readme-img/hone-c.jpg)<h4 align="center">Home screen for client</h4> |![home](./readme-img/hu.jpg)<h4 align="center">Home screen for user</h4> |
-|![Home screen for client](/readme-img/hone-c.jpg)<h4 align="center">Home screen for client</h4> |![home](./readme-img/hu.jpg)<h4 align="center">Home screen for user</h4> |
-|![Home screen for client](/readme-img/hone-c.jpg)<h4 align="center">Home screen for client</h4> |![home](./readme-img/hu.jpg)<h4 align="center">Home screen for user</h4> |
-|![Home screen for client](/readme-img/hone-c.jpg)<h4 align="center">Home screen for client</h4> |![home](./readme-img/hu.jpg)<h4 align="center">Home screen for user</h4> |
-|![Home screen for client](/readme-img/hone-c.jpg)<h4 align="center">Home screen for client</h4> |![home](./readme-img/hu.jpg)<h4 align="center">Home screen for user</h4> |
-|![Home screen for client](/readme-img/hone-c.jpg)<h4 align="center">Home screen for client</h4> |![home](./readme-img/hu.jpg)<h4 align="center">Home screen for user</h4> |
-|![Home screen for client](/readme-img/hone-c.jpg)<h4 align="center">Home screen for client</h4> |![home](./readme-img/hu.jpg)<h4 align="center">Home screen for user</h4> |
-|![Home screen for client](/readme-img/hone-c.jpg)<h4 align="center">Home screen for client</h4> |![home](./readme-img/hu.jpg)<h4 align="center">Home screen for user</h4> |
-|![Home screen for client](/readme-img/hone-c.jpg)<h4 align="center">Home screen for client</h4> |![home](./readme-img/hu.jpg)<h4 align="center">Home screen for user</h4> |
-|![Home screen for client](/readme-img/hone-c.jpg)<h4 align="center">Home screen for client</h4> |![home](./readme-img/hu.jpg)<h4 align="center">Home screen for user</h4> |
-|![Home screen for client](/readme-img/hone-c.jpg)<h4 align="center">Home screen for client</h4> |![home](./readme-img/hu.jpg)<h4 align="center">Home screen for user</h4> |
-|![Home screen for client](/readme-img/hone-c.jpg)<h4 align="center">Home screen for client</h4> |![home](./readme-img/hu.jpg)<h4 align="center">Home screen for user</h4> |
+|![login](/readme-img/lg.jpg)<h4 align="center">Login</h4> |![register](./readme-img/reg.jpg)<h4 align="center">Register</h4> |
+|![](/readme-img/vt.jpg)<h4 align="center">Vertification</h4> |![](./readme-img/hu.jpg)<h4 align="center"> </h4> |
+|![](/readme-img/hone-c.jpg)<h4 align="center"></h4> |![](./readme-img/hu.jpg)<h4 align="center"> </h4> |
+|![](/readme-img/hone-c.jpg)<h4 align="center"></h4> |![](./readme-img/hu.jpg)<h4 align="center"> </h4> |
+|![](/readme-img/hone-c.jpg)<h4 align="center"></h4> |![](./readme-img/hu.jpg)<h4 align="center"> </h4> |
+|![](/readme-img/hone-c.jpg)<h4 align="center"></h4> |![](./readme-img/hu.jpg)<h4 align="center"> </h4> |
+|![](/readme-img/hone-c.jpg)<h4 align="center"></h4> |![](./readme-img/hu.jpg)<h4 align="center"> </h4> |
+|![](/readme-img/hone-c.jpg)<h4 align="center"></h4> |![](./readme-img/hu.jpg)<h4 align="center"> </h4> |
+|![](/readme-img/hone-c.jpg)<h4 align="center"></h4> |![](./readme-img/hu.jpg)<h4 align="center"> </h4> |
+|![](/readme-img/hone-c.jpg)<h4 align="center"></h4> |![](./readme-img/hu.jpg)<h4 align="center"> </h4> |
+|![](/readme-img/hone-c.jpg)<h4 align="center"></h4> |![](./readme-img/hu.jpg)<h4 align="center"> </h4> |
+|![](/readme-img/hone-c.jpg)<h4 align="center"></h4> |![](./readme-img/hu.jpg)<h4 align="center"> </h4> |
 
 
 Note: this application will be further improved in the future.
