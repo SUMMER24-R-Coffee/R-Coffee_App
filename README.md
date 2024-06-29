@@ -57,4 +57,4 @@ You need to install the [Backend](https://github.com/SUMMER24-R-Coffee/R-Coffee_
 | ![setting](./readme-img/au.jpg) | ![setting](/readme-img/ac.jpg) |
 | **Settings User** | **Settings Client** |
 
- **Note**: this application will be further improved in the future.
+ **Note**: This is not the final version, this application will be further improved in the future.
