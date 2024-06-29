@@ -2,7 +2,7 @@
 
 ## Overview
 
-R-Coffee app is a frontend application that follows the Model-View-ViewModel (MVVM) architecture. The app is built primarily using Kotlin, with some Java components to make payment functionality. It aims to provide a seamless and efficient user experience for managing coffee-related tasks. Read more about [Backend](https://github.com/SUMMER24-R-Coffee/R-Coffee_Server)
+R-Coffee app is a frontend application that follows the Model-View-ViewModel (MVVM) architecture. The app is built primarily using Kotlin, with some Java components to make payment functionality. It aims to provide a seamless and efficient user experience for managing coffee-related tasks. Read more about [Backend](https://github.com/SUMMER24-R-Coffee/R-Coffee_Server). UI design [Figma](https://www.figma.com/design/BmEKc2HmaQ0NbgAF/R'Coffee-UI?node-id=11-2&t=Jpe6wlVOrtKx7zzz-0).
 
 <!--## Features
 
