@@ -27,10 +27,6 @@ class AddAddressActivity : AppCompatActivity() {
         binding = ActivityAddAddressBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (!Places.isInitialized()) {
-            Places.initialize(applicationContext, getString(R.string.API_KEY))
-        }
-
         val repository = AddressRepository()
         val factory = AddressViewModelFactory(repository)
         addressViewModel = ViewModelProvider(this, factory).get(AddressViewModel::class.java)
