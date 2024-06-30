@@ -266,14 +266,17 @@ class OrderInnformationActivity : AppCompatActivity() {
         when (paymentSheetResult) {
             is PaymentSheetResult.Completed -> {
                 setStatusPayment("paid")
+                startOrderResultActivity("Success","Stripe")
                 Toast.makeText(this, "Payment Successful", Toast.LENGTH_SHORT).show()
             }
             is PaymentSheetResult.Canceled -> {
                 setStatusPayment("unpaid")
+                startOrderResultActivity("Pending","Stripe")
                 Toast.makeText(this, "Payment Canceled", Toast.LENGTH_SHORT).show()
             }
             is PaymentSheetResult.Failed -> {
                 setStatusPayment("unpaid")
+                startOrderResultActivity("Pending","Stripe")
                 Toast.makeText(this, "Payment Failed: ${paymentSheetResult.error.message}", Toast.LENGTH_SHORT).show()
             }
         }
@@ -293,16 +296,19 @@ class OrderInnformationActivity : AppCompatActivity() {
                     PayOrderListener {
                     override fun onPaymentSucceeded(transactionId: String, transToken: String, appTransID: String) {
                         setStatusPayment("paid")
+                        startOrderResultActivity("Success", "Zalo Pay")
                         Toast.makeText(this@OrderInnformationActivity, "Payment Successful", Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onPaymentCanceled(zpTransToken: String, appTransID: String) {
                         setStatusPayment("unpaid")
+                        startOrderResultActivity("Pending", "Zalo Pay")
                         Toast.makeText(this@OrderInnformationActivity, "Payment Cancelled", Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onPaymentError(zaloPayError: ZaloPayError, zpTransToken: String, appTransID: String) {
                         setStatusPayment("unpaid")
+                        startOrderResultActivity("Pending", "Zalo Pay")
                         Toast.makeText(this@OrderInnformationActivity, "Payment Failed", Toast.LENGTH_SHORT).show()
                     }
                 })
@@ -312,33 +318,32 @@ class OrderInnformationActivity : AppCompatActivity() {
             e.printStackTrace()
         }
     }
-//    private fun startOrderResultActivity(paymentStatus: String, methodPayment: String) {
-//        val intent = Intent(this@OrderInnformationActivity, MainActivity::class.java)
-////        val currentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
-////        intent.putExtra("order_id", orderId)
-////        intent.putExtra("payment_status", paymentStatus)
-////        intent.putExtra("name", getName())
-////        intent.putExtra("phone", getPhone())
-////        intent.putExtra("address", binding.tvAddress.text.toString())
-////        intent.putExtra("total_payment", totalPayment)
-////        intent.putExtra("payment_method", methodPayment)
-////        intent.putExtra("time_create", currentTime)
-////        intent.putExtra("message",binding.tvMessageOrdInf.text.toString())
-////
-////        // Logging information
-////        Log.d("OrderInformationActivity", "Starting OrderResultActivity with the following data:")
-////        Log.d("OrderInformationActivity", "order_id: $orderId")
-////        Log.d("OrderInformationActivity", "payment_status: $paymentStatus")
-////        Log.d("OrderInformationActivity", "name: ${getName()}")
-////        Log.d("OrderInformationActivity", "phone: ${getPhone()}")
-////        Log.d("OrderInformationActivity", "address: ${binding.tvAddress.text.toString()}")
-////        Log.d("OrderInformationActivity", "total_payment: $totalPayment")
-////        Log.d("OrderInformationActivity", "payment_method: $methodPayment")
-////        Log.d("OrderInformationActivity", "time_create: $currentTime")
-////        Log.d("OrderInformationActivity", "message: ${binding.tvMessageOrdInf.text.toString()}")
-//        startActivity(intent)
-//        finish()
-//    }
+    private fun startOrderResultActivity(paymentStatus: String, methodPayment: String) {
+        val intent = Intent(this@OrderInnformationActivity, OrderResultActivity::class.java)
+        val currentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+        intent.putExtra("order_id", orderId)
+        intent.putExtra("payment_status", paymentStatus)
+        intent.putExtra("name", getName())
+        intent.putExtra("phone", getPhone())
+        intent.putExtra("address", binding.tvAddress.text.toString())
+        intent.putExtra("total_payment", totalPayment)
+        intent.putExtra("payment_method", methodPayment)
+        intent.putExtra("time_create", currentTime)
+        intent.putExtra("message",binding.tvMessageOrdInf.text.toString())
+
+        Log.d("OrderInformationActivity", "Starting OrderResultActivity with the following data:")
+        Log.d("OrderInformationActivity", "order_id: $orderId")
+        Log.d("OrderInformationActivity", "payment_status: $paymentStatus")
+        Log.d("OrderInformationActivity", "name: ${getName()}")
+        Log.d("OrderInformationActivity", "phone: ${getPhone()}")
+        Log.d("OrderInformationActivity", "address: ${binding.tvAddress.text.toString()}")
+        Log.d("OrderInformationActivity", "total_payment: $totalPayment")
+        Log.d("OrderInformationActivity", "payment_method: $methodPayment")
+        Log.d("OrderInformationActivity", "time_create: $currentTime")
+        Log.d("OrderInformationActivity", "message: ${binding.tvMessageOrdInf.text.toString()}")
+        startActivity(intent)
+        finish()
+    }
 
     private fun setStatusPayment(status:String){
         paymentViewModel.updatePaymentStatus(orderId,status,getEmail(),tokenFcm)

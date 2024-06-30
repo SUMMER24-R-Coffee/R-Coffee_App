@@ -29,7 +29,6 @@ class OrderResultActivity : AppCompatActivity() {
         val time = intent.getStringExtra("time_create") ?: "None"
         val message = intent.getStringExtra("message") ?: "None"
 
-        // Log received data
         Log.d("OrderResultActivity", "Received data from intent:")
         Log.d("OrderResultActivity", "order_id: $orderId")
         Log.d("OrderResultActivity", "payment_status: $paymentStatus")
@@ -67,7 +66,8 @@ class OrderResultActivity : AppCompatActivity() {
     }
 
     private fun navigateToMainActivity() {
-        startActivity(Intent(this@OrderResultActivity, MainActivity::class.java))
+        val intent = Intent(this@OrderResultActivity, MainActivity::class.java)
+        startActivity(intent)
         finish()
     }
 }
