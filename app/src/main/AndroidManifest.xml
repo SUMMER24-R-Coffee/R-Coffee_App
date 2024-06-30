@@ -47,10 +47,6 @@
             android:name=".ui.view.activity.order.OrderResultActivity"
             android:exported="false" />
 
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/API_KEY" />
-
         <activity
             android:name=".ui.view.activity.product.ProductActivity"
             android:exported="false" />
