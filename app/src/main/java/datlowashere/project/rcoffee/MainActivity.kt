@@ -68,9 +68,11 @@ class MainActivity : AppCompatActivity()  {
 
         val switchToCancelled = intent.getBooleanExtra("SWITCH_TO_CANCELLED", false)
         val switchToCompleted = intent.getBooleanExtra("SWITCH_TO_COMPLETED", false)
+        val switchToPending = intent.getBooleanExtra("SWITCH_TO_PENDING", false)
         val bundle = Bundle().apply {
             putBoolean("SWITCH_TO_CANCELLED", switchToCancelled)
             putBoolean("SWITCH_TO_COMPLETED", switchToCompleted)
+            putBoolean("SWITCH_TO_PENDING", switchToPending)
     }
         if (switchToCancelled || switchToCompleted) {
             navController.navigate(R.id.nav_history, bundle)

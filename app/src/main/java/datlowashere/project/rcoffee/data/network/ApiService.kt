@@ -18,6 +18,7 @@ import datlowashere.project.rcoffee.data.model.Rating
 import datlowashere.project.rcoffee.data.model.Users
 import datlowashere.project.rcoffee.data.model.Voucher
 import datlowashere.project.rcoffee.data.model.response.OrderResponse
+import datlowashere.project.rcoffee.data.model.response.PaymentIntentResponse
 import datlowashere.project.rcoffee.data.model.response.RegisterResponese
 import datlowashere.project.rcoffee.data.model.response.TokenResponse
 import datlowashere.project.rcoffee.data.model.response.TotalUnread
@@ -27,6 +28,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
@@ -117,6 +119,10 @@ interface ApiService {
     fun insertPaymentDetail(@Body paymentDetail: PaymentDetail): Call<Void>
     @PUT(AppConstant.UPDATE_PAYMENT_STATUS)
     suspend fun updatePaymentDetail(@Path("order_id") orderId: String, @Body paymentDetail: PaymentDetail): Call<Void>
+
+    @Headers("Content-Type: application/json")
+    @POST(AppConstant.GET_CREATE_PAYMENT)
+    fun createPaymentIntent(@Body params: Map<String, String>): Call<PaymentIntentResponse>
 
     //favorite
     @POST(AppConstant.IN_DEL_FAV)

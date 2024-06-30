@@ -14,6 +14,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
+import com.stripe.android.PaymentConfiguration
+import com.stripe.android.paymentsheet.PaymentSheet
+import com.stripe.android.paymentsheet.PaymentSheetResult
 import datlowashere.project.rcoffee.MainActivity
 import datlowashere.project.rcoffee.R
 import datlowashere.project.rcoffee.data.model.Order
@@ -54,7 +57,8 @@ class OrderInnformationActivity : AppCompatActivity() {
     private lateinit var orderId: String
     private var totalPayment: Double = 0.0
     private lateinit var tokenFcm:String
-
+    private lateinit var paymentSheet: PaymentSheet
+    private lateinit var paymentIntentClientSecret: String
 
 
 
@@ -68,6 +72,9 @@ class OrderInnformationActivity : AppCompatActivity() {
         StrictMode.setThreadPolicy(policy)
         ZaloPaySDK.tearDown();
         ZaloPaySDK.init(2553, Environment.SANDBOX);
+
+        PaymentConfiguration.init(applicationContext, "pk_test_51PXGt92MK7lgPTnSaAZZIORMsm4j4R7Do2SD9G4weZ0CvZvLvtRrTx6b0b7LhCYeDNZ1a9nDJFp8TSMW5x0glRGr00htlbMf6P")
+        paymentSheet = PaymentSheet(this, ::onPaymentSheetResult)
 
         setUpViewModel()
 
@@ -90,7 +97,12 @@ class OrderInnformationActivity : AppCompatActivity() {
         }
 
         binding.btnRepay.setOnClickListener {
-            zaloPay()
+            if(binding.tvPaymentMethodOrdInf.equals("Zalo Pay")){
+                zaloPay()
+            }else{
+                stripePay()
+
+            }
         }
         binding.btnReceiveOrder.setOnClickListener {
             DialogCustom.showReceiveConfirmationDialog(this@OrderInnformationActivity, onComfirmReceive = {->
@@ -106,9 +118,9 @@ class OrderInnformationActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+
+        // TODO: FIX WHEN FINISH TO ORDER RESULT ACTIVITY
     }
-    //TODO: Set up rating->activity rating
-    //TODO: Add a textview status payment beside the textview show time order
 
     private fun setUpRecyclerView() {
         itemOrderItemAdapter = ItemOrderAdapter(this, emptyList())
@@ -227,6 +239,45 @@ class OrderInnformationActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+    private fun stripePay() {
+        val amountInCents = (totalPayment * 100).toInt()
+
+        val params = mapOf(
+            "total_amount" to amountInCents.toString(),
+            "currency" to "usd"
+        )
+
+        paymentViewModel.createPaymentIntent(params).observe(this) { response ->
+            response?.let {
+                paymentIntentClientSecret = it.clientSecret
+
+                paymentSheet.presentWithPaymentIntent(
+                    paymentIntentClientSecret,
+                    PaymentSheet.Configuration("R'Coffee, Inc.")
+                )
+            } ?: run {
+                Toast.makeText(this, "Failed to create PaymentIntent", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+
+    private fun onPaymentSheetResult(paymentSheetResult: PaymentSheetResult) {
+        when (paymentSheetResult) {
+            is PaymentSheetResult.Completed -> {
+                setStatusPayment("paid")
+                Toast.makeText(this, "Payment Successful", Toast.LENGTH_SHORT).show()
+            }
+            is PaymentSheetResult.Canceled -> {
+                setStatusPayment("unpaid")
+                Toast.makeText(this, "Payment Canceled", Toast.LENGTH_SHORT).show()
+            }
+            is PaymentSheetResult.Failed -> {
+                setStatusPayment("unpaid")
+                Toast.makeText(this, "Payment Failed: ${paymentSheetResult.error.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     private fun zaloPay(){
         val amountToPay =totalPayment.toInt()
@@ -242,19 +293,16 @@ class OrderInnformationActivity : AppCompatActivity() {
                     PayOrderListener {
                     override fun onPaymentSucceeded(transactionId: String, transToken: String, appTransID: String) {
                         setStatusPayment("paid")
-                        startOrderResultActivity("Success")
                         Toast.makeText(this@OrderInnformationActivity, "Payment Successful", Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onPaymentCanceled(zpTransToken: String, appTransID: String) {
                         setStatusPayment("unpaid")
-                        startOrderResultActivity("Pending")
                         Toast.makeText(this@OrderInnformationActivity, "Payment Cancelled", Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onPaymentError(zaloPayError: ZaloPayError, zpTransToken: String, appTransID: String) {
                         setStatusPayment("unpaid")
-                        startOrderResultActivity("Pending")
                         Toast.makeText(this@OrderInnformationActivity, "Payment Failed", Toast.LENGTH_SHORT).show()
                     }
                 })
@@ -264,21 +312,34 @@ class OrderInnformationActivity : AppCompatActivity() {
             e.printStackTrace()
         }
     }
-    private fun startOrderResultActivity(paymentStatus: String) {
-        val intent = Intent(this@OrderInnformationActivity, OrderResultActivity::class.java)
-        val currentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
-        intent.putExtra("order_id", orderId)
-        intent.putExtra("payment_status", paymentStatus)
-        intent.putExtra("name", getName())
-        intent.putExtra("phone", getPhone())
-        intent.putExtra("address", binding.tvAddress.text.toString())
-        intent.putExtra("total_payment", totalPayment)
-        intent.putExtra("payment_method", binding.tvPaymentMethodOrdInf.text.toString())
-        intent.putExtra("time_create", currentTime)
-        intent.putExtra("message",binding.tvMessageOrdInf.text.toString())
-        startActivity(intent)
-        finish()
-    }
+//    private fun startOrderResultActivity(paymentStatus: String, methodPayment: String) {
+//        val intent = Intent(this@OrderInnformationActivity, MainActivity::class.java)
+////        val currentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+////        intent.putExtra("order_id", orderId)
+////        intent.putExtra("payment_status", paymentStatus)
+////        intent.putExtra("name", getName())
+////        intent.putExtra("phone", getPhone())
+////        intent.putExtra("address", binding.tvAddress.text.toString())
+////        intent.putExtra("total_payment", totalPayment)
+////        intent.putExtra("payment_method", methodPayment)
+////        intent.putExtra("time_create", currentTime)
+////        intent.putExtra("message",binding.tvMessageOrdInf.text.toString())
+////
+////        // Logging information
+////        Log.d("OrderInformationActivity", "Starting OrderResultActivity with the following data:")
+////        Log.d("OrderInformationActivity", "order_id: $orderId")
+////        Log.d("OrderInformationActivity", "payment_status: $paymentStatus")
+////        Log.d("OrderInformationActivity", "name: ${getName()}")
+////        Log.d("OrderInformationActivity", "phone: ${getPhone()}")
+////        Log.d("OrderInformationActivity", "address: ${binding.tvAddress.text.toString()}")
+////        Log.d("OrderInformationActivity", "total_payment: $totalPayment")
+////        Log.d("OrderInformationActivity", "payment_method: $methodPayment")
+////        Log.d("OrderInformationActivity", "time_create: $currentTime")
+////        Log.d("OrderInformationActivity", "message: ${binding.tvMessageOrdInf.text.toString()}")
+//        startActivity(intent)
+//        finish()
+//    }
+
     private fun setStatusPayment(status:String){
         paymentViewModel.updatePaymentStatus(orderId,status,getEmail(),tokenFcm)
         paymentViewModel.paymentStatus.observe(this@OrderInnformationActivity, Observer {isSuccess ->

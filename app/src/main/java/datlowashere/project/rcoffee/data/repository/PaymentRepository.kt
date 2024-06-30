@@ -1,7 +1,10 @@
 package datlowashere.project.rcoffee.data.repository
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import datlowashere.project.rcoffee.data.model.PaymentDetail
+import datlowashere.project.rcoffee.data.model.response.PaymentIntentResponse
 import datlowashere.project.rcoffee.data.network.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -41,5 +44,25 @@ class PaymentRepository {
                 callback(false)
             }
         })
+    }
+
+    fun createPaymentIntent(params: Map<String, String>): LiveData<PaymentIntentResponse> {
+        val paymentIntentLiveData = MutableLiveData<PaymentIntentResponse>()
+        val call = apiService.createPaymentIntent(params)
+        call.enqueue(object : Callback<PaymentIntentResponse> {
+            override fun onResponse(call: Call<PaymentIntentResponse>, response: Response<PaymentIntentResponse>) {
+                if (response.isSuccessful) {
+                    response.body()?.let { paymentIntentLiveData.postValue(it) }
+                } else {
+                    Log.e("Stripe", "Error response: ${response.errorBody()?.string()}")
+                }
+            }
+
+            override fun onFailure(call: Call<PaymentIntentResponse>, t: Throwable) {
+                Log.e("Stripe", "Network error: ${t.message}")
+            }
+        })
+
+        return paymentIntentLiveData
     }
 }

@@ -208,7 +208,7 @@
                         android:textAlignment="center" />
 
                     <RadioButton
-                        android:id="@+id/rdoVNPay"
+                        android:id="@+id/rdoStripe"
                         style="@style/textContent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -217,7 +217,7 @@
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
                         android:text="VNPay"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:textAlignment="center" />
 
                 </RadioGroup>

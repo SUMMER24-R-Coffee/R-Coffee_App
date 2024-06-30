@@ -17,7 +17,6 @@ import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
-import datlowashere.project.rcoffee.MainActivity
 import datlowashere.project.rcoffee.constant.AppConstant
 import datlowashere.project.rcoffee.data.model.Address
 import datlowashere.project.rcoffee.data.model.Basket
@@ -42,11 +41,6 @@ import datlowashere.project.rcoffee.viewmodel.PaymentViewModel
 import datlowashere.project.rcoffee.viewmodel.PaymentViewModelFactory
 import datlowashere.project.rcoffee.zalopay.Api.CreateOrder
 import datlowashere.project.rcoffee.zalopay.Constant.AppInfo
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import org.json.JSONObject
 import vn.zalopay.sdk.Environment
 import vn.zalopay.sdk.ZaloPayError
 import vn.zalopay.sdk.ZaloPaySDK
@@ -54,7 +48,11 @@ import vn.zalopay.sdk.listeners.PayOrderListener
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import java.util.UUID
+import com.stripe.android.PaymentConfiguration
+import com.stripe.android.paymentsheet.PaymentSheet
+import com.stripe.android.paymentsheet.PaymentSheetResult
+import datlowashere.project.rcoffee.data.model.response.PaymentIntentResponse
+import datlowashere.project.rcoffee.data.network.ApiClient
 
 class OrderActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOrderBinding
@@ -72,7 +70,8 @@ class OrderActivity : AppCompatActivity() {
     private var methodPayment: String =""
     private lateinit var orderId: String
     private lateinit var tokenFcm: String
-
+    private lateinit var paymentSheet: PaymentSheet
+    private lateinit var paymentIntentClientSecret: String
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,6 +85,9 @@ class OrderActivity : AppCompatActivity() {
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
         ZaloPaySDK.init(AppInfo.APP_ID, Environment.SANDBOX);
+
+        PaymentConfiguration.init(applicationContext, "pk_test_51PXGt92MK7lgPTnSaAZZIORMsm4j4R7Do2SD9G4weZ0CvZvLvtRrTx6b0b7LhCYeDNZ1a9nDJFp8TSMW5x0glRGr00htlbMf6P")
+        paymentSheet = PaymentSheet(this, ::onPaymentSheetResult)
 
         orderId = generateOrderId()
 
@@ -128,20 +130,63 @@ class OrderActivity : AppCompatActivity() {
         binding.btnPlaceOrder.setOnClickListener {
             if (selectedAddressId == null) {
                 Toast.makeText(this, "Please, select address", Toast.LENGTH_SHORT).show()
-            } else if (!binding.rdoZaloPay.isChecked && !binding.rdoVNPay.isChecked) {
+            } else if (!binding.rdoZaloPay.isChecked && !binding.rdoStripe.isChecked) {
                 Toast.makeText(this, "Please, select a payment method", Toast.LENGTH_SHORT).show()
             } else {
                 if (binding.rdoZaloPay.isChecked) {
                     methodPayment = "Zalo Pay"
                     placeOrder()
                     zaloPay()
-                } else if (binding.rdoVNPay.isChecked) {
-                    methodPayment = "VNPay"
-                    Toast.makeText(this, "Feature is in progress", Toast.LENGTH_SHORT).show()
+                } else if (binding.rdoStripe.isChecked) {
+                    methodPayment = "Stripe"
+                    placeOrder()
+                    stripePay()
                 }
             }
         }
 
+    }
+    private fun stripePay() {
+        val amountInCents = (totalPayment * 100).toInt()
+
+        val params = mapOf(
+            "total_amount" to amountInCents.toString(),
+            "currency" to "usd"
+        )
+
+        paymentViewModel.createPaymentIntent(params).observe(this) { response ->
+            response?.let {
+                paymentIntentClientSecret = it.clientSecret
+
+                paymentSheet.presentWithPaymentIntent(
+                    paymentIntentClientSecret,
+                    PaymentSheet.Configuration("R'Coffee, Inc.")
+                )
+            } ?: run {
+                Toast.makeText(this, "Failed to create PaymentIntent", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+
+    private fun onPaymentSheetResult(paymentSheetResult: PaymentSheetResult) {
+        when (paymentSheetResult) {
+            is PaymentSheetResult.Completed -> {
+                setStatusPayment("paid")
+                startOrderResultActivity("Success")
+                Toast.makeText(this, "Payment Successful", Toast.LENGTH_SHORT).show()
+            }
+            is PaymentSheetResult.Canceled -> {
+                setStatusPayment("unpaid")
+                startOrderResultActivity("Pending")
+                Toast.makeText(this, "Payment Canceled", Toast.LENGTH_SHORT).show()
+            }
+            is PaymentSheetResult.Failed -> {
+                setStatusPayment("unpaid")
+                startOrderResultActivity("Pending")
+                Toast.makeText(this, "Payment Failed: ${paymentSheetResult.error.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun zaloPay(){

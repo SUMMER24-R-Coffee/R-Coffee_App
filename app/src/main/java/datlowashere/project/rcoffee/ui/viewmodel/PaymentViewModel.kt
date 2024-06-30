@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import datlowashere.project.rcoffee.data.model.PaymentDetail
+import datlowashere.project.rcoffee.data.model.response.PaymentIntentResponse
 import datlowashere.project.rcoffee.data.repository.PaymentRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -38,6 +39,10 @@ class PaymentViewModel(private val paymentRepository: PaymentRepository) : ViewM
             }
         }
     }
+    fun createPaymentIntent(params: Map<String, String>): LiveData<PaymentIntentResponse> {
+        return paymentRepository.createPaymentIntent(params)
+    }
+
 }
 
 class PaymentViewModelFactory(private val paymentRepository: PaymentRepository) : ViewModelProvider.Factory {

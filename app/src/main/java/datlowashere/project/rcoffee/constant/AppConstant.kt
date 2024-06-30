@@ -40,6 +40,7 @@ class AppConstant {
         const val DELETE_NOTIFICATION="notification/{notification_id}/delete"
         const val GET_UNREAD_NOTIFICATION ="/api-app/unread/{email_user}"
         const val REQUEST_IMAGE_PICK = 100
+        const val GET_CREATE_PAYMENT="create-payment-intent"
 
     }
 }
