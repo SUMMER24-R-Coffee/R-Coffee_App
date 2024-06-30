@@ -212,11 +212,11 @@
                         style="@style/textContent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/vnpay"
+                        android:drawableLeft="@drawable/stripe"
                         android:layoutDirection="rtl"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
-                        android:text="VNPay"
+                        android:text="Stripe"
                         android:visibility="visible"
                         android:textAlignment="center" />
 

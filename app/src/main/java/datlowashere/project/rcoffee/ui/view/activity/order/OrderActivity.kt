@@ -86,12 +86,11 @@ class OrderActivity : AppCompatActivity() {
         StrictMode.setThreadPolicy(policy)
         ZaloPaySDK.init(AppInfo.APP_ID, Environment.SANDBOX);
 
-        PaymentConfiguration.init(applicationContext, "pk_test_51PXGt92MK7lgPTnSaAZZIORMsm4j4R7Do2SD9G4weZ0CvZvLvtRrTx6b0b7LhCYeDNZ1a9nDJFp8TSMW5x0glRGr00htlbMf6P")
+        PaymentConfiguration.init(applicationContext, AppConstant.PUBLISHABLE_KEY)
         paymentSheet = PaymentSheet(this, ::onPaymentSheetResult)
 
         orderId = generateOrderId()
 
-        //TODO: For the order have move to zalo pay browser but not given a result back. then set re-pay for it
     }
 
     @SuppressLint("SetTextI18n")

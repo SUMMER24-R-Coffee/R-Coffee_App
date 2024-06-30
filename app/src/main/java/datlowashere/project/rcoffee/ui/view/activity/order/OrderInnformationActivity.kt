@@ -19,6 +19,7 @@ import com.stripe.android.paymentsheet.PaymentSheet
 import com.stripe.android.paymentsheet.PaymentSheetResult
 import datlowashere.project.rcoffee.MainActivity
 import datlowashere.project.rcoffee.R
+import datlowashere.project.rcoffee.constant.AppConstant
 import datlowashere.project.rcoffee.data.model.Order
 import datlowashere.project.rcoffee.data.model.PaymentDetail
 import datlowashere.project.rcoffee.data.repository.BasketRepository
@@ -73,7 +74,7 @@ class OrderInnformationActivity : AppCompatActivity() {
         ZaloPaySDK.tearDown();
         ZaloPaySDK.init(2553, Environment.SANDBOX);
 
-        PaymentConfiguration.init(applicationContext, "pk_test_51PXGt92MK7lgPTnSaAZZIORMsm4j4R7Do2SD9G4weZ0CvZvLvtRrTx6b0b7LhCYeDNZ1a9nDJFp8TSMW5x0glRGr00htlbMf6P")
+        PaymentConfiguration.init(applicationContext, AppConstant.PUBLISHABLE_KEY)
         paymentSheet = PaymentSheet(this, ::onPaymentSheetResult)
 
         setUpViewModel()
