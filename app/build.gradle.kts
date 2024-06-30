@@ -96,7 +96,10 @@ dependencies {
 
 
     //otpview
-    implementation ("com.github.aabhasr1:OtpView:v1.1.2-ktx") // kotlin
+    implementation ("com.github.aabhasr1:OtpView:v1.1.2-ktx")
+
+    //Stripe
+    implementation("com.stripe:stripe-android:20.47.4")
 
 
 

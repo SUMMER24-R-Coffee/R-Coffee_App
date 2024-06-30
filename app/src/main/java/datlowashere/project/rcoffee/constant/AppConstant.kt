@@ -40,6 +40,8 @@ class AppConstant {
         const val DELETE_NOTIFICATION="notification/{notification_id}/delete"
         const val GET_UNREAD_NOTIFICATION ="/api-app/unread/{email_user}"
         const val REQUEST_IMAGE_PICK = 100
+        const val GET_CREATE_PAYMENT="create-payment-intent"
+        const val PUBLISHABLE_KEY="pk_test_51PXGt92MK7lgPTnSaAZZIORMsm4j4R7Do2SD9G4weZ0CvZvLvtRrTx6b0b7LhCYeDNZ1a9nDJFp8TSMW5x0glRGr00htlbMf6P"
 
     }
 }

@@ -72,22 +72,19 @@ class OrderHistoryFragment : Fragment() {
     private fun checkAndSwitchTabs() {
         val switchToCancelled = arguments?.getBoolean("SWITCH_TO_CANCELLED", false) ?: false
         val switchToCompleted = arguments?.getBoolean("SWITCH_TO_COMPLETED", false) ?: false
-        if (switchToCancelled) {
-            viewPager.post { switchToCancelledOrdersTab() }
-        } else if (switchToCompleted) {
-            viewPager.post { switchToCompletedOrdersTab() }
+        val switchToPending = arguments?.getBoolean("SWITCH_TO_PENDING", false) ?: false
+        when {
+            switchToCancelled -> binding.viewpager2Ord.post { switchTab(2) }
+            switchToCompleted -> binding.viewpager2Ord.post { switchTab(1) }
+            switchToPending -> binding.viewpager2Ord.post { switchTab(0) }
         }
     }
 
-    private fun switchToCancelledOrdersTab() {
-        Log.d("OrderHistoryFragment", "Switching to Cancelled Orders Tab")
-        binding.viewpager2Ord.currentItem = 2
+    private fun switchTab(index: Int) {
+        Log.d("OrderHistoryFragment", "Switching to Tab Index: $index")
+        binding.viewpager2Ord.currentItem = index
     }
 
-    private fun switchToCompletedOrdersTab() {
-        Log.d("OrderHistoryFragment", "Switching to Completed Orders Tab")
-        binding.viewpager2Ord.currentItem = 1
-    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
