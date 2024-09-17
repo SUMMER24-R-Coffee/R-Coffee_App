@@ -29,7 +29,7 @@ class PaymentRepository {
         apiService.updatePaymentDetail(orderId, paymentDetail).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 Log.d("PaymentRepository", "Response received: Code=${response.code()}, Message=${response.message()}")
-                if(response.isSuccessful ||response.code() ==203){
+                if(response.isSuccessful ||response.code() ==200){
                     Log.d("PaymentRepository", "success")
                     callback(true)
 

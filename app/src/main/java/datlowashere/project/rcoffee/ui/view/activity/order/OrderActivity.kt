@@ -67,11 +67,12 @@ class OrderActivity : AppCompatActivity() {
     private var selectedVoucherPercent: Double? = 0.0
     private var discountAmount: Double = 0.0
     private var totalPayment: Double = 0.0
-    private var methodPayment: String =""
+    private var methodPayment: String = ""
     private lateinit var orderId: String
     private lateinit var tokenFcm: String
     private lateinit var paymentSheet: PaymentSheet
     private lateinit var paymentIntentClientSecret: String
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,10 +95,11 @@ class OrderActivity : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setUpView(){
+    private fun setUpView() {
         binding.tvInforUserOrd.text = "Delivery Address\n${getName()} | ${getPhone()}"
 
-        selectedBaskets = intent.getParcelableArrayListExtra<Basket>("selectedBaskets") ?: arrayListOf()
+        selectedBaskets =
+            intent.getParcelableArrayListExtra<Basket>("selectedBaskets") ?: arrayListOf()
         totalAmount = intent.getDoubleExtra("totalAmount", 0.0)
 
         listBasketId = selectedBaskets.map { it.basket_id }
@@ -145,6 +147,7 @@ class OrderActivity : AppCompatActivity() {
         }
 
     }
+
     private fun stripePay() {
         val amountInCents = (totalPayment * 100).toInt()
 
@@ -153,17 +156,21 @@ class OrderActivity : AppCompatActivity() {
             "currency" to "usd"
         )
 
-        paymentViewModel.createPaymentIntent(params).observe(this) { response ->
-            response?.let {
-                paymentIntentClientSecret = it.clientSecret
+        try {
+            paymentViewModel.createPaymentIntent(params).observe(this) { response ->
+                response?.let {
+                    paymentIntentClientSecret = it.clientSecret
 
-                paymentSheet.presentWithPaymentIntent(
-                    paymentIntentClientSecret,
-                    PaymentSheet.Configuration("R'Coffee, Inc.")
-                )
-            } ?: run {
-                Toast.makeText(this, "Failed to create PaymentIntent", Toast.LENGTH_SHORT).show()
+                    paymentSheet.presentWithPaymentIntent(
+                        paymentIntentClientSecret,
+                        PaymentSheet.Configuration("R'Coffee, Inc.")
+                    )
+                } ?: run {
+                    Toast.makeText(this, "Failed to create PaymentIntent", Toast.LENGTH_SHORT).show()
+                }
             }
+        } catch (e: Exception) {
+            Log.d("Exception Stripe", ":"+e.message)
         }
     }
 
@@ -173,23 +180,22 @@ class OrderActivity : AppCompatActivity() {
             is PaymentSheetResult.Completed -> {
                 setStatusPayment("paid")
                 startOrderResultActivity("Success")
-                Toast.makeText(this, "Payment Successful", Toast.LENGTH_SHORT).show()
             }
+
             is PaymentSheetResult.Canceled -> {
                 setStatusPayment("unpaid")
                 startOrderResultActivity("Pending")
-                Toast.makeText(this, "Payment Canceled", Toast.LENGTH_SHORT).show()
             }
+
             is PaymentSheetResult.Failed -> {
                 setStatusPayment("unpaid")
                 startOrderResultActivity("Pending")
-                Toast.makeText(this, "Payment Failed: ${paymentSheetResult.error.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun zaloPay(){
-        val amountToPay =totalPayment.toInt()
+    private fun zaloPay() {
+        val amountToPay = totalPayment.toInt()
         Log.d("OrderActivity", "Payment IDs: $amountToPay.tp")
         val orderApi = CreateOrder()
         try {
@@ -198,32 +204,54 @@ class OrderActivity : AppCompatActivity() {
             if (code == "1") {
                 val token = data.getString("zptranstoken")
 
-                ZaloPaySDK.getInstance().payOrder(this@OrderActivity, token, "demozpdk://app", object : PayOrderListener {
-                    override fun onPaymentSucceeded(transactionId: String, transToken: String, appTransID: String) {
-                        setStatusPayment("paid")
-                        startOrderResultActivity("Success")
-                        Toast.makeText(this@OrderActivity, "Payment Successful", Toast.LENGTH_SHORT).show()
-                    }
+                ZaloPaySDK.getInstance().payOrder(
+                    this@OrderActivity,
+                    token,
+                    "demozpdk://app",
+                    object : PayOrderListener {
+                        override fun onPaymentSucceeded(
+                            transactionId: String,
+                            transToken: String,
+                            appTransID: String
+                        ) {
+                            setStatusPayment("paid")
+                            startOrderResultActivity("Success")
+                            Toast.makeText(
+                                this@OrderActivity,
+                                "Payment Successful",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
 
-                    override fun onPaymentCanceled(zpTransToken: String, appTransID: String) {
-                        setStatusPayment("unpaid")
-                        startOrderResultActivity("Pending")
-                        Toast.makeText(this@OrderActivity, "Payment Cancelled", Toast.LENGTH_SHORT).show()
-                    }
+                        override fun onPaymentCanceled(zpTransToken: String, appTransID: String) {
+                            setStatusPayment("unpaid")
+                            startOrderResultActivity("Pending")
+                            Toast.makeText(
+                                this@OrderActivity,
+                                "Payment Cancelled",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
 
-                    override fun onPaymentError(zaloPayError: ZaloPayError, zpTransToken: String, appTransID: String) {
-                        setStatusPayment("unpaid")
-                        startOrderResultActivity("Pending")
-                        Toast.makeText(this@OrderActivity, "Payment Failed", Toast.LENGTH_SHORT).show()
-                    }
-                })
+                        override fun onPaymentError(
+                            zaloPayError: ZaloPayError,
+                            zpTransToken: String,
+                            appTransID: String
+                        ) {
+                            setStatusPayment("unpaid")
+                            startOrderResultActivity("Pending")
+                            Toast.makeText(this@OrderActivity, "Payment Failed", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    })
             }
 
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
-    private fun setUpViewModel(){
+
+    private fun setUpViewModel() {
         val orderRepository = OrderRepository()
         val orderFactory = OrderViewModelFactory(orderRepository)
         orderViewModel = ViewModelProvider(this, orderFactory).get(OrderViewModel::class.java)
@@ -232,11 +260,12 @@ class OrderActivity : AppCompatActivity() {
         val factory = BasketViewModelFactory(repository)
         basketViewModel = ViewModelProvider(this, factory).get(BasketViewModel::class.java)
 
-        val paymentRepository= PaymentRepository()
-        val payFactory =PaymentViewModelFactory(paymentRepository)
+        val paymentRepository = PaymentRepository()
+        val payFactory = PaymentViewModelFactory(paymentRepository)
         paymentViewModel = ViewModelProvider(this, payFactory).get(PaymentViewModel::class.java)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -262,13 +291,16 @@ class OrderActivity : AppCompatActivity() {
             }
         }
     }
+
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         ZaloPaySDK.getInstance().onResult(intent)
     }
+
     private fun startOrderResultActivity(paymentStatus: String) {
         val intent = Intent(this@OrderActivity, OrderResultActivity::class.java)
-        val currentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+        val currentTime =
+            SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
         intent.putExtra("order_id", orderId)
         intent.putExtra("payment_status", paymentStatus)
         intent.putExtra("name", getName())
@@ -277,10 +309,11 @@ class OrderActivity : AppCompatActivity() {
         intent.putExtra("total_payment", totalPayment)
         intent.putExtra("payment_method", methodPayment)
         intent.putExtra("time_create", currentTime)
-        intent.putExtra("message",binding.edLeaveMessage.text.toString())
+        intent.putExtra("message", binding.edLeaveMessage.text.toString())
         startActivity(intent)
         finish()
     }
+
     @SuppressLint("SetTextI18n")
     private fun updatePaymentDetails() {
         discountAmount = totalAmount * (selectedVoucherPercent ?: 0.0) / 100
@@ -288,11 +321,12 @@ class OrderActivity : AppCompatActivity() {
 
         totalPayment = totalAmount - discountAmount
         binding.tvTotalPayment.text = FormatterHelper.formatCurrency(totalPayment)
-        binding.tvTotalAmountOrder.text = "Total Amount\n${FormatterHelper.formatCurrency(totalPayment)}"
+        binding.tvTotalAmountOrder.text =
+            "Total Amount\n${FormatterHelper.formatCurrency(totalPayment)}"
     }
 
-    private fun setStatusPayment(status:String){
-        var paymentDetail =PaymentDetail(
+    private fun setStatusPayment(status: String) {
+        var paymentDetail = PaymentDetail(
             status = status,
             order_id = orderId,
             email_user = getEmail(),
@@ -302,6 +336,7 @@ class OrderActivity : AppCompatActivity() {
         Log.d("OrderActivity", "status: $paymentDetail")
 
     }
+
     private fun placeOrder() {
         if (listBasketId.isEmpty()) {
             Log.e("OrderActivity", "Basket ID list is empty, cannot place order")
@@ -322,7 +357,6 @@ class OrderActivity : AppCompatActivity() {
             token = tokenFcm
 
         )
-
         orderViewModel.insertOrder(order)
 
         Log.d("OrderActivity", "Order: $order")
@@ -343,18 +377,20 @@ class OrderActivity : AppCompatActivity() {
     private fun getName(): String {
         return SharedPreferencesHelper.getUserName(this) ?: " "
     }
+
     private fun getEmail(): String {
         return SharedPreferencesHelper.getUserEmail(this) ?: ""
     }
-    private fun getToken(){
+
+    private fun getToken() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful){
-                Log.w("TAG","Failed token", task.exception)
+            if (!task.isSuccessful) {
+                Log.w("TAG", "Failed token", task.exception)
                 return@OnCompleteListener
             }
-            val token =task.result
-            tokenFcm=token
-            Log.i("Token",token)
+            val token = task.result
+            tokenFcm = token
+            Log.i("Token", token)
 
         })
 

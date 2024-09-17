@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
@@ -40,6 +41,8 @@ import datlowashere.project.rcoffee.viewmodel.PaymentViewModel
 import datlowashere.project.rcoffee.viewmodel.PaymentViewModelFactory
 import datlowashere.project.rcoffee.zalopay.Api.CreateOrder
 import datlowashere.project.rcoffee.zalopay.Constant.AppInfo
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import vn.zalopay.sdk.Environment
 import vn.zalopay.sdk.ZaloPayError
 import vn.zalopay.sdk.ZaloPaySDK
@@ -57,10 +60,9 @@ class OrderInnformationActivity : AppCompatActivity() {
     private lateinit var itemOrderItemAdapter: ItemOrderAdapter
     private lateinit var orderId: String
     private var totalPayment: Double = 0.0
-    private lateinit var tokenFcm:String
+    private lateinit var tokenFcm: String
     private lateinit var paymentSheet: PaymentSheet
     private lateinit var paymentIntentClientSecret: String
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,17 +100,19 @@ class OrderInnformationActivity : AppCompatActivity() {
         }
 
         binding.btnRepay.setOnClickListener {
-            if(binding.tvPaymentMethodOrdInf.equals("Zalo Pay")){
+            if (binding.tvPaymentMethodOrdInf.equals("Zalo Pay")) {
                 zaloPay()
-            }else{
+            } else {
                 stripePay()
 
             }
         }
         binding.btnReceiveOrder.setOnClickListener {
-            DialogCustom.showReceiveConfirmationDialog(this@OrderInnformationActivity, onComfirmReceive = {->
-                onReceivedOrder()
-            })
+            DialogCustom.showReceiveConfirmationDialog(
+                this@OrderInnformationActivity,
+                onComfirmReceive = { ->
+                    onReceivedOrder()
+                })
 
         }
 
@@ -119,13 +123,12 @@ class OrderInnformationActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
-
-        // TODO: FIX WHEN FINISH TO ORDER RESULT ACTIVITY
     }
 
     private fun setUpRecyclerView() {
         itemOrderItemAdapter = ItemOrderAdapter(this, emptyList())
-        binding.rcvOrderItems.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.rcvOrderItems.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rcvOrderItems.adapter = itemOrderItemAdapter
     }
 
@@ -161,19 +164,43 @@ class OrderInnformationActivity : AppCompatActivity() {
             tvTimeOrderInf.text = order.create_at?.let { FormatterHelper.formatDateTime(it) }
             tvUserInforOrdInf.text = "${getName()} | ${getPhone()}"
             tvTotalPaymentOrdInf.text = FormatterHelper.formatCurrency(order.total_amount)
-            tvMerchandiseOrdInf.text = FormatterHelper.formatCurrency(order.total_amount + order.discount_amount)
+            tvMerchandiseOrdInf.text =
+                FormatterHelper.formatCurrency(order.total_amount + order.discount_amount)
             tvDiscountOrdInf.text = FormatterHelper.formatCurrency(order.discount_amount)
-            tvMessageOrdInf.text = order.order_message?.takeIf { it.isNotEmpty() } ?: "None"
+            tvMessageOrdInf.text = order.order_message.takeIf { it.isNotEmpty() } ?: "None"
             tvPaymentMethodOrdInf.text = order.payment_method
             tvStatusOrderInf.text = order.status_order
             tvAddress.text = order.location
             tvReason.text = order.reason
 
             when (order.status_order) {
-                "cancelled" -> tvStatusOrderInf.setTextColor(ContextCompat.getColor(root.context, R.color.red_exp))
-                "delivered" -> tvStatusOrderInf.setTextColor(ContextCompat.getColor(root.context, R.color.green_ext))
-                "delivering" -> tvStatusOrderInf.setTextColor(ContextCompat.getColor(root.context, R.color.blue_bld))
-                else -> tvStatusOrderInf.setTextColor(ContextCompat.getColor(root.context, R.color.yellow_erth))
+                "cancelled" -> tvStatusOrderInf.setTextColor(
+                    ContextCompat.getColor(
+                        root.context,
+                        R.color.red_exp
+                    )
+                )
+
+                "delivered" -> tvStatusOrderInf.setTextColor(
+                    ContextCompat.getColor(
+                        root.context,
+                        R.color.green_ext
+                    )
+                )
+
+                "delivering" -> tvStatusOrderInf.setTextColor(
+                    ContextCompat.getColor(
+                        root.context,
+                        R.color.blue_bld
+                    )
+                )
+
+                else -> tvStatusOrderInf.setTextColor(
+                    ContextCompat.getColor(
+                        root.context,
+                        R.color.yellow_erth
+                    )
+                )
             }
 
             when (order.status_order) {
@@ -183,15 +210,19 @@ class OrderInnformationActivity : AppCompatActivity() {
                         btnRepay.visibility = View.VISIBLE
                     }
                 }
-                "preparing" ->{
+
+                "preparing" -> {
                     btnCancelOrder.visibility = View.VISIBLE
                 }
+
                 "delivering" -> {
                     btnReceiveOrder.visibility = View.VISIBLE
                 }
+
                 "delivered" -> {
                     btnRating.visibility = View.VISIBLE
                 }
+
                 else -> {
                     lnBottomOnf.visibility = View.GONE
                 }
@@ -205,24 +236,35 @@ class OrderInnformationActivity : AppCompatActivity() {
 
     private fun handleCancelOrder() {
         val bottomSheet = CancelOrderBottomSheetDialogFragment()
-        bottomSheet.setOnReasonSelectedListener(object : CancelOrderBottomSheetDialogFragment.OnReasonSelectedListener {
+        bottomSheet.setOnReasonSelectedListener(object :
+            CancelOrderBottomSheetDialogFragment.OnReasonSelectedListener {
             override fun onReasonSelected(reason: String) {
-                orderViewModel.updateStatusOrder(orderId, "cancelled",reason,getEmail(), tokenFcm)
-                orderViewModel.statusUpdated.observe(this@OrderInnformationActivity, Observer { isSuccess ->
-                    if (isSuccess) {
-                        Toast.makeText(this@OrderInnformationActivity, "Order cancelled successfully", Toast.LENGTH_SHORT).show()
-                        navigateToOrderHistory("SWITCH_TO_CANCELLED")
-                    } else {
-                        Toast.makeText(this@OrderInnformationActivity, "Failed to cancel order", Toast.LENGTH_SHORT).show()
-                    }
-                })
+                orderViewModel.updateStatusOrder(orderId, "cancelled", reason, getEmail(), tokenFcm)
+                orderViewModel.statusUpdated.observe(
+                    this@OrderInnformationActivity,
+                    Observer { isSuccess ->
+                        if (isSuccess) {
+                            Toast.makeText(
+                                this@OrderInnformationActivity,
+                                "Order cancelled successfully",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            navigateToOrderHistory("SWITCH_TO_CANCELLED")
+                        } else {
+                            Toast.makeText(
+                                this@OrderInnformationActivity,
+                                "Failed to cancel order",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    })
             }
         })
         bottomSheet.show(supportFragmentManager, "CancelOrderBottomSheet")
     }
 
     private fun onReceivedOrder() {
-        orderViewModel.updateStatusOrder(orderId, "delivered","",getEmail(), tokenFcm)
+        orderViewModel.updateStatusOrder(orderId, "delivered", "", getEmail(), tokenFcm)
         orderViewModel.statusUpdated.observe(this, Observer { isSuccess ->
             if (isSuccess) {
                 Toast.makeText(this, "Order Received", Toast.LENGTH_SHORT).show()
@@ -240,6 +282,7 @@ class OrderInnformationActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
     private fun stripePay() {
         val amountInCents = (totalPayment * 100).toInt()
 
@@ -248,18 +291,24 @@ class OrderInnformationActivity : AppCompatActivity() {
             "currency" to "usd"
         )
 
-        paymentViewModel.createPaymentIntent(params).observe(this) { response ->
-            response?.let {
-                paymentIntentClientSecret = it.clientSecret
+        try {
+            paymentViewModel.createPaymentIntent(params).observe(this) { response ->
+                response?.let {
+                    paymentIntentClientSecret = it.clientSecret
 
-                paymentSheet.presentWithPaymentIntent(
-                    paymentIntentClientSecret,
-                    PaymentSheet.Configuration("R'Coffee, Inc.")
-                )
-            } ?: run {
-                Toast.makeText(this, "Failed to create PaymentIntent", Toast.LENGTH_SHORT).show()
+                    paymentSheet.presentWithPaymentIntent(
+                        paymentIntentClientSecret,
+                        PaymentSheet.Configuration("R'Coffee, Inc.")
+                    )
+                } ?: run {
+                    Toast.makeText(this, "Failed to create PaymentIntent", Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
+        } catch (e: Exception) {
+            Log.d("Exception Stripe", ":"+e.message)
         }
+
     }
 
 
@@ -267,25 +316,24 @@ class OrderInnformationActivity : AppCompatActivity() {
         when (paymentSheetResult) {
             is PaymentSheetResult.Completed -> {
                 setStatusPayment("paid")
-                startOrderResultActivity("Success","Stripe")
-                Toast.makeText(this, "Payment Successful", Toast.LENGTH_SHORT).show()
+                startOrderResultActivity("Success", "Stripe")
             }
+
             is PaymentSheetResult.Canceled -> {
-                setStatusPayment("unpaid")
-                startOrderResultActivity("Pending","Stripe")
-                Toast.makeText(this, "Payment Canceled", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Payment Cancelled", Toast.LENGTH_SHORT).show()
+                startOrderResultActivity("Pending", "Stripe")
             }
+
             is PaymentSheetResult.Failed -> {
-                setStatusPayment("unpaid")
-                startOrderResultActivity("Pending","Stripe")
-                Toast.makeText(this, "Payment Failed: ${paymentSheetResult.error.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Payment failed", Toast.LENGTH_SHORT).show()
+                startOrderResultActivity("Pending", "Stripe")
             }
         }
     }
 
-    private fun zaloPay(){
-        val amountToPay =totalPayment.toInt()
-        Log.d("OrderInformation",amountToPay.toString())
+    private fun zaloPay() {
+        val amountToPay = totalPayment.toInt()
+        Log.d("OrderInformation", amountToPay.toString())
         val orderApi = CreateOrder()
         try {
             val data = orderApi.createOrder(amountToPay.toString())
@@ -293,69 +341,87 @@ class OrderInnformationActivity : AppCompatActivity() {
             if (code == "1") {
                 val token = data.getString("zptranstoken")
 
-                ZaloPaySDK.getInstance().payOrder(this@OrderInnformationActivity, token, "demozpdkt://appt", object :
-                    PayOrderListener {
-                    override fun onPaymentSucceeded(transactionId: String, transToken: String, appTransID: String) {
-                        setStatusPayment("paid")
-                        startOrderResultActivity("Success", "Zalo Pay")
-                        Toast.makeText(this@OrderInnformationActivity, "Payment Successful", Toast.LENGTH_SHORT).show()
-                    }
+                ZaloPaySDK.getInstance()
+                    .payOrder(this@OrderInnformationActivity, token, "demozpdkt://appt", object :
+                        PayOrderListener {
+                        override fun onPaymentSucceeded(
+                            transactionId: String,
+                            transToken: String,
+                            appTransID: String
+                        ) {
+                            setStatusPayment("paid")
+                            startOrderResultActivity("Success", "Zalo Pay")
+                            Toast.makeText(
+                                this@OrderInnformationActivity,
+                                "Payment Successful",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
 
-                    override fun onPaymentCanceled(zpTransToken: String, appTransID: String) {
-                        setStatusPayment("unpaid")
-                        startOrderResultActivity("Pending", "Zalo Pay")
-                        Toast.makeText(this@OrderInnformationActivity, "Payment Cancelled", Toast.LENGTH_SHORT).show()
-                    }
+                        override fun onPaymentCanceled(zpTransToken: String, appTransID: String) {
+                            startOrderResultActivity("Pending", "Zalo Pay")
+                            Toast.makeText(
+                                this@OrderInnformationActivity,
+                                "Payment Cancelled",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
 
-                    override fun onPaymentError(zaloPayError: ZaloPayError, zpTransToken: String, appTransID: String) {
-                        setStatusPayment("unpaid")
-                        startOrderResultActivity("Pending", "Zalo Pay")
-                        Toast.makeText(this@OrderInnformationActivity, "Payment Failed", Toast.LENGTH_SHORT).show()
-                    }
-                })
+                        override fun onPaymentError(
+                            zaloPayError: ZaloPayError,
+                            zpTransToken: String,
+                            appTransID: String
+                        ) {
+                            startOrderResultActivity("Pending", "Zalo Pay")
+                            Toast.makeText(
+                                this@OrderInnformationActivity,
+                                "Payment Failed",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    })
             }
 
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
-    private fun startOrderResultActivity(paymentStatus: String, methodPayment: String) {
-        val intent = Intent(this@OrderInnformationActivity, OrderResultActivity::class.java)
-        val currentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
-        intent.putExtra("order_id", orderId)
-        intent.putExtra("payment_status", paymentStatus)
-        intent.putExtra("name", getName())
-        intent.putExtra("phone", getPhone())
-        intent.putExtra("address", binding.tvAddress.text.toString())
-        intent.putExtra("total_payment", totalPayment)
-        intent.putExtra("payment_method", methodPayment)
-        intent.putExtra("time_create", currentTime)
-        intent.putExtra("message",binding.tvMessageOrdInf.text.toString())
 
-        Log.d("OrderInformationActivity", "Starting OrderResultActivity with the following data:")
-        Log.d("OrderInformationActivity", "order_id: $orderId")
-        Log.d("OrderInformationActivity", "payment_status: $paymentStatus")
-        Log.d("OrderInformationActivity", "name: ${getName()}")
-        Log.d("OrderInformationActivity", "phone: ${getPhone()}")
-        Log.d("OrderInformationActivity", "address: ${binding.tvAddress.text.toString()}")
-        Log.d("OrderInformationActivity", "total_payment: $totalPayment")
-        Log.d("OrderInformationActivity", "payment_method: $methodPayment")
-        Log.d("OrderInformationActivity", "time_create: $currentTime")
-        Log.d("OrderInformationActivity", "message: ${binding.tvMessageOrdInf.text.toString()}")
-        startActivity(intent)
-        finish()
+    private fun startOrderResultActivity(paymentStatus: String, methodPayment: String) {
+
+            val intent = Intent(this@OrderInnformationActivity, OrderResultActivity::class.java)
+            val currentTime =
+                SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+            intent.putExtra("order_id", orderId ?: "N/A");
+            intent.putExtra("payment_status", paymentStatus)
+            intent.putExtra("name", getName())
+            intent.putExtra("phone", getPhone())
+            intent.putExtra("address", binding.tvAddress.text.toString())
+            intent.putExtra("total_payment", totalPayment)
+            intent.putExtra("payment_method", methodPayment)
+            intent.putExtra("time_create", currentTime)
+            intent.putExtra("message", binding.tvMessageOrdInf.text.toString())
+
+            Log.d("OrderInformationActivity", "Starting OrderResultActivity with the following data:")
+            Log.d("OrderInformationActivity", "order_id: $orderId")
+            Log.d("OrderInformationActivity", "payment_status: $paymentStatus")
+            Log.d("OrderInformationActivity", "name: ${getName()}")
+            Log.d("OrderInformationActivity", "phone: ${getPhone()}")
+            Log.d("OrderInformationActivity", "address: ${binding.tvAddress.text}")
+            Log.d("OrderInformationActivity", "total_payment: $totalPayment")
+            Log.d("OrderInformationActivity", "payment_method: $methodPayment")
+            Log.d("OrderInformationActivity", "time_create: $currentTime")
+            Log.d("OrderInformationActivity", "message: ${binding.tvMessageOrdInf.text.toString()}")
+            startActivity(intent)
+            finish()
     }
 
-    private fun setStatusPayment(status:String){
-        paymentViewModel.updatePaymentStatus(orderId,status,getEmail(),tokenFcm)
-        paymentViewModel.paymentStatus.observe(this@OrderInnformationActivity, Observer {isSuccess ->
-            if (isSuccess) {
-                Toast.makeText(this@OrderInnformationActivity, "Re-pay order successfully", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this@OrderInnformationActivity, "Failed to Re-pay  order", Toast.LENGTH_SHORT).show()
-            }
-        })
-
+    private fun setStatusPayment(status: String) {
+        try {
+            paymentViewModel.updatePaymentStatus(orderId, status, getEmail(), tokenFcm)
+        } catch (e: Exception) {
+            TODO("Not yet implemented")
+        }
     }
 
     private fun getEmail(): String {
@@ -369,19 +435,21 @@ class OrderInnformationActivity : AppCompatActivity() {
     private fun getName(): String {
         return SharedPreferencesHelper.getUserName(this) ?: ""
     }
-    private fun getToken(){
+
+    private fun getToken() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful){
-                Log.w("TAG","Failed token", task.exception)
+            if (!task.isSuccessful) {
+                Log.w("TAG", "Failed token", task.exception)
                 return@OnCompleteListener
             }
-            val token1 =task.result
-            tokenFcm=token1
-            Log.i("Token",token1)
+            val token1 = task.result
+            tokenFcm = token1
+            Log.i("Token", token1)
 
         })
 
     }
+
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         ZaloPaySDK.getInstance().onResult(intent)
