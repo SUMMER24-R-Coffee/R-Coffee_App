@@ -320,12 +320,10 @@ class OrderInnformationActivity : AppCompatActivity() {
             }
 
             is PaymentSheetResult.Canceled -> {
-                Toast.makeText(this, "Payment Cancelled", Toast.LENGTH_SHORT).show()
                 startOrderResultActivity("Pending", "Stripe")
             }
 
             is PaymentSheetResult.Failed -> {
-                Toast.makeText(this, "Payment failed", Toast.LENGTH_SHORT).show()
                 startOrderResultActivity("Pending", "Stripe")
             }
         }
@@ -420,7 +418,7 @@ class OrderInnformationActivity : AppCompatActivity() {
         try {
             paymentViewModel.updatePaymentStatus(orderId, status, getEmail(), tokenFcm)
         } catch (e: Exception) {
-            TODO("Not yet implemented")
+            Log.d("Exception", "Message"+e.message)
         }
     }
 
