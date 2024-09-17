@@ -42,7 +42,10 @@ class AuthViewModel(private val authRepository: AuthRepository) : ViewModel() {
                         requestCodeError.postValue(body?.message ?: "Unknown error")
                     }
                 } else {
-                    Log.e("AuthViewModel", "Failed to send verification code: ${response.message()}")
+                    Log.e(
+                        "AuthViewModel",
+                        "Failed to send verification code: ${response.message()}"
+                    )
                     requestCodeError.postValue("Failed to send verification code: ${response.message()}")
                 }
             } catch (e: Exception) {
@@ -71,7 +74,12 @@ class AuthViewModel(private val authRepository: AuthRepository) : ViewModel() {
                 }
             } catch (e: Exception) {
                 Log.e("AuthViewModel", "An error occurred: ${e.message}")
-                _registerResponse.postValue(Response.error(500, ResponseBody.create(null, e.message ?: "Unknown error")))
+                _registerResponse.postValue(
+                    Response.error(
+                        500,
+                        ResponseBody.create(null, e.message ?: "Unknown error")
+                    )
+                )
             }
         }
     }

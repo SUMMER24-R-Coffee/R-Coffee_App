@@ -43,7 +43,8 @@ class OrderResultActivity : AppCompatActivity() {
         if (paymentStatus.equals("Pending", ignoreCase = true)) {
             val pendingIcon: Drawable? = ContextCompat.getDrawable(this, R.drawable.error_filledsvg)
             binding.fabResult.setImageDrawable(pendingIcon)
-            binding.fabResult.imageTintList = ContextCompat.getColorStateList(this, R.color.yellow_erth)
+            binding.fabResult.imageTintList =
+                ContextCompat.getColorStateList(this, R.color.yellow_erth)
         }
 
         binding.tvORDID.text = orderId
@@ -65,7 +66,32 @@ class OrderResultActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.tvORDID.text = null
+        binding.tvStatusPayment.text = null
+        binding.tvTotalPaymentR.text = null
+        binding.tvTimePayment.text = null
+        binding.tvPhoneOrder.text = null
+        binding.tvNameOrd.text = null
+        binding.tvAddressDeliver.text = null
+        binding.tvMessageOrder.text = null
+        binding.tvMethodPay.text = null
+
+        intent.removeExtra("order_id")
+        intent.removeExtra("payment_status")
+        intent.removeExtra("total_payment")
+        intent.removeExtra("payment_method")
+        intent.removeExtra("name")
+        intent.removeExtra("phone")
+        intent.removeExtra("address")
+        intent.removeExtra("time_create")
+        intent.removeExtra("message")
+    }
+
+
     private fun navigateToMainActivity() {
+
         val intent = Intent(this@OrderResultActivity, MainActivity::class.java)
         startActivity(intent)
         finish()

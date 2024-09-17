@@ -24,28 +24,35 @@ class PaymentViewModel(private val paymentRepository: PaymentRepository) : ViewM
             }
         }
     }
-    fun updatePaymentStatus(orderId: String, status: String, emailUser:String, token: String) {
-        var paymentDetail = PaymentDetail(
+
+    fun updatePaymentStatus(orderId: String, status: String, emailUser: String, token: String) {
+        val paymentDetail = PaymentDetail(
             payment_id = 0,
             status = status,
             order_id = orderId,
             email_user = emailUser,
-            token= token
+            token = token
         )
         viewModelScope.launch(Dispatchers.IO) {
-            paymentRepository.updatePaymentStatus(orderId, paymentDetail) { isSuccess ->
-                Log.d("PaymentViewModel", "success")
-                _paymentStatus.postValue(isSuccess)
+            try {
+                paymentRepository.updatePaymentStatus(orderId, paymentDetail) { isSuccess ->
+                    Log.d("PaymentViewModel", "Update Payment Success: $isSuccess")
+                    _paymentStatus.postValue(isSuccess)
+                }
+            } catch (e: Exception) {
+                Log.e("PaymentViewModel", "Error updating payment status", e)
             }
         }
     }
+
     fun createPaymentIntent(params: Map<String, String>): LiveData<PaymentIntentResponse> {
         return paymentRepository.createPaymentIntent(params)
     }
 
 }
 
-class PaymentViewModelFactory(private val paymentRepository: PaymentRepository) : ViewModelProvider.Factory {
+class PaymentViewModelFactory(private val paymentRepository: PaymentRepository) :
+    ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(PaymentViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

@@ -10,7 +10,7 @@ import datlowashere.project.rcoffee.data.repository.BasketRepository
 import datlowashere.project.rcoffee.data.repository.FavoriteRepository
 import kotlinx.coroutines.launch
 
-class FavoriteViewModel(private val favoriteRepository: FavoriteRepository) :ViewModel() {
+class FavoriteViewModel(private val favoriteRepository: FavoriteRepository) : ViewModel() {
     private val _favoriteResponse = MutableLiveData<Favorite>()
     val favoriteResponse: LiveData<Favorite> get() = _favoriteResponse
 
@@ -28,7 +28,9 @@ class FavoriteViewModel(private val favoriteRepository: FavoriteRepository) :Vie
         }
     }
 }
-class FavoriteViewModelFactory(private val favoriteRepository: FavoriteRepository) : ViewModelProvider.Factory {
+
+class FavoriteViewModelFactory(private val favoriteRepository: FavoriteRepository) :
+    ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(FavoriteViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

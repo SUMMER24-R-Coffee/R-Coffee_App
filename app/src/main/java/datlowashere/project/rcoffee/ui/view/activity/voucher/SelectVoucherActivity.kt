@@ -21,7 +21,7 @@ import datlowashere.project.rcoffee.viewmodel.VoucherViewModelFactory
 
 class SelectVoucherActivity : AppCompatActivity(), VoucherAdapter.OnItemClickListener {
     private lateinit var binding: ActivitySelectVoucherBinding
-    private lateinit var voucherViewModel:VoucherViewModel
+    private lateinit var voucherViewModel: VoucherViewModel
     private lateinit var voucherAdapter: VoucherAdapter
 
 

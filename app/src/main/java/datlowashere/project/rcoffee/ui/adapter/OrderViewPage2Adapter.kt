@@ -9,7 +9,8 @@ import datlowashere.project.rcoffee.ui.view.fragment.order.OrderCancelFragment
 import datlowashere.project.rcoffee.ui.view.fragment.order.OrderCompletedFragment
 import datlowashere.project.rcoffee.ui.view.fragment.order.OrderFragment
 
-class OrderViewPage2Adapterr(fragmentManager: FragmentManager, lifecycle: Lifecycle): FragmentStateAdapter(fragmentManager, lifecycle) {
+class OrderViewPage2Adapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
+    FragmentStateAdapter(fragmentManager, lifecycle) {
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> OrderFragment()

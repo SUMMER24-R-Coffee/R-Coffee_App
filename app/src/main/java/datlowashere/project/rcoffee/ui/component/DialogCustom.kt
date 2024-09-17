@@ -47,12 +47,12 @@ object DialogCustom {
         val btnGoToLogin = dialogView.findViewById<Button>(R.id.btnGoToLogin)
         val btnCancel = dialogView.findViewById<Button>(R.id.btnCancel)
         val img = dialogView.findViewById<ImageView>(R.id.imgDialogcustom)
-        val title =dialogView.findViewById<TextView>(R.id.tvTitleDialog)
-        val message =dialogView.findViewById<TextView>(R.id.tvMessageDialog)
-        btnGoToLogin.text="Log out"
+        val title = dialogView.findViewById<TextView>(R.id.tvTitleDialog)
+        val message = dialogView.findViewById<TextView>(R.id.tvMessageDialog)
+        btnGoToLogin.text = "Log out"
         img.setImageResource(R.drawable.logomini)
-        title.text="Comfirm"
-        message.text="Are you sure to log out?"
+        title.text = "Comfirm"
+        message.text = "Are you sure to log out?"
 
 
         btnGoToLogin.setOnClickListener {
@@ -66,6 +66,7 @@ object DialogCustom {
 
         alertDialog.show()
     }
+
     fun showDeleteConfirmationDialog(context: Context, onDeleteConfirmed: () -> Unit) {
         val alertDialogBuilder = AlertDialog.Builder(context)
         alertDialogBuilder.apply {
@@ -80,6 +81,7 @@ object DialogCustom {
             show()
         }
     }
+
     fun showReceiveConfirmationDialog(context: Context, onComfirmReceive: () -> Unit) {
         val alertDialogBuilder = AlertDialog.Builder(context)
         alertDialogBuilder.apply {

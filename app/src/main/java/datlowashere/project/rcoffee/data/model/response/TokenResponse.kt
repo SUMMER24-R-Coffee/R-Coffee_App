@@ -1,5 +1,5 @@
 package datlowashere.project.rcoffee.data.model.response
 
-data class TokenResponse (
+data class TokenResponse(
     val token: String
 )

@@ -11,7 +11,7 @@ import datlowashere.project.rcoffee.data.repository.RatingRepository
 import datlowashere.project.rcoffee.utils.Resource
 import kotlinx.coroutines.launch
 
-class RatingViewModel(private val repository: RatingRepository, ) : ViewModel()  {
+class RatingViewModel(private val repository: RatingRepository) : ViewModel() {
 
     private val _ratings = MutableLiveData<Resource<List<Rating>>>()
     val ratings: LiveData<Resource<List<Rating>>> get() = _ratings
@@ -44,6 +44,7 @@ class RatingViewModel(private val repository: RatingRepository, ) : ViewModel() 
             }
         }
     }
+
     fun insertRating(rating: Rating) {
         viewModelScope.launch {
             _insertRatingResult.postValue(Resource.Loading())
@@ -51,13 +52,17 @@ class RatingViewModel(private val repository: RatingRepository, ) : ViewModel() 
                 val result = repository.insertRating(rating)
                 _insertRatingResult.postValue(Resource.Success(result))
             } catch (e: Exception) {
-                _insertRatingResult.postValue(Resource.Error(e.localizedMessage ?: "An error occurred"))
+                _insertRatingResult.postValue(
+                    Resource.Error(
+                        e.localizedMessage ?: "An error occurred"
+                    )
+                )
             }
         }
     }
 }
 
-class RatingViewModelFactory( private val repository: RatingRepository) : ViewModelProvider.Factory {
+class RatingViewModelFactory(private val repository: RatingRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(RatingViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

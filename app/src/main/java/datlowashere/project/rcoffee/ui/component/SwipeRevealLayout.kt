@@ -41,7 +41,12 @@ class SwipeRevealLayout @JvmOverloads constructor(
         val contentHeight = contentView.measuredHeight
         val actionWidth = actionView.measuredWidth
         contentView.layout(0 - dragOffset, 0, contentWidth - dragOffset, contentHeight)
-        actionView.layout(contentWidth - dragOffset, 0, contentWidth + actionWidth - dragOffset, contentHeight)
+        actionView.layout(
+            contentWidth - dragOffset,
+            0,
+            contentWidth + actionWidth - dragOffset,
+            contentHeight
+        )
     }
 
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
@@ -58,7 +63,13 @@ class SwipeRevealLayout @JvmOverloads constructor(
             return child == contentView
         }
 
-        override fun onViewPositionChanged(changedView: View, left: Int, top: Int, dx: Int, dy: Int) {
+        override fun onViewPositionChanged(
+            changedView: View,
+            left: Int,
+            top: Int,
+            dx: Int,
+            dy: Int
+        ) {
             dragOffset = left
             actionView.translationX = left.toFloat()
             invalidate()

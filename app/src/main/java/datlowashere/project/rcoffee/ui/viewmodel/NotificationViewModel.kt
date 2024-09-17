@@ -7,7 +7,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
-class NotificationViewModel(private val notificationRepository: NotificationRepository) : ViewModel() {
+class NotificationViewModel(private val notificationRepository: NotificationRepository) :
+    ViewModel() {
 
     private val _notifications = MutableLiveData<List<Notification>>()
     val notifications: LiveData<List<Notification>> get() = _notifications
@@ -48,7 +49,8 @@ class NotificationViewModel(private val notificationRepository: NotificationRepo
     fun deleteNotification(notificationId: Int) {
         viewModelScope.launch {
             try {
-                val response: Response<Void> = notificationRepository.deleteNotification(notificationId)
+                val response: Response<Void> =
+                    notificationRepository.deleteNotification(notificationId)
                 if (response.isSuccessful) {
                     _deleteNotificationResult.postValue(Result.success(response.body()) as Result<Void>?)
                 } else {
@@ -59,7 +61,12 @@ class NotificationViewModel(private val notificationRepository: NotificationRepo
             }
         }
     }
-    fun getUnreadNotificationCount(emailUser: String, onSuccess: (Int) -> Unit, onError: (String) -> Unit) {
+
+    fun getUnreadNotificationCount(
+        emailUser: String,
+        onSuccess: (Int) -> Unit,
+        onError: (String) -> Unit
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val count = notificationRepository.getUnreadNotificationCount(emailUser)
@@ -71,7 +78,8 @@ class NotificationViewModel(private val notificationRepository: NotificationRepo
     }
 }
 
-class NotificationViewModelFactory(private val notificationRepository: NotificationRepository) : ViewModelProvider.Factory {
+class NotificationViewModelFactory(private val notificationRepository: NotificationRepository) :
+    ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

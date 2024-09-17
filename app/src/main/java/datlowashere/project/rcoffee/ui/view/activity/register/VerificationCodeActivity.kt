@@ -115,7 +115,8 @@ class VerificationCodeActivity : AppCompatActivity() {
         authViewModel.requestCodeResponse.observe(this) { response ->
             progressDialogHelper.dismiss()
             if (response.isSuccessful) {
-                Toast.makeText(this, "Verification code sent to your email", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Verification code sent to your email", Toast.LENGTH_SHORT)
+                    .show()
                 startCountdown()
             } else {
                 val errorBody = response.errorBody()?.string()

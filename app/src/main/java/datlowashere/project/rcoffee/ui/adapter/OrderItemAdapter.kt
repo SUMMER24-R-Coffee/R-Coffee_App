@@ -19,7 +19,8 @@ class OrderItemAdapter(
     private val onItemClicked: (Order) -> Unit,
 ) : RecyclerView.Adapter<OrderItemAdapter.OrderItemViewHolder>() {
 
-    inner class OrderItemViewHolder(private val binding: LayoutItemOrderBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class OrderItemViewHolder(private val binding: LayoutItemOrderBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(order: Order) {
             Glide.with(binding.imgProductOrderItem.context)
@@ -29,18 +30,43 @@ class OrderItemAdapter(
                 .into(binding.imgProductOrderItem)
 
             binding.tvNameOrderItem.text = order.name
-            binding.tvPriceOrderProductItem.text = FormatterHelper.formatCurrency(order.total_amount)
-            binding.tvQuantityOrderProductItem.text ="x"+order.total_item.toString()
+            binding.tvPriceOrderProductItem.text =
+                FormatterHelper.formatCurrency(order.total_amount)
+            binding.tvQuantityOrderProductItem.text = "x" + order.total_item.toString()
             binding.tvTotalItem.text = "Detail"
             binding.tvStatusOrderItem.text = order.status_order
 
             when (order.status_order.toLowerCase()) {
-                "cancelled" -> binding.tvStatusOrderItem.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red_exp))
-                "delivered" -> binding.tvStatusOrderItem.setTextColor(ContextCompat.getColor(binding.root.context, R.color.green_ext))
-                "delivering" -> binding.tvStatusOrderItem.setTextColor(ContextCompat.getColor(binding.root.context, R.color.blue_bld))
-                else -> binding.tvStatusOrderItem.setTextColor(ContextCompat.getColor(binding.root.context, R.color.yellow_erth))
+                "cancelled" -> binding.tvStatusOrderItem.setTextColor(
+                    ContextCompat.getColor(
+                        binding.root.context,
+                        R.color.red_exp
+                    )
+                )
+
+                "delivered" -> binding.tvStatusOrderItem.setTextColor(
+                    ContextCompat.getColor(
+                        binding.root.context,
+                        R.color.green_ext
+                    )
+                )
+
+                "delivering" -> binding.tvStatusOrderItem.setTextColor(
+                    ContextCompat.getColor(
+                        binding.root.context,
+                        R.color.blue_bld
+                    )
+                )
+
+                else -> binding.tvStatusOrderItem.setTextColor(
+                    ContextCompat.getColor(
+                        binding.root.context,
+                        R.color.yellow_erth
+                    )
+                )
             }
-            binding.tvTimeOrderItem.text = order.create_at?.let { FormatterHelper.formatDateTime(it) }
+            binding.tvTimeOrderItem.text =
+                order.create_at?.let { FormatterHelper.formatDateTime(it) }
 
             binding.root.setOnClickListener {
                 onItemClicked(order)
@@ -54,7 +80,8 @@ class OrderItemAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrderItemViewHolder {
-        val binding = LayoutItemOrderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            LayoutItemOrderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return OrderItemViewHolder(binding)
     }
 

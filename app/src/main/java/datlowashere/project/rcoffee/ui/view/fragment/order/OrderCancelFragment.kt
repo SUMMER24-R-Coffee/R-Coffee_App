@@ -29,7 +29,7 @@ class OrderCancelFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentOrderCancelBinding.inflate(layoutInflater,container,false)
+        _binding = FragmentOrderCancelBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -41,7 +41,8 @@ class OrderCancelFragment : Fragment() {
 
         orderItemAdapter = OrderItemAdapter(
             listOf(),
-            onItemClicked = { order ->handleItemClick(order) },)
+            onItemClicked = { order -> handleItemClick(order) },
+        )
 
         binding.rcvCancel.apply {
             layoutManager = LinearLayoutManager(context)
@@ -52,7 +53,8 @@ class OrderCancelFragment : Fragment() {
             val filteredOrders = orders.filter {
                 it.status_order == "cancelled"
             }
-            binding.tvMessageOrderCancelFragment.visibility = if (filteredOrders.isEmpty()) View.VISIBLE else View.GONE
+            binding.tvMessageOrderCancelFragment.visibility =
+                if (filteredOrders.isEmpty()) View.VISIBLE else View.GONE
 
             orderItemAdapter.updateOrders(filteredOrders)
         }
@@ -64,13 +66,14 @@ class OrderCancelFragment : Fragment() {
         intent.putExtra("ORDER", order)
         startActivity(intent)
     }
-    private fun getEmail():String{
+
+    private fun getEmail(): String {
         return SharedPreferencesHelper.getUserEmail(requireContext()) ?: " "
 
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding=null
+        _binding = null
     }
 }

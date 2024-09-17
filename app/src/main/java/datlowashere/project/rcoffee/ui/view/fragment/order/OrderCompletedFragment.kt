@@ -39,7 +39,8 @@ class OrderCompletedFragment : Fragment() {
 
         orderItemAdapter = OrderItemAdapter(
             listOf(),
-            onItemClicked = { order ->handleItemClick(order)
+            onItemClicked = { order ->
+                handleItemClick(order)
             },
 
             )
@@ -53,7 +54,8 @@ class OrderCompletedFragment : Fragment() {
             val filteredOrders = orders.filter {
                 it.status_order == "delivered"
             }
-            binding.tvMessageOrderCompletedFragment.visibility = if (filteredOrders.isEmpty()) View.VISIBLE else View.GONE
+            binding.tvMessageOrderCompletedFragment.visibility =
+                if (filteredOrders.isEmpty()) View.VISIBLE else View.GONE
             orderItemAdapter.updateOrders(filteredOrders)
         }
         orderViewModel.getOrders(getEmail())
@@ -64,10 +66,12 @@ class OrderCompletedFragment : Fragment() {
         intent.putExtra("ORDER", order)
         startActivity(intent)
     }
-    private fun getEmail():String{
+
+    private fun getEmail(): String {
         return SharedPreferencesHelper.getUserEmail(requireContext()) ?: " "
 
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

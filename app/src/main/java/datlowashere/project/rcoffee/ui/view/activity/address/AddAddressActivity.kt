@@ -39,10 +39,10 @@ class AddAddressActivity : AppCompatActivity() {
         binding.btnSaveLocation.setOnClickListener {
             val addressText = binding.edLocation.text.toString()
             if (addressText.isNotBlank()) {
-                val newAddress = Address(addressText,getEmail())
+                val newAddress = Address(addressText, getEmail())
                 addressViewModel.addAddress(newAddress)
                 finish()
-            }else{
+            } else {
                 Toast.makeText(this, "Address cannot be empty", Toast.LENGTH_SHORT).show()
 
             }

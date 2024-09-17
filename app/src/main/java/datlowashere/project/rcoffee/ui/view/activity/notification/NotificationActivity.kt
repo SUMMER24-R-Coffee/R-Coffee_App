@@ -28,7 +28,8 @@ class NotificationActivity : AppCompatActivity() {
 
         val repository = NotificationRepository()
         val factory = NotificationViewModelFactory(repository)
-        notificationViewModel = ViewModelProvider(this, factory).get(NotificationViewModel::class.java)
+        notificationViewModel =
+            ViewModelProvider(this, factory).get(NotificationViewModel::class.java)
 
         setupRecyclerView()
         observeViewModel()
@@ -50,15 +51,16 @@ class NotificationActivity : AppCompatActivity() {
     private fun observeViewModel() {
         notificationViewModel.notifications.observe(this) { notifications ->
             notificationAdapter.updateNotifications(notifications)
-            binding.tvMessageNotification.visibility = if (notifications.isEmpty()) View.VISIBLE else View.GONE
+            binding.tvMessageNotification.visibility =
+                if (notifications.isEmpty()) View.VISIBLE else View.GONE
         }
 
         notificationViewModel.markAsReadResult.observe(this) { result ->
             result.onSuccess {
-                Log.d("NotificationActivity","Masked as read successful")
+                Log.d("NotificationActivity", "Masked as read successful")
                 notificationViewModel.getNotifications(getEmail())
             }.onFailure {
-                Log.d("NotificationActivity","Masked as read failed")
+                Log.d("NotificationActivity", "Masked as read failed")
             }
         }
 

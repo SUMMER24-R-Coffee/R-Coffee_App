@@ -43,7 +43,8 @@ class RegisterActivity : AppCompatActivity() {
         authViewModel.requestCodeResponse.observe(this, Observer { response ->
             progressDialogHelper.dismiss()
             if (response.isSuccessful) {
-                Toast.makeText(this, "Verification code sent to your email", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Verification code sent to your email", Toast.LENGTH_SHORT)
+                    .show()
                 Log.d("RegisterActivity", "Verification code sent successfully")
 
                 // Proceed to VerificationActivity
@@ -52,7 +53,11 @@ class RegisterActivity : AppCompatActivity() {
                 intent.putExtra("password", binding.tedPasswordRegis.text.toString())
                 startActivity(intent)
             } else {
-                Toast.makeText(this, "Failed to send verification code: ${response.message()}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "Failed to send verification code: ${response.message()}",
+                    Toast.LENGTH_SHORT
+                ).show()
                 Log.e("RegisterActivity", "Failed to send verification code: ${response.message()}")
             }
         })
@@ -89,7 +94,8 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         if (password.length < 6) {
-            Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_SHORT)
+                .show()
             return false
         }
 
