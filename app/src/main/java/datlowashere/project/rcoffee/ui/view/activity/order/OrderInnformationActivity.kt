@@ -306,7 +306,7 @@ class OrderInnformationActivity : AppCompatActivity() {
                 }
             }
         } catch (e: Exception) {
-            Log.d("Exception Stripe", ":"+e.message)
+            Log.d("Exception Stripe", ":" + e.message)
         }
 
     }
@@ -387,38 +387,38 @@ class OrderInnformationActivity : AppCompatActivity() {
 
     private fun startOrderResultActivity(paymentStatus: String, methodPayment: String) {
 
-            val intent = Intent(this@OrderInnformationActivity, OrderResultActivity::class.java)
-            val currentTime =
-                SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
-            intent.putExtra("order_id", orderId ?: "N/A");
-            intent.putExtra("payment_status", paymentStatus)
-            intent.putExtra("name", getName())
-            intent.putExtra("phone", getPhone())
-            intent.putExtra("address", binding.tvAddress.text.toString())
-            intent.putExtra("total_payment", totalPayment)
-            intent.putExtra("payment_method", methodPayment)
-            intent.putExtra("time_create", currentTime)
-            intent.putExtra("message", binding.tvMessageOrdInf.text.toString())
+        val intent = Intent(this@OrderInnformationActivity, OrderResultActivity::class.java)
+        val currentTime =
+            SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+        intent.putExtra("order_id", orderId ?: "N/A");
+        intent.putExtra("payment_status", paymentStatus)
+        intent.putExtra("name", getName())
+        intent.putExtra("phone", getPhone())
+        intent.putExtra("address", binding.tvAddress.text.toString())
+        intent.putExtra("total_payment", totalPayment)
+        intent.putExtra("payment_method", methodPayment)
+        intent.putExtra("time_create", currentTime)
+        intent.putExtra("message", binding.tvMessageOrdInf.text.toString())
 
-            Log.d("OrderInformationActivity", "Starting OrderResultActivity with the following data:")
-            Log.d("OrderInformationActivity", "order_id: $orderId")
-            Log.d("OrderInformationActivity", "payment_status: $paymentStatus")
-            Log.d("OrderInformationActivity", "name: ${getName()}")
-            Log.d("OrderInformationActivity", "phone: ${getPhone()}")
-            Log.d("OrderInformationActivity", "address: ${binding.tvAddress.text}")
-            Log.d("OrderInformationActivity", "total_payment: $totalPayment")
-            Log.d("OrderInformationActivity", "payment_method: $methodPayment")
-            Log.d("OrderInformationActivity", "time_create: $currentTime")
-            Log.d("OrderInformationActivity", "message: ${binding.tvMessageOrdInf.text.toString()}")
-            startActivity(intent)
-            finish()
+        Log.d("OrderInformationActivity", "Starting OrderResultActivity with the following data:")
+        Log.d("OrderInformationActivity", "order_id: $orderId")
+        Log.d("OrderInformationActivity", "payment_status: $paymentStatus")
+        Log.d("OrderInformationActivity", "name: ${getName()}")
+        Log.d("OrderInformationActivity", "phone: ${getPhone()}")
+        Log.d("OrderInformationActivity", "address: ${binding.tvAddress.text}")
+        Log.d("OrderInformationActivity", "total_payment: $totalPayment")
+        Log.d("OrderInformationActivity", "payment_method: $methodPayment")
+        Log.d("OrderInformationActivity", "time_create: $currentTime")
+        Log.d("OrderInformationActivity", "message: ${binding.tvMessageOrdInf.text.toString()}")
+        startActivity(intent)
+        finish()
     }
 
     private fun setStatusPayment(status: String) {
         try {
             paymentViewModel.updatePaymentStatus(orderId, status, getEmail(), tokenFcm)
         } catch (e: Exception) {
-            Log.d("Exception", "Message"+e.message)
+            Log.d("Exception", "Message" + e.message)
         }
     }
 

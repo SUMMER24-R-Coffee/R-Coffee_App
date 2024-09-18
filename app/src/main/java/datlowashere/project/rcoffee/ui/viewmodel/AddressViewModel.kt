@@ -36,7 +36,9 @@ class AddressViewModel(private val addressRepository: AddressRepository) : ViewM
         }
     }
 }
-class AddressViewModelFactory(private val addressRepository: AddressRepository) : ViewModelProvider.Factory {
+
+class AddressViewModelFactory(private val addressRepository: AddressRepository) :
+    ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(AddressViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

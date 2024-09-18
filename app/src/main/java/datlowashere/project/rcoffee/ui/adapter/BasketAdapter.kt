@@ -25,7 +25,8 @@ class BasketAdapter(
 ) : RecyclerView.Adapter<BasketAdapter.BasketViewHolder>() {
     private val selectedBaskets = mutableMapOf<Int, Basket>()
 
-    inner class BasketViewHolder(private val binding: LayoutItemBasketBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class BasketViewHolder(private val binding: LayoutItemBasketBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(basket: Basket) {
             Glide.with(binding.imgProductBasketItem.context)
                 .load(basket.img)
@@ -59,7 +60,7 @@ class BasketAdapter(
                     updateSelectedBasketQuantity(basket, newQuantity)
 
                 }
-                if(newQuantity <1){
+                if (newQuantity < 1) {
                     showDeleteConfirmationDialog(basket)
                 }
                 calculateTotalAmount()
@@ -85,7 +86,8 @@ class BasketAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BasketViewHolder {
-        val binding = LayoutItemBasketBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            LayoutItemBasketBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return BasketViewHolder(binding)
     }
 

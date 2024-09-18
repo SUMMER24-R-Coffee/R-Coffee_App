@@ -12,7 +12,11 @@ class AddressAdapter(
 ) : RecyclerView.Adapter<AddressAdapter.AddressViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddressViewHolder {
-        val binding = LayoutItemSelectAddressBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = LayoutItemSelectAddressBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return AddressViewHolder(binding)
     }
 
@@ -28,7 +32,8 @@ class AddressAdapter(
         notifyDataSetChanged()
     }
 
-    inner class AddressViewHolder(private val binding: LayoutItemSelectAddressBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class AddressViewHolder(private val binding: LayoutItemSelectAddressBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         init {
             binding.lnAddressSelected.setOnClickListener {
                 val position = adapterPosition

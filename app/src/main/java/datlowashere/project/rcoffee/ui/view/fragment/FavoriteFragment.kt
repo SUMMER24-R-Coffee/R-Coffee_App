@@ -51,7 +51,8 @@ class FavoriteFragment : Fragment(), FavoriteProductAdapter.OnItemClickListener 
 
         val favoriteRepository = FavoriteRepository()
         val favoriteViewModelFactory = FavoriteViewModelFactory(favoriteRepository)
-        favoriteViewModel = ViewModelProvider(this, favoriteViewModelFactory)[FavoriteViewModel::class.java]
+        favoriteViewModel =
+            ViewModelProvider(this, favoriteViewModelFactory)[FavoriteViewModel::class.java]
 
         //TODO: Update the case of last item->clicked and it already delete but have to click a few time to disappear
         favoriteProductAdapter = FavoriteProductAdapter(emptyList(), this)
@@ -68,12 +69,15 @@ class FavoriteFragment : Fragment(), FavoriteProductAdapter.OnItemClickListener 
                     resource.data?.let { products ->
                         Log.d("FavoriteFragment", "Filtered products fetched: ${products.size}")
                         favoriteProductAdapter.updateProducts(products)
-                        binding.tvMessageFav.visibility = if (products.isEmpty()) View.VISIBLE else View.GONE
+                        binding.tvMessageFav.visibility =
+                            if (products.isEmpty()) View.VISIBLE else View.GONE
                     }
                 }
+
                 is Resource.Error -> {
                     Log.e("FavoriteFragment", "Error fetching products: ${resource.message}")
                 }
+
                 is Resource.Loading -> {
                     Log.d("FavoriteFragment", "Loading products")
                 }
@@ -97,7 +101,8 @@ class FavoriteFragment : Fragment(), FavoriteProductAdapter.OnItemClickListener 
             putExtra("product", product)
         }
         Log.d("PRODUCT_INFO", product.toString())
-        startActivity(intent)    }
+        startActivity(intent)
+    }
 
     fun getEmail(): String {
         return SharedPreferencesHelper.getUserEmail(requireContext()) ?: " "

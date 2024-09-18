@@ -28,7 +28,7 @@ import datlowashere.project.rcoffee.ui.viewmodel.AuthViewModel
 import datlowashere.project.rcoffee.ui.viewmodel.AuthViewModelFactory
 import datlowashere.project.rcoffee.utils.SharedPreferencesHelper
 
-class MainActivity : AppCompatActivity()  {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var authViewModel: AuthViewModel
@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity()  {
             putBoolean("SWITCH_TO_CANCELLED", switchToCancelled)
             putBoolean("SWITCH_TO_COMPLETED", switchToCompleted)
             putBoolean("SWITCH_TO_PENDING", switchToPending)
-    }
+        }
         if (switchToCancelled || switchToCompleted) {
             navController.navigate(R.id.nav_history, bundle)
         }
@@ -84,18 +84,22 @@ class MainActivity : AppCompatActivity()  {
                     navController.navigate(R.id.nav_home)
                     true
                 }
+
                 R.id.nav_history -> {
                     navController.navigate(R.id.nav_history)
                     true
                 }
+
                 R.id.nav_fav -> {
                     navController.navigate(R.id.nav_fav)
                     true
                 }
+
                 R.id.nav_settting -> {
                     navController.navigate(R.id.nav_settting)
                     true
                 }
+
                 else -> false
             }
         }
@@ -107,6 +111,7 @@ class MainActivity : AppCompatActivity()  {
         }
 
     }
+
     private fun setupViewModels() {
         val authRepository = AuthRepository()
         val authViewModelFactory = AuthViewModelFactory(authRepository)
@@ -131,9 +136,17 @@ class MainActivity : AppCompatActivity()  {
                                         .placeholder(R.drawable.user_circle)
                                 )
                                 .into(object : CustomTarget<Bitmap>() {
-                                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                                        val borderedBitmap = addBorderToBitmap(resource, dpToPx(2), resources.getColor(R.color.black))
-                                        binding.bottomNav.menu.findItem(R.id.nav_settting)?.icon = BitmapDrawable(resources, borderedBitmap)
+                                    override fun onResourceReady(
+                                        resource: Bitmap,
+                                        transition: Transition<in Bitmap>?
+                                    ) {
+                                        val borderedBitmap = addBorderToBitmap(
+                                            resource,
+                                            dpToPx(2),
+                                            resources.getColor(R.color.black)
+                                        )
+                                        binding.bottomNav.menu.findItem(R.id.nav_settting)?.icon =
+                                            BitmapDrawable(resources, borderedBitmap)
                                     }
 
                                     override fun onLoadCleared(placeholder: Drawable?) {
@@ -153,14 +166,23 @@ class MainActivity : AppCompatActivity()  {
 
     fun addBorderToBitmap(bitmap: Bitmap, borderWidth: Int, borderColor: Int): Bitmap {
         val borderSize = borderWidth * 1
-        val newBitmap = Bitmap.createBitmap(bitmap.width + borderSize, bitmap.height + borderSize, bitmap.config)
+        val newBitmap = Bitmap.createBitmap(
+            bitmap.width + borderSize,
+            bitmap.height + borderSize,
+            bitmap.config
+        )
         val canvas = Canvas(newBitmap)
         val paint = Paint()
 
         paint.isAntiAlias = true
         val bitmapShader = BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
         paint.shader = bitmapShader
-        val rect = RectF(borderWidth.toFloat(), borderWidth.toFloat(), (newBitmap.width - borderWidth).toFloat(), (newBitmap.height - borderWidth).toFloat())
+        val rect = RectF(
+            borderWidth.toFloat(),
+            borderWidth.toFloat(),
+            (newBitmap.width - borderWidth).toFloat(),
+            (newBitmap.height - borderWidth).toFloat()
+        )
         canvas.drawOval(rect, paint)
 
         paint.shader = null

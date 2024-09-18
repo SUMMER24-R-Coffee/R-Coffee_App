@@ -35,14 +35,14 @@ class ProductInformationActivity : AppCompatActivity() {
         binding = ActivityProductInformationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btnBackPrdIm.setOnClickListener{
+        binding.btnBackPrdIm.setOnClickListener {
             finish()
         }
 
         setUpViewModel()
         setupObservers()
 
-        binding.btnUpdateBasket.setOnClickListener{
+        binding.btnUpdateBasket.setOnClickListener {
             setUpButtonUpdateBasket()
         }
 
@@ -52,25 +52,27 @@ class ProductInformationActivity : AppCompatActivity() {
 
     }
 
-    private fun setUpViewModel(){
+    private fun setUpViewModel() {
         val repository = ProductRepository()
         val factory = ProductViewModelFactory(repository)
         productViewModel = ViewModelProvider(this, factory).get(ProductViewModel::class.java)
 
         val basketRepository = BasketRepository()
         val basketViewModelFactory = BasketViewModelFactory(basketRepository)
-        basketViewModel = ViewModelProvider(this, basketViewModelFactory).get(BasketViewModel::class.java)
+        basketViewModel =
+            ViewModelProvider(this, basketViewModelFactory).get(BasketViewModel::class.java)
     }
-    private fun setupObservers(){
+
+    private fun setupObservers() {
         val product: Product? = intent.getParcelableExtra("product")
         product?.let {
             binding.apply {
                 tvProductNamInf.text = it.product_name
                 tvDescriptionPrdInf.text = it.description
                 tvProductPriceInf.text = FormatterHelper.formatCurrency(it.price)
-                tvAverageStarInf.text =String.format("%.1f", it.average_rating)
+                tvAverageStarInf.text = String.format("%.1f", it.average_rating)
 
-                binding.ratingBarProduct.rating= it.average_rating.toFloat()
+                binding.ratingBarProduct.rating = it.average_rating.toFloat()
                 if (product.favorite_id != null) {
                     btnFavoritePrd.setImageResource(R.drawable.red_heart)
                 } else {
@@ -118,7 +120,7 @@ class ProductInformationActivity : AppCompatActivity() {
     }
 
 
-    private fun setUpButtonToBasket(){
+    private fun setUpButtonToBasket() {
         val userEmail = SharedPreferencesHelper.getUserEmail(this)
         if (userEmail.isNullOrEmpty()) {
             DialogCustom.showLoginDialog(this)
@@ -176,7 +178,8 @@ class ProductInformationActivity : AppCompatActivity() {
 
     private fun updateBasketButtonText(quantity: Int, productPrice: Double) {
         val totalPrice = quantity * productPrice
-        binding.btnUpdateBasket.text = "Update Basket - "+FormatterHelper.formatCurrency(totalPrice)
+        binding.btnUpdateBasket.text =
+            "Update Basket - " + FormatterHelper.formatCurrency(totalPrice)
     }
 
 

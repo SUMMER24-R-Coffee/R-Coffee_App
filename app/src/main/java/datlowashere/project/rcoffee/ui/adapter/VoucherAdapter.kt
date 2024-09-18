@@ -14,7 +14,8 @@ class VoucherAdapter(
 ) : RecyclerView.Adapter<VoucherAdapter.VoucherViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VoucherViewHolder {
-        val binding = LayoutItemVoucherBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            LayoutItemVoucherBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return VoucherViewHolder(binding)
     }
 
@@ -25,7 +26,8 @@ class VoucherAdapter(
 
     override fun getItemCount() = vouchers.size
 
-    inner class VoucherViewHolder(private val binding: LayoutItemVoucherBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class VoucherViewHolder(private val binding: LayoutItemVoucherBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         init {
             binding.cardViewItemVoucher.setOnClickListener {
                 val position = adapterPosition
@@ -38,7 +40,8 @@ class VoucherAdapter(
         fun bind(voucher: Voucher) {
             binding.tvVoucherCode.text = voucher.voucher_code
             binding.tvVoucherPercent.text = "${voucher.percent}%"
-            binding.tvVoucherValidDate.text = "Valid "+FormatterHelper.formatDateTime(voucher.valid_date)
+            binding.tvVoucherValidDate.text =
+                "Valid " + FormatterHelper.formatDateTime(voucher.valid_date)
 
             val remainingTime = calculateRemainingTime(voucher.exp_date)
             binding.tvVoucherExpDate.text = remainingTime
@@ -55,6 +58,7 @@ class VoucherAdapter(
 
         return "Expires in $days days, $hours hours, $minutes minutes"
     }
+
     interface OnItemClickListener {
         fun onItemClick(voucher: Voucher)
     }

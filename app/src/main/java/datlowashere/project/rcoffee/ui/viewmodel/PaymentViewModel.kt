@@ -24,6 +24,7 @@ class PaymentViewModel(private val paymentRepository: PaymentRepository) : ViewM
             }
         }
     }
+
     fun updatePaymentStatus(orderId: String, status: String, emailUser: String, token: String) {
         val paymentDetail = PaymentDetail(
             payment_id = 0,
@@ -50,7 +51,8 @@ class PaymentViewModel(private val paymentRepository: PaymentRepository) : ViewM
 
 }
 
-class PaymentViewModelFactory(private val paymentRepository: PaymentRepository) : ViewModelProvider.Factory {
+class PaymentViewModelFactory(private val paymentRepository: PaymentRepository) :
+    ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(PaymentViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

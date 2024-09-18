@@ -39,7 +39,13 @@ class OrderViewModel(private val orderRepository: OrderRepository) : ViewModel()
         }
     }
 
-    fun updateStatusOrder( orderId: String, statusOrder: String, reason:String,emailUser: String, token: String) {
+    fun updateStatusOrder(
+        orderId: String,
+        statusOrder: String,
+        reason: String,
+        emailUser: String,
+        token: String
+    ) {
         val order = OrderResponse(
             status_order = statusOrder,
             reason = reason,
@@ -54,7 +60,9 @@ class OrderViewModel(private val orderRepository: OrderRepository) : ViewModel()
         }
     }
 }
-class OrderViewModelFactory(private val orderRepository: OrderRepository) : ViewModelProvider.Factory {
+
+class OrderViewModelFactory(private val orderRepository: OrderRepository) :
+    ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(OrderViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

@@ -19,7 +19,8 @@ class CategoryAdapter(
     private var selectedPosition = RecyclerView.NO_POSITION
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
-        val binding = LayoutItemCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            LayoutItemCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CategoryViewHolder(binding)
     }
 
@@ -37,7 +38,8 @@ class CategoryAdapter(
         return categories.size
     }
 
-    inner class CategoryViewHolder(private val binding: LayoutItemCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class CategoryViewHolder(private val binding: LayoutItemCategoryBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(category: Category, isSelected: Boolean) {
             binding.tvCategoryName.text = category.name
             binding.lnContainerCategory.setBackgroundResource(

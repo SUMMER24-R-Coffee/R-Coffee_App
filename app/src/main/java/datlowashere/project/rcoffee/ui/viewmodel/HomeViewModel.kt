@@ -10,8 +10,10 @@ import datlowashere.project.rcoffee.utils.Resource
 import datlowashere.project.rcoffee.utils.SharedPreferencesHelper
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val repository: HomeRepository,
-                    private val context: Context) : ViewModel() {
+class HomeViewModel(
+    private val repository: HomeRepository,
+    private val context: Context
+) : ViewModel() {
 
     private val _banners = MutableLiveData<Resource<List<Banner>>>()
     val banners: LiveData<Resource<List<Banner>>> get() = _banners
@@ -35,6 +37,7 @@ class HomeViewModel(private val repository: HomeRepository,
             getCategories()
         }
     }
+
     private suspend fun getBanners() {
         _banners.postValue(Resource.Loading())
         try {
@@ -73,6 +76,7 @@ class HomeViewModel(private val repository: HomeRepository,
             filteredProducts.value = Resource.Success(filteredList)
         }
     }
+
     fun getProductsWithFavorites(userEmail: String) {
         viewModelScope.launch {
             _products.postValue(Resource.Loading())
@@ -89,8 +93,11 @@ class HomeViewModel(private val repository: HomeRepository,
         }
     }
 }
-class HomeViewModelFactory(private val repository: HomeRepository,
-                            private val context: Context) : ViewModelProvider.Factory {
+
+class HomeViewModelFactory(
+    private val repository: HomeRepository,
+    private val context: Context
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

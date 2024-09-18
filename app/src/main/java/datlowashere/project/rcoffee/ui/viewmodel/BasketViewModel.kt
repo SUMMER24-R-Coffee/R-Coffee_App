@@ -65,6 +65,7 @@ class BasketViewModel(private val basketRepository: BasketRepository) : ViewMode
     fun updateOrderIDBasket(orderId: String, basketId: List<Int>): LiveData<Boolean> {
         return basketRepository.updateOrderIDBasket(orderId, basketId)
     }
+
     fun updateQuantity(basketId: Int, quantity: Int) {
         val basket = Basket(
             quantity = quantity,
@@ -118,18 +119,19 @@ class BasketViewModel(private val basketRepository: BasketRepository) : ViewMode
     }
 
 
-
     fun getBasketByOrd(orderId: String) {
         basketRepository.getBasketByOrderId(orderId) { basketList ->
             _baskets.postValue(basketList)
         }
     }
+
     fun clearToastMessage() {
         _toastMessage.value = null
     }
 }
 
-class BasketViewModelFactory(private val basketRepository: BasketRepository) : ViewModelProvider.Factory {
+class BasketViewModelFactory(private val basketRepository: BasketRepository) :
+    ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(BasketViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

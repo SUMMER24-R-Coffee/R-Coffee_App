@@ -166,11 +166,12 @@ class OrderActivity : AppCompatActivity() {
                         PaymentSheet.Configuration("R'Coffee, Inc.")
                     )
                 } ?: run {
-                    Toast.makeText(this, "Failed to create PaymentIntent", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Failed to create PaymentIntent", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         } catch (e: Exception) {
-            Log.d("Exception Stripe", ":"+e.message)
+            Log.d("Exception Stripe", ":" + e.message)
         }
     }
 

@@ -16,7 +16,8 @@ class AddRatingAdapter(
     private val onRatingSaved: (Int, Int, Int, String) -> Unit
 ) : RecyclerView.Adapter<AddRatingAdapter.RatingViewHolder>() {
 
-    inner class RatingViewHolder(private val binding: LayoutItemRatingBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class RatingViewHolder(private val binding: LayoutItemRatingBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(basket: Basket, rating: Rating?) {
             binding.apply {
@@ -53,7 +54,8 @@ class AddRatingAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RatingViewHolder {
-        val binding = LayoutItemRatingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            LayoutItemRatingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return RatingViewHolder(binding)
     }
 

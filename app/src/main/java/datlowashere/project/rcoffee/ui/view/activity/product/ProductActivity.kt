@@ -31,7 +31,8 @@ import datlowashere.project.rcoffee.utils.GridSpacingItemDecoration
 import datlowashere.project.rcoffee.utils.Resource
 import datlowashere.project.rcoffee.utils.SharedPreferencesHelper
 
-class ProductActivity : AppCompatActivity(), ProductAdapter.OnItemClickListener, FilterBottomSheetFragment.FilterListener {
+class ProductActivity : AppCompatActivity(), ProductAdapter.OnItemClickListener,
+    FilterBottomSheetFragment.FilterListener {
 
     private lateinit var binding: ActivityProductBinding
     private lateinit var productViewModel: ProductViewModel
@@ -77,11 +78,13 @@ class ProductActivity : AppCompatActivity(), ProductAdapter.OnItemClickListener,
 
         val basketRepository = BasketRepository()
         val basketViewModelFactory = BasketViewModelFactory(basketRepository)
-        basketViewModel = ViewModelProvider(this, basketViewModelFactory).get(BasketViewModel::class.java)
+        basketViewModel =
+            ViewModelProvider(this, basketViewModelFactory).get(BasketViewModel::class.java)
 
         val favoriteRepository = FavoriteRepository()
         val favoriteViewModelFactory = FavoriteViewModelFactory(favoriteRepository)
-        favoriteViewModel = ViewModelProvider(this, favoriteViewModelFactory).get(FavoriteViewModel::class.java)
+        favoriteViewModel =
+            ViewModelProvider(this, favoriteViewModelFactory).get(FavoriteViewModel::class.java)
     }
 
     private fun observeViewModel() {
@@ -94,8 +97,10 @@ class ProductActivity : AppCompatActivity(), ProductAdapter.OnItemClickListener,
                         updateMessageVisibility()
                     }
                 }
+
                 is Resource.Error -> {
                 }
+
                 is Resource.Loading -> {
                 }
             }

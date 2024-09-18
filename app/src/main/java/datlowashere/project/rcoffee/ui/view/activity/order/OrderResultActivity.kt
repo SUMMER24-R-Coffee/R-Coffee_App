@@ -65,6 +65,7 @@ class OrderResultActivity : AppCompatActivity() {
             navigateToMainActivity()
         }
     }
+
     override fun onDestroy() {
         super.onDestroy()
         binding.tvORDID.text = null

@@ -87,7 +87,7 @@ class LoginActivity : AppCompatActivity() {
                         SharedPreferencesHelper.setUserPhone(this, response.users?.phone ?: " ")
                         SharedPreferencesHelper.setUserName(this, response.users?.name ?: " ")
                         SharedPreferencesHelper.setUserToken(this, tokenFcm)
-                        SharedPreferencesHelper.setUserPassword(this,password )
+                        SharedPreferencesHelper.setUserPassword(this, password)
 
 
                         val email = response.users?.email_user ?: ""
