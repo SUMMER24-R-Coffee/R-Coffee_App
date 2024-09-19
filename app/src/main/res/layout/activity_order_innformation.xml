@@ -292,6 +292,7 @@
                         android:layout_weight="1"
                         android:text="Merchandise Subtotal" />
 
+
                     <TextView
                         android:id="@+id/tvMerchandiseOrdInf"
                         style="@style/textContent"
@@ -301,6 +302,30 @@
                         android:text="TextView"
                         android:textAlignment="textEnd" />
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp">
+
+                    <TextView
+                        style="@style/textContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Shipping Fee" />
+
+
+                    <TextView
+                        android:id="@+id/tvShippingFee"
+                        style="@style/textContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="TextView"
+                        android:textAlignment="textEnd" />
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"

@@ -165,11 +165,12 @@ class OrderInnformationActivity : AppCompatActivity() {
             tvUserInforOrdInf.text = "${getName()} | ${getPhone()}"
             tvTotalPaymentOrdInf.text = FormatterHelper.formatCurrency(order.total_amount)
             tvMerchandiseOrdInf.text =
-                FormatterHelper.formatCurrency(order.total_amount + order.discount_amount)
-            tvDiscountOrdInf.text = FormatterHelper.formatCurrency(order.discount_amount)
+                FormatterHelper.formatCurrency(order.total_amount + order.discount_amount -25000)
+            tvDiscountOrdInf.text ="-"+ FormatterHelper.formatCurrency(order.discount_amount)
             tvMessageOrdInf.text = order.order_message.takeIf { it.isNotEmpty() } ?: "None"
             tvPaymentMethodOrdInf.text = order.payment_method
             tvStatusOrderInf.text = order.status_order
+            tvShippingFee.text ="25.000đ"
             tvAddress.text = order.location
             tvReason.text = order.reason
 

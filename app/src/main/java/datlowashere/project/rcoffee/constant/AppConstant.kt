@@ -1,7 +1,7 @@
 package datlowashere.project.rcoffee.constant
 
 class AppConstant {
-    val BASE_URL = "http://192.168.1.3:3000/api-app/"
+    val BASE_URL = "http://10.10.51.136:3000/api-app/"
 
     companion object {
         const val REQUEST_CODE_ADDRESS = 1
