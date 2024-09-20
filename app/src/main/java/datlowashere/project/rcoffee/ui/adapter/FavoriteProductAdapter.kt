@@ -15,10 +15,12 @@ class FavoriteProductAdapter(
     private val itemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<FavoriteProductAdapter.FavoriteProductViewHolder>() {
 
-    inner class FavoriteProductViewHolder(val binding: LayoutItemFavouriteBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class FavoriteProductViewHolder(val binding: LayoutItemFavouriteBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteProductViewHolder {
-        val binding = LayoutItemFavouriteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            LayoutItemFavouriteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return FavoriteProductViewHolder(binding)
     }
 
@@ -60,10 +62,12 @@ class FavoriteProductAdapter(
             binding.imgHeartFav.setImageResource(R.drawable.hert)
         }
     }
+
     fun updateProducts(newProducts: List<Product>) {
         products = newProducts
         notifyDataSetChanged()
     }
+
     interface OnItemClickListener {
         fun onFavoriteClick(product: Product)
         fun onFavoriteProductClick(product: Product)

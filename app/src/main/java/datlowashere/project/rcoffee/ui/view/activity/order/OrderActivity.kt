@@ -67,6 +67,7 @@ class OrderActivity : AppCompatActivity() {
     private var selectedVoucherPercent: Double? = 0.0
     private var discountAmount: Double = 0.0
     private var totalPayment: Double = 0.0
+    private var preTotalPayment: Double = 0.0
     private var methodPayment: String = ""
     private lateinit var orderId: String
     private lateinit var tokenFcm: String
@@ -108,7 +109,7 @@ class OrderActivity : AppCompatActivity() {
         updatePaymentDetails()
 
         binding.tvMerchandise.text = FormatterHelper.formatCurrency(totalAmount)
-        binding.tvShipping.text = "0 đ"
+        binding.tvShipping.text = "+25.000 đ"
         val adapter = ItemOrderAdapter(this, selectedBaskets)
         binding.rcvSelectedBasket.layoutManager = LinearLayoutManager(this)
         binding.rcvSelectedBasket.adapter = adapter
@@ -166,11 +167,12 @@ class OrderActivity : AppCompatActivity() {
                         PaymentSheet.Configuration("R'Coffee, Inc.")
                     )
                 } ?: run {
-                    Toast.makeText(this, "Failed to create PaymentIntent", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Failed to create PaymentIntent", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         } catch (e: Exception) {
-            Log.d("Exception Stripe", ":"+e.message)
+            Log.d("Exception Stripe", ":" + e.message)
         }
     }
 
@@ -319,7 +321,8 @@ class OrderActivity : AppCompatActivity() {
         discountAmount = totalAmount * (selectedVoucherPercent ?: 0.0) / 100
         binding.tvDiscount.text = "-${FormatterHelper.formatCurrency(discountAmount)}"
 
-        totalPayment = totalAmount - discountAmount
+        totalPayment = totalAmount - discountAmount +25000
+
         binding.tvTotalPayment.text = FormatterHelper.formatCurrency(totalPayment)
         binding.tvTotalAmountOrder.text =
             "Total Amount\n${FormatterHelper.formatCurrency(totalPayment)}"

@@ -47,7 +47,7 @@ class ChangePasswordActivity : AppCompatActivity() {
             showToast("Please fill in all fields")
             return
         }
-        if (oldPassword!=getOldPass()){
+        if (oldPassword != getOldPass()) {
             showToast("Old password is incorrect")
             return
         }
@@ -70,6 +70,7 @@ class ChangePasswordActivity : AppCompatActivity() {
     private fun getEmailUser(): String {
         return SharedPreferencesHelper.getUserEmail(this) ?: ""
     }
+
     private fun getOldPass(): String {
         return SharedPreferencesHelper.getUserPassword(this) ?: ""
     }

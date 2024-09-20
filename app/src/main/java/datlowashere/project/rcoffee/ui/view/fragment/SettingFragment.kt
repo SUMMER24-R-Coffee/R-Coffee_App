@@ -135,8 +135,22 @@ class SettingFragment : Fragment() {
                     DialogCustom.showLoginDialog(requireContext())
                 }
             }
-            lnAbout.setOnClickListener { startActivity(Intent(requireContext(),AboutActivity::class.java)) }
-            lnHelpCentre.setOnClickListener { startActivity(Intent(requireContext(),HelpCenterActivity::class.java)) }
+            lnAbout.setOnClickListener {
+                startActivity(
+                    Intent(
+                        requireContext(),
+                        AboutActivity::class.java
+                    )
+                )
+            }
+            lnHelpCentre.setOnClickListener {
+                startActivity(
+                    Intent(
+                        requireContext(),
+                        HelpCenterActivity::class.java
+                    )
+                )
+            }
             btnGetLogin.setOnClickListener {
                 startActivity(Intent(requireContext(), LoginActivity::class.java))
             }

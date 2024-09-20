@@ -47,7 +47,8 @@ import datlowashere.project.rcoffee.utils.Resource
 import datlowashere.project.rcoffee.utils.SharedPreferencesHelper
 
 
-class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAdapter.OnItemClickListener {
+class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener,
+    ProductAdapter.OnItemClickListener {
 
     private var _binding: FragmentHomeFragmentBinding? = null
     private val binding get() = _binding!!
@@ -82,7 +83,14 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
         homeViewModel.getProducts(getEmail())
 
 
-        binding.edSearchHome.setOnClickListener{startActivity(Intent(requireContext(),ProductActivity::class.java))}
+        binding.edSearchHome.setOnClickListener {
+            startActivity(
+                Intent(
+                    requireContext(),
+                    ProductActivity::class.java
+                )
+            )
+        }
 
         binding.tvTitleCateory.setOnClickListener {
             startActivity(Intent(context, ProductActivity::class.java))
@@ -107,15 +115,20 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
 
         val basketRepository = BasketRepository()
         val basketViewModelFactory = BasketViewModelFactory(basketRepository)
-        basketViewModel = ViewModelProvider(this, basketViewModelFactory).get(BasketViewModel::class.java)
+        basketViewModel =
+            ViewModelProvider(this, basketViewModelFactory).get(BasketViewModel::class.java)
 
         val favoriteRepository = FavoriteRepository()
         val favoriteViewModelFactory = FavoriteViewModelFactory(favoriteRepository)
-        favoriteViewModel= ViewModelProvider(this, favoriteViewModelFactory).get(FavoriteViewModel::class.java)
+        favoriteViewModel =
+            ViewModelProvider(this, favoriteViewModelFactory).get(FavoriteViewModel::class.java)
 
         val notificatonRepository = NotificationRepository()
         val notificationViewModelFactory = NotificationViewModelFactory(notificatonRepository)
-        notificationViewModel= ViewModelProvider(this, notificationViewModelFactory).get(NotificationViewModel::class.java)
+        notificationViewModel = ViewModelProvider(
+            this,
+            notificationViewModelFactory
+        ).get(NotificationViewModel::class.java)
     }
 
     @SuppressLint("FragmentLiveDataObserve")
@@ -126,8 +139,10 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
                     val imageList = resource.data?.map { SlideModel(it.img, "") }
                     imageList?.let { binding.imageSlider.setImageList(it, ScaleTypes.CENTER_CROP) }
                 }
+
                 is Resource.Error -> {
                 }
+
                 is Resource.Loading -> {
                 }
             }
@@ -138,12 +153,15 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
                 is Resource.Success -> {
                     resource.data?.let {
                         categoryAdapter = CategoryAdapter(it, this@HomeFragment)
-                        binding.rcvCategory.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                        binding.rcvCategory.layoutManager =
+                            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                         binding.rcvCategory.adapter = categoryAdapter
                     }
                 }
+
                 is Resource.Error -> {
                 }
+
                 is Resource.Loading -> {
                 }
             }
@@ -152,24 +170,34 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
         homeViewModel.products.observe(this@HomeFragment, Observer { resource ->
             when (resource) {
                 is Resource.Success -> {
-                    resource.data?.let {products ->
-                    if(products.isNotEmpty()){
-                        productAdapter = ProductAdapter(products, this@HomeFragment)
-                        binding.rcvProduct.apply {
-                            layoutManager =LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                            adapter=productAdapter
-                        }
+                    resource.data?.let { products ->
+                        if (products.isNotEmpty()) {
+                            productAdapter = ProductAdapter(products, this@HomeFragment)
+                            binding.rcvProduct.apply {
+                                layoutManager = LinearLayoutManager(
+                                    context,
+                                    LinearLayoutManager.HORIZONTAL,
+                                    false
+                                )
+                                adapter = productAdapter
+                            }
 
-                        binding.rcvRecommend.apply {
-                            layoutManager =LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                            adapter=productAdapter
+                            binding.rcvRecommend.apply {
+                                layoutManager = LinearLayoutManager(
+                                    context,
+                                    LinearLayoutManager.HORIZONTAL,
+                                    false
+                                )
+                                adapter = productAdapter
+                            }
                         }
-                    }
 
                     }
                 }
+
                 is Resource.Error -> {
                 }
+
                 is Resource.Loading -> {
                 }
             }
@@ -180,12 +208,15 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
                 is Resource.Success -> {
                     resource.data?.let {
                         productAdapter = ProductAdapter(it, this@HomeFragment)
-                        binding.rcvProduct.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                        binding.rcvProduct.layoutManager =
+                            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                         binding.rcvProduct.adapter = productAdapter
                     }
                 }
+
                 is Resource.Error -> {
                 }
+
                 is Resource.Loading -> {
                 }
             }
@@ -294,7 +325,7 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
             DialogCustom.showLoginDialog(requireContext())
         } else {
             val userEmail = getEmail()
-            val favorite = Favorite(0,product.product_id,userEmail)
+            val favorite = Favorite(0, product.product_id, userEmail)
 
             favoriteViewModel.insertOrDeleteFavorite(favorite)
         }
@@ -303,6 +334,7 @@ class HomeFragment : Fragment(), CategoryAdapter.OnItemClickListener, ProductAda
     fun getEmail(): String {
         return SharedPreferencesHelper.getUserEmail(requireContext()) ?: " "
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

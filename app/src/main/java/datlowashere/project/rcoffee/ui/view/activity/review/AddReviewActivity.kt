@@ -37,9 +37,16 @@ class AddReviewActivity : AppCompatActivity() {
 
         fetchRatingsForBaskets(basketIds)
 
-        addRatingAdapter = AddRatingAdapter(baskets ?: emptyList(), emptyMap()) { basketId, productId, ratingValue, reviewText ->
+        addRatingAdapter = AddRatingAdapter(
+            baskets ?: emptyList(),
+            emptyMap()
+        ) { basketId, productId, ratingValue, reviewText ->
             if (ratingValue < 1 || reviewText.isEmpty()) {
-                Toast.makeText(this, "Please, write your review and rating first", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "Please, write your review and rating first",
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
                 val newRating = Rating(
                     basket_id = basketId,
@@ -72,9 +79,11 @@ class AddReviewActivity : AppCompatActivity() {
                         Log.d("AddRating", ratingsMap.toString())
                     }
                 }
+
                 is Resource.Error -> {
                     Toast.makeText(this, "Error fetching ratings", Toast.LENGTH_SHORT).show()
                 }
+
                 is Resource.Loading -> {
                 }
             }
@@ -85,9 +94,11 @@ class AddReviewActivity : AppCompatActivity() {
                     Toast.makeText(this, "Your rating has been added", Toast.LENGTH_SHORT).show()
                     fetchRatingsForBaskets(basketIds)
                 }
+
                 is Resource.Error -> {
                     Toast.makeText(this, "Error adding rating", Toast.LENGTH_SHORT).show()
                 }
+
                 is Resource.Loading -> {
                 }
             }

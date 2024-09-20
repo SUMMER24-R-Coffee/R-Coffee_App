@@ -36,6 +36,7 @@ object SharedPreferencesHelper {
     fun setUserName(context: Context, name: String) {
         getSharedPreferences(context).edit().putString(KEY_USER_NAME, name).apply()
     }
+
     fun getUserName(context: Context): String? {
         return getSharedPreferences(context).getString(KEY_USER_NAME, null)
     }
@@ -43,6 +44,7 @@ object SharedPreferencesHelper {
     fun setUserPhone(context: Context, phone: String) {
         getSharedPreferences(context).edit().putString(KEY_USER_PHONE, phone).apply()
     }
+
     fun getUserPhone(context: Context): String? {
         return getSharedPreferences(context).getString(KEY_USER_PHONE, null)
     }
@@ -54,6 +56,7 @@ object SharedPreferencesHelper {
     fun getUserToken(context: Context): String? {
         return getSharedPreferences(context).getString(KEY_USER_TOKEN, null)
     }
+
     fun setUserPassword(context: Context, password: String) {
         getSharedPreferences(context).edit().putString(KEY_USER_PASSWORD, password).apply()
     }
@@ -61,6 +64,7 @@ object SharedPreferencesHelper {
     fun getUserPassword(context: Context): String? {
         return getSharedPreferences(context).getString(KEY_USER_PASSWORD, null)
     }
+
     fun clear(context: Context) {
         getSharedPreferences(context).edit().clear().apply()
     }

@@ -20,10 +20,12 @@ class ProductAdapter(
     private var selectedPosition = RecyclerView.NO_POSITION
 
 
-    inner class ProductViewHolder(val binding: LayoutItemProductBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ProductViewHolder(val binding: LayoutItemProductBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
-        val binding = LayoutItemProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            LayoutItemProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ProductViewHolder(binding)
     }
 
@@ -41,7 +43,7 @@ class ProductAdapter(
                 .placeholder(R.drawable.img_default)
                 .into(imgProductItemImg)
 
-            if (product.favorite_id!=null) {
+            if (product.favorite_id != null) {
                 imgFavProduct.setImageResource(R.drawable.red_heart)
             } else {
                 imgFavProduct.setImageResource(R.drawable.hert)
@@ -75,6 +77,7 @@ class ProductAdapter(
         products = newProducts
         notifyDataSetChanged()
     }
+
     private fun updateFavoriteIcon(isFavorite: Boolean, binding: LayoutItemProductBinding) {
         if (isFavorite) {
             binding.imgFavProduct.setImageResource(R.drawable.red_heart)
@@ -82,6 +85,7 @@ class ProductAdapter(
             binding.imgFavProduct.setImageResource(R.drawable.hert)
         }
     }
+
     interface OnItemClickListener {
         fun onProductClick(product: Product)
         fun onAddBasketClick(product: Product)

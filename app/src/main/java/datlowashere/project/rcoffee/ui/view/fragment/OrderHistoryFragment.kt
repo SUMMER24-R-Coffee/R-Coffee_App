@@ -8,17 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.ViewCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import datlowashere.project.rcoffee.R
 import datlowashere.project.rcoffee.databinding.FragmentOrderHistoryBinding
-import datlowashere.project.rcoffee.ui.adapter.OrderViewPage2Adapterr
+import datlowashere.project.rcoffee.ui.adapter.OrderViewPage2Adapter
 import datlowashere.project.rcoffee.ui.viewmodel.HistoryViewModel
 
 class OrderHistoryFragment : Fragment() {
@@ -26,7 +24,7 @@ class OrderHistoryFragment : Fragment() {
     private var _binding: FragmentOrderHistoryBinding? = null
     private val binding get() = _binding!!
     private lateinit var historyViewModel: HistoryViewModel
-    private lateinit var orderViewPage2Adapterr: OrderViewPage2Adapterr
+    private lateinit var orderViewPage2Adapter: OrderViewPage2Adapter
     private lateinit var viewPager: ViewPager2
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,9 +37,9 @@ class OrderHistoryFragment : Fragment() {
         viewPager = binding.viewpager2Ord
         val tabLayout = binding.tabLayoutOrd
 
-        orderViewPage2Adapterr = OrderViewPage2Adapterr(this.childFragmentManager, lifecycle)
+        orderViewPage2Adapter = OrderViewPage2Adapter(this.childFragmentManager, lifecycle)
 
-        viewPager.adapter = orderViewPage2Adapterr
+        viewPager.adapter = orderViewPage2Adapter
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position) {

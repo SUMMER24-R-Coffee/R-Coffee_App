@@ -17,7 +17,7 @@ import datlowashere.project.rcoffee.utils.SharedPreferencesHelper
 import datlowashere.project.rcoffee.viewmodel.AddressViewModel
 import datlowashere.project.rcoffee.viewmodel.AddressViewModelFactory
 
-class SelectAddressActivity : AppCompatActivity() , AddressAdapter.OnItemClickListener{
+class SelectAddressActivity : AppCompatActivity(), AddressAdapter.OnItemClickListener {
     private lateinit var binding: ActivitySelectAddressBinding
     private lateinit var addressViewModel: AddressViewModel
     private lateinit var addressAdapter: AddressAdapter
@@ -29,7 +29,7 @@ class SelectAddressActivity : AppCompatActivity() , AddressAdapter.OnItemClickLi
         setContentView(binding.root)
         val repository = AddressRepository()
         val factory = AddressViewModelFactory(repository)
-        addressViewModel =ViewModelProvider(this, factory).get(AddressViewModel::class.java)
+        addressViewModel = ViewModelProvider(this, factory).get(AddressViewModel::class.java)
 
 
         binding.btnBackSelectAddress.setOnClickListener {
@@ -55,8 +55,8 @@ class SelectAddressActivity : AppCompatActivity() , AddressAdapter.OnItemClickLi
         addressViewModel.getAddresses(getEmail())
     }
 
-    private fun setupRecyclerView(){
-        addressAdapter = AddressAdapter(emptyList(),this)
+    private fun setupRecyclerView() {
+        addressAdapter = AddressAdapter(emptyList(), this)
         binding.rcvSelectAddress.apply {
             layoutManager = LinearLayoutManager(this@SelectAddressActivity)
             adapter = addressAdapter
@@ -94,6 +94,7 @@ class SelectAddressActivity : AppCompatActivity() , AddressAdapter.OnItemClickLi
     private fun getEmail(): String {
         return SharedPreferencesHelper.getUserEmail(this) ?: " "
     }
+
     override fun onResume() {
         super.onResume()
         addressViewModel.getAddresses(getEmail())

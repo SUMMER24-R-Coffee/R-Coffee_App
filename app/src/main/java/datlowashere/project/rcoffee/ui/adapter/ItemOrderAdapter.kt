@@ -17,7 +17,8 @@ class ItemOrderAdapter(
 ) : RecyclerView.Adapter<ItemOrderAdapter.ItemOrderViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemOrderViewHolder {
-        val binding = LayoutItemOrderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            LayoutItemOrderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ItemOrderViewHolder(binding)
     }
 
@@ -35,7 +36,8 @@ class ItemOrderAdapter(
         notifyDataSetChanged()
     }
 
-    inner class ItemOrderViewHolder(private val binding: LayoutItemOrderBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ItemOrderViewHolder(private val binding: LayoutItemOrderBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(basket: Basket) {
             Glide.with(context)

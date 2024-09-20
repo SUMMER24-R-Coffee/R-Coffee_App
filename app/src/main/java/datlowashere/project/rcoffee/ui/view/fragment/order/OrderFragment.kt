@@ -40,10 +40,11 @@ class OrderFragment : Fragment() {
 
         orderItemAdapter = OrderItemAdapter(
             listOf(),
-            onItemClicked = { order ->handleItemClick(order)
+            onItemClicked = { order ->
+                handleItemClick(order)
             },
 
-        )
+            )
 
         binding.rcvOrder.apply {
             layoutManager = LinearLayoutManager(context)
@@ -54,7 +55,8 @@ class OrderFragment : Fragment() {
             val filteredOrders = orders.filter {
                 it.status_order != "cancelled" && it.status_order != "delivered"
             }
-            binding.tvMessageOrderFragment.visibility = if (filteredOrders.isEmpty()) View.VISIBLE else View.GONE
+            binding.tvMessageOrderFragment.visibility =
+                if (filteredOrders.isEmpty()) View.VISIBLE else View.GONE
 
             orderItemAdapter.updateOrders(filteredOrders)
         }
@@ -67,10 +69,11 @@ class OrderFragment : Fragment() {
         startActivity(intent)
     }
 
-    private fun getEmail():String{
+    private fun getEmail(): String {
         return SharedPreferencesHelper.getUserEmail(requireContext()) ?: " "
 
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

@@ -18,11 +18,16 @@ class NotificationAdapter(
 ) : RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
-        val binding = LayoutItemNotificationBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = LayoutItemNotificationBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return NotificationViewHolder(binding)
     }
 
-    inner class NotificationViewHolder(private val binding: LayoutItemNotificationBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class NotificationViewHolder(private val binding: LayoutItemNotificationBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(notification: Notification) {
             binding.tvTitleMessageNoti.text = notification.title
@@ -31,10 +36,10 @@ class NotificationAdapter(
 
             if (notification.is_read == 1) {
                 binding.lnContainerNotification.setBackgroundResource(R.color.white)
-                binding.tvCheckMessage.visibility =View.VISIBLE
+                binding.tvCheckMessage.visibility = View.VISIBLE
             } else {
                 binding.lnContainerNotification.setBackgroundResource(R.color.light_pink)
-                binding.tvCheckMessage.visibility =View.GONE
+                binding.tvCheckMessage.visibility = View.GONE
             }
 
             binding.imgProductNotifi.setOnClickListener {

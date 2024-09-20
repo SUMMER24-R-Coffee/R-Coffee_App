@@ -13,14 +13,13 @@ import datlowashere.project.rcoffee.utils.Resource
 import datlowashere.project.rcoffee.utils.SharedPreferencesHelper
 import kotlinx.coroutines.launch
 
-class ProductViewModel(private val repository: ProductRepository, ) : ViewModel()  {
+class ProductViewModel(private val repository: ProductRepository) : ViewModel() {
 
     private val _products = MutableLiveData<Resource<List<Product>>>()
     val products: LiveData<Resource<List<Product>>> get() = _products
 
     private val _ratings = MutableLiveData<Resource<List<Rating>>>()
     val ratings: LiveData<Resource<List<Rating>>> get() = _ratings
-
 
 
     fun getProducts(email_user: String) {
@@ -49,9 +48,10 @@ class ProductViewModel(private val repository: ProductRepository, ) : ViewModel(
     }
 
 
-    }
+}
 
-class ProductViewModelFactory( private val repository: ProductRepository) : ViewModelProvider.Factory {
+class ProductViewModelFactory(private val repository: ProductRepository) :
+    ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ProductViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

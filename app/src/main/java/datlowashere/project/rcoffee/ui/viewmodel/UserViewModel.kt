@@ -28,8 +28,6 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
     }
 
 
-
-
     fun updateUser(user: Users) {
         viewModelScope.launch {
             val response = userRepository.updateUser(user)
@@ -44,6 +42,7 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
         }
     }
 }
+
 class UserViewModelFactory(private val userRepository: UserRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(UserViewModel::class.java)) {

@@ -38,13 +38,13 @@ class BasketActivity : AppCompatActivity() {
         binding.btnBackBasket.setOnClickListener {
             finish()
         }
-        binding.btnCheckoutBasket.setOnClickListener{
+        binding.btnCheckoutBasket.setOnClickListener {
             val selectedBaskets = adapter.getSelectedBaskets()
             val totalAmount = adapter.getTotalAmount()
 
-            if(totalAmount ==0.0){
+            if (totalAmount == 0.0) {
                 Toast.makeText(this, "Please, select item", Toast.LENGTH_SHORT).show()
-            }else {
+            } else {
                 val intent = Intent(this, OrderActivity::class.java)
                 intent.putParcelableArrayListExtra("selectedBaskets", ArrayList(selectedBaskets))
                 intent.putExtra("totalAmount", totalAmount)
@@ -65,19 +65,26 @@ class BasketActivity : AppCompatActivity() {
             listOf(),
             onItemClicked = { basket -> handleItemClick(basket) },
             onCheckBoxClicked = { basket -> handleCheckBoxClick(basket) },
-            onQuantityChanged = { basket, newQuantity -> handleQuantityChange(basket, newQuantity) },
+            onQuantityChanged = { basket, newQuantity ->
+                handleQuantityChange(
+                    basket,
+                    newQuantity
+                )
+            },
             onRemoveClicked = { basket -> handleRemoveClick(basket) },
             onTotalAmountChanged = { totalAmount -> updateTotalAmount(totalAmount) },
             this
         )
-        binding.rcvBasket.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false)
+        binding.rcvBasket.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rcvBasket.adapter = adapter
 
     }
+
     private fun setUpObservers() {
         basketViewModel.baskets.observe(this) { baskets ->
             adapter.updateBaskets(baskets)
-            binding.tvMessageBasket.visibility = if(baskets.isEmpty()) View.VISIBLE else View.GONE
+            binding.tvMessageBasket.visibility = if (baskets.isEmpty()) View.VISIBLE else View.GONE
 
         }
         basketViewModel.getBaskets(getEmail())
@@ -91,12 +98,15 @@ class BasketActivity : AppCompatActivity() {
 
         })
     }
+
     @SuppressLint("SetTextI18n")
     private fun updateTotalAmount(totalAmount: Double) {
-        binding.tvTotalAmountBasket.text ="Total Amount:\n"+ FormatterHelper.formatCurrency(totalAmount)
+        binding.tvTotalAmountBasket.text =
+            "Total Amount:\n" + FormatterHelper.formatCurrency(totalAmount)
         binding.btnCheckoutBasket.isEnabled = totalAmount != 0.0
 
     }
+
     private fun handleItemClick(basket: Basket) {
     }
 
